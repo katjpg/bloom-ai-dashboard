@@ -81,11 +81,13 @@ stateDiagram-v2
 stateDiagram-v2
     [*] --> StartSentimentAnalysis
     StartSentimentAnalysis --> CheckContentLength
-    CheckContentLength --> SkipSentiment: Length  AnalyzeSentiment: Length >= 20
+    CheckContentLength --> SkipSentiment: Length < 20
+    CheckContentLength --> AnalyzeSentiment: Length >= 20
     SkipSentiment --> AnalyzeCommunityIntent
     AnalyzeSentiment --> AnalyzeCommunityIntent
     AnalyzeCommunityIntent --> CalculateRewards
     CalculateRewards --> [*]
+
 ```
 
 **State Machine Features:**
