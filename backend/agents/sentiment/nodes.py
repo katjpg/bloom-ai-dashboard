@@ -26,7 +26,7 @@ GEMINI_MODEL = "google-gla:gemini-2.0-flash"
 
 # API Configuration
 API_TIMEOUT = 30
-MIN_CONTENT_LENGTH = 20
+MIN_CONTENT_LENGTH = 0 # changed to 0 
 
 # Sentiment Configuration
 POSITIVE_SENTIMENT_THRESHOLD = 30
