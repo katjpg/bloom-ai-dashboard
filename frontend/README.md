@@ -1,5 +1,7 @@
 # Bloom Dashboard - Frontend
 
+> Updated: June 15th, 3:09AM (RIP)
+
 ## Setup
 
 ```bash
