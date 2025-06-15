@@ -38,7 +38,7 @@ export default async function RootLayout({
             defaultOpen={defaultOpen}
             style={
               {
-                "--sidebar-width": "calc(var(--spacing) * 72)",
+                "--sidebar-width": "calc(var(--spacing) * 60)",
               } as React.CSSProperties
             }
           >
