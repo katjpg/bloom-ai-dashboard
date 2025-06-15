@@ -27,6 +27,17 @@ export interface MessageVolumeData {
   violations: number
 }
 
+export interface RobloxExperience {
+  id: number
+  title: string
+  description: string
+  isActive: boolean
+  safetyScore: number
+  lastUpdated: string
+  playerCount: number
+  thumbnail: string
+}
+
 // Mock data
 export const mockMetrics: MockMetrics = {
   totalMessages: 12847,
@@ -67,4 +78,67 @@ export const mockMessageVolumeData: MessageVolumeData[] = [
   { hour: "21", approved: 523, flagged: 41, violations: 11 },
   { hour: "22", approved: 456, flagged: 36, violations: 9 },
   { hour: "23", approved: 312, flagged: 24, violations: 6 }
+]
+
+export const mockExperiences: RobloxExperience[] = [
+  {
+    id: 1,
+    title: "Adventure Quest",
+    description: "Epic fantasy adventure with quests, dungeons, and magical creatures. Join thousands of players in this immersive RPG experience.",
+    isActive: true,
+    safetyScore: 94.8,
+    lastUpdated: "2 hours ago",
+    playerCount: 12847,
+    thumbnail: "/api/placeholder/400/225"
+  },
+  {
+    id: 2,
+    title: "City Builder Pro",
+    description: "Build and manage your dream city with advanced construction tools and economic simulation features.",
+    isActive: false,
+    safetyScore: 91.2,
+    lastUpdated: "1 day ago",
+    playerCount: 8934,
+    thumbnail: "/api/placeholder/400/225"
+  },
+  {
+    id: 3,
+    title: "Racing Championship",
+    description: "High-speed racing with customizable cars, multiple tracks, and competitive tournaments.",
+    isActive: true,
+    safetyScore: 96.1,
+    lastUpdated: "30 minutes ago",
+    playerCount: 15623,
+    thumbnail: "/api/placeholder/400/225"
+  },
+  {
+    id: 4,
+    title: "Space Explorer",
+    description: "Explore the cosmos, discover new planets, and build your own space station in this sci-fi adventure.",
+    isActive: true,
+    safetyScore: 93.7,
+    lastUpdated: "1 hour ago",
+    playerCount: 7892,
+    thumbnail: "/api/placeholder/400/225"
+  },
+  {
+    id: 5,
+    title: "Pet Paradise",
+    description: "Adopt, care for, and train virtual pets in a colorful world full of fun activities and mini-games.",
+    isActive: false,
+    safetyScore: 98.3,
+    lastUpdated: "3 days ago",
+    playerCount: 5641,
+    thumbnail: "/api/placeholder/400/225"
+  },
+  {
+    id: 6,
+    title: "Survival Island",
+    description: "Test your survival skills on a mysterious island with crafting, building, and exploration elements.",
+    isActive: true,
+    safetyScore: 89.6,
+    lastUpdated: "45 minutes ago",
+    playerCount: 11256,
+    thumbnail: "/api/placeholder/400/225"
+  }
 ]
