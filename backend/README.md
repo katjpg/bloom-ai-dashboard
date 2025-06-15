@@ -1,4 +1,4 @@
-# Bloom AI Dashboard - Backend
+# Bloom Dashboard - Backend
 > Real-time message moderation and sentiment analysis backend using finite state machines and orchestrator-worker pattern
 
 A message processing backend built with FastAPI and Pydantic AI, implementing finite state machine workflows for content moderation and sentiment analysis in gaming communities. Features graph-based agent orchestration, PII detection, and behavioral scoring.

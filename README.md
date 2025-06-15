@@ -1,1 +1,1 @@
-# bloom-ai-dashboard
+# Bloom Dashboard (wip)
