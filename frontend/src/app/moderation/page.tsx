@@ -1,0 +1,68 @@
+"use client"
+
+import { useState } from "react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { PriorityLevel, ContentType } from "@/lib/colors-mod"
+import ModFilters from "./_components/mod-filters"
+import LiveChatFeed from "./_components/live-chat-feed"
+
+export default function ModerationPage() {
+  const [filters, setFilters] = useState<{
+    priorities: PriorityLevel[]
+    violations: ContentType[]
+  }>({
+    priorities: [],
+    violations: []
+  })
+
+  const handleFiltersChange = (newFilters: {
+    priorities: PriorityLevel[]
+    violations: ContentType[]
+  }) => {
+    setFilters(newFilters)
+  }
+
+  return (
+    <div className="@container/page flex flex-1 flex-col gap-8 p-6">
+      {/* Header Section */}
+      <div className="flex flex-col gap-2">
+        <h1 className="font-clash text-3xl font-medium">
+          Moderation Dashboard
+        </h1>
+        <p className="text-muted-foreground">
+          Monitor and manage live chat interactions
+        </p>
+      </div>
+
+      {/* Navigation Tabs */}
+      <Tabs defaultValue="live-chat" className="gap-6">
+        <TabsList className="w-full @3xl/page:w-fit">
+          <TabsTrigger value="live-chat">Live Chat</TabsTrigger>
+          <TabsTrigger value="moderation-history" disabled>
+            Moderation History
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="live-chat" className="flex flex-col gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            {/* Left sidebar with filters */}
+            <div className="lg:col-span-1">
+              <ModFilters onFiltersChange={handleFiltersChange} />
+            </div>
+
+            {/* Main chat feed */}
+            <div className="lg:col-span-3">
+              <LiveChatFeed filters={filters} />
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="moderation-history" className="flex flex-col gap-6">
+          <div className="text-center text-muted-foreground py-8">
+            Moderation History - Coming Soon
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
+  )
+}
