@@ -14,10 +14,10 @@ export default function ModInfo({ selectedExperienceId = 1 }: ModInfoProps) {
   const experienceActiveUsers = mockActiveUsers.filter(user => user.experience_id === selectedExperienceId)
   
   return (
-    <div className="space-y-4">
-      {/* Experience Info Card */}
-      <Card className="@container">
-        <CardContent className="space-y-4">
+    <Card className="@container">
+      <CardContent className="space-y-6">
+        {/* Experience Info Section */}
+        <div className="space-y-4">
           {/* Experience Thumbnail */}
           <div className="relative aspect-video bg-gradient-to-br from-muted/50 to-muted w-full rounded-md overflow-hidden">
             <div className="absolute inset-0 bg-muted/80 flex items-center justify-center">
@@ -49,17 +49,16 @@ export default function ModInfo({ selectedExperienceId = 1 }: ModInfoProps) {
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
 
-      {/* Active Users Card */}
-      <Card className="@container">
-        <CardHeader className="pb-3">
-          <CardTitle className="font-clash text-lg font-medium">
+        {/* Divider */}
+        <div className="border-t border-border" />
+
+        {/* Active Users Section */}
+        <div className="space-y-4">
+          <h4 className="font-clash text-lg font-medium">
             Active Users ({experienceActiveUsers.length})
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+          </h4>
           <div className="space-y-3 max-h-[400px] overflow-y-auto">
             {experienceActiveUsers.map((user) => (
               <div key={user.id} className="flex items-center gap-3">
@@ -88,8 +87,8 @@ export default function ModInfo({ selectedExperienceId = 1 }: ModInfoProps) {
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </CardContent>
+    </Card>
   )
 }
