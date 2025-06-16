@@ -11,21 +11,25 @@ interface LiveChatFeedProps {
     priorities: PriorityLevel[]
     violations: ContentType[]
   }
+  selectedExperienceId: number
 }
 
-export default function LiveChatFeed({ filters }: LiveChatFeedProps) {
+export default function LiveChatFeed({ filters, selectedExperienceId }: LiveChatFeedProps) {
   const filteredMessages = useMemo(() => {
     return mockChatMessages.filter((message) => {
-      // Show all messages if no filters selected (empty arrays mean "All")
+      // Filter by selected experience first
+      const experienceMatch = message.experience_id === selectedExperienceId
+      
+      // Then apply other filters - show all messages if no filters selected (empty arrays mean "All")
       const priorityMatch = filters.priorities.length === 0 || 
         (message.priority_level && filters.priorities.includes(message.priority_level))
       
       const violationMatch = filters.violations.length === 0 || 
         (message.content_types && message.content_types.some(ct => filters.violations.includes(ct)))
       
-      return priorityMatch && violationMatch
+      return experienceMatch && priorityMatch && violationMatch
     })
-  }, [filters])
+  }, [filters, selectedExperienceId])
 
   return (
     <Card className="h-full">

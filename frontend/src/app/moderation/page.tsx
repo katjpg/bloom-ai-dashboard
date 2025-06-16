@@ -2,9 +2,18 @@
 
 import { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { PriorityLevel, ContentType } from "@/lib/colors-mod"
 import ModFilters from "./_components/mod-filters"
 import LiveChatFeed from "./_components/live-chat-feed"
+import ModInfo from "./_components/mod-info"
+import { mockExperiences } from "./_data"
 
 export default function ModerationPage() {
   const [filters, setFilters] = useState<{
@@ -14,6 +23,8 @@ export default function ModerationPage() {
     priorities: [],
     violations: []
   })
+
+  const [selectedExperienceId, setSelectedExperienceId] = useState<number>(1)
 
   const handleFiltersChange = (newFilters: {
     priorities: PriorityLevel[]
@@ -25,13 +36,27 @@ export default function ModerationPage() {
   return (
     <div className="@container/page flex flex-1 flex-col gap-8 p-6">
       {/* Header Section */}
-      <div className="flex flex-col gap-2">
-        <h1 className="font-clash text-3xl font-medium">
-          Moderation Dashboard
-        </h1>
-        <p className="text-muted-foreground">
-          Monitor and manage live chat interactions
-        </p>
+      <div className="flex items-end justify-between">
+        <div className="flex flex-col gap-2">
+          <h1 className="font-clash text-3xl font-medium">
+            Moderation Dashboard
+          </h1>
+          <p className="text-muted-foreground">
+            Monitor and manage live chat interactions
+          </p>
+        </div>
+        <Select value={selectedExperienceId.toString()} onValueChange={(value) => setSelectedExperienceId(Number(value))}>
+          <SelectTrigger className="w-[200px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {mockExperiences.map((experience) => (
+              <SelectItem key={experience.id} value={experience.id.toString()}>
+                {experience.title}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Navigation Tabs */}
@@ -44,7 +69,7 @@ export default function ModerationPage() {
         </TabsList>
 
         <TabsContent value="live-chat" className="flex flex-col gap-6">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-6 gap-6">
             {/* Left sidebar with filters */}
             <div className="lg:col-span-1">
               <ModFilters onFiltersChange={handleFiltersChange} />
@@ -52,7 +77,12 @@ export default function ModerationPage() {
 
             {/* Main chat feed */}
             <div className="lg:col-span-3">
-              <LiveChatFeed filters={filters} />
+              <LiveChatFeed filters={filters} selectedExperienceId={selectedExperienceId} />
+            </div>
+
+            {/* Right sidebar with mod info */}
+            <div className="lg:col-span-2">
+              <ModInfo selectedExperienceId={selectedExperienceId} />
             </div>
           </div>
         </TabsContent>
