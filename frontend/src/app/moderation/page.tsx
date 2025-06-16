@@ -9,29 +9,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { PriorityLevel, ContentType } from "@/lib/colors-mod"
-import ModFilters from "./_components/mod-filters"
 import LiveChatFeed from "./_components/live-chat-feed"
 import ModInfo from "./_components/mod-info"
 import { mockExperiences } from "./_data"
 
 export default function ModerationPage() {
-  const [filters, setFilters] = useState<{
-    priorities: PriorityLevel[]
-    violations: ContentType[]
-  }>({
-    priorities: [],
-    violations: []
-  })
-
   const [selectedExperienceId, setSelectedExperienceId] = useState<number>(1)
-
-  const handleFiltersChange = (newFilters: {
-    priorities: PriorityLevel[]
-    violations: ContentType[]
-  }) => {
-    setFilters(newFilters)
-  }
 
   return (
     <div className="@container/page flex flex-1 flex-col gap-8 p-6">
@@ -69,19 +52,14 @@ export default function ModerationPage() {
         </TabsList>
 
         <TabsContent value="live-chat" className="flex flex-col gap-6">
-          <div className="grid grid-cols-1 lg:grid-cols-6 gap-6">
-            {/* Left sidebar with filters */}
-            <div className="lg:col-span-1">
-              <ModFilters onFiltersChange={handleFiltersChange} />
-            </div>
-
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Main chat feed */}
             <div className="lg:col-span-3">
-              <LiveChatFeed filters={filters} selectedExperienceId={selectedExperienceId} />
+              <LiveChatFeed selectedExperienceId={selectedExperienceId} />
             </div>
 
             {/* Right sidebar with mod info */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-1">
               <ModInfo selectedExperienceId={selectedExperienceId} />
             </div>
           </div>
