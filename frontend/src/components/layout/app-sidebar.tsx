@@ -91,7 +91,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <a href="/">
                 <BloomLogo className="!size-5" />
-                <span className="text-base font-semibold font-clash">Bloom</span>
+                <span className="text-xl font-semibold font-clash">Bloom</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

@@ -39,7 +39,7 @@ export function NavSecondary({
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
                 <a href={item.url}>
-                  <item.icon />
+                  <item.icon className="h-6 w-6" />
                   <span>{item.title}</span>
                 </a>
               </SidebarMenuButton>
@@ -48,7 +48,7 @@ export function NavSecondary({
           <SidebarMenuItem className="group-data-[collapsible=icon]:hidden">
             <SidebarMenuButton asChild>
               <label>
-                <IconBrightness />
+                <IconBrightness className="h-6 w-6" />
                 <span>Dark Mode</span>
                 {mounted ? (
                   <Switch

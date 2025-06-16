@@ -35,7 +35,7 @@ export function NavMain({
                 isActive={pathname === item.url}
               >
                 <Link href={item.url}>
-                  {item.icon && <item.icon />}
+                  {item.icon && <item.icon className="h-6 w-6" />}
                   <span>{item.title}</span>
                 </Link>
               </SidebarMenuButton>
