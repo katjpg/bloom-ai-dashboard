@@ -41,56 +41,55 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
   }
 
   return (
-    <Card className="@container">
-      <CardContent className="space-y-6 relative">
+    <Card className="@container/card shadow-xs overflow-hidden">
+      <CardContent className="space-y-4 relative p-4">
         {/* Close Button */}
         <Button
           variant="ghost"
           size="sm"
           onClick={onClose}
-          className="absolute top-4 right-4 h-8 w-8 p-0 hover:bg-muted"
+          className="absolute top-3 right-3 h-7 w-7 p-0 hover:bg-muted/50 z-10"
         >
-          <X className="h-4 w-4" />
+          <X className="h-3.5 w-3.5" />
         </Button>
 
         {/* Player Profile Section */}
-        <div className="pt-8 text-center space-y-4">
+        <div className="pt-2 text-center space-y-3">
           <div className="relative inline-block">
-            <Avatar className="h-20 w-20 mx-auto">
+            <Avatar className="h-14 w-14 @sm:h-16 @sm:w-16 mx-auto">
               <AvatarImage src={selectedPlayer.avatar_url} alt={selectedPlayer.player_name} />
-              <AvatarFallback className="text-lg">
+              <AvatarFallback className="text-sm font-medium">
                 {selectedPlayer.player_name.split(' ').map(n => n[0]).join('').toUpperCase()}
               </AvatarFallback>
             </Avatar>
             
             {/* Activity Status Indicator */}
             <div 
-              className={`absolute bottom-1 right-1 w-4 h-4 rounded-full border-2 border-background ${
+              className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-background ${
                 isOnline ? 'bg-green-500' : 'bg-gray-400'
               }`}
             />
           </div>
           
-          <div className="space-y-1">
-            <h3 className="font-clash font-semibold text-xl">{selectedPlayer.player_name}</h3>
-            <p className="text-sm text-muted-foreground">ID: {selectedPlayer.player_id}</p>
+          <div className="space-y-0.5 min-w-0">
+            <h3 className="font-clash font-semibold text-lg line-clamp-1">{selectedPlayer.player_name}</h3>
+            <p className="text-xs text-muted-foreground">ID: {selectedPlayer.player_id}</p>
             <p className="text-xs text-muted-foreground">Member since {memberSince}</p>
           </div>
         </div>
 
         {/* Divider */}
-        <div className="border-t border-border" />
+        <div className="border-t border-border/60" />
 
         {/* Activity Section */}
-        <div className="space-y-4">
-          <h4 className="font-clash text-lg font-medium">Activity</h4>
+        <div className="space-y-3">
+          <h4 className="font-clash text-base font-medium">Activity</h4>
           
           {/* Recent Message */}
           <div className="space-y-2">
-            <h5 className="text-sm font-medium text-muted-foreground">Recent Message</h5>
-            <div className="bg-muted/50 rounded-lg p-3">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs text-muted-foreground">
+            <div className="bg-muted/30 rounded-lg p-3 border border-border/40">
+              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                <span className="text-xs text-muted-foreground font-medium">
                   {new Date(selectedPlayer.timestamp).toLocaleString()}
                 </span>
                 {selectedPlayer.priority_level && (
@@ -102,55 +101,64 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
                   </Badge>
                 )}
               </div>
-              <p className="text-sm break-words">{selectedPlayer.message}</p>
+              <p className="text-sm break-words leading-relaxed">{selectedPlayer.message}</p>
             </div>
           </div>
 
-          {/* Quick Stats Cards */}
-          <div className="grid grid-cols-3 gap-3">
-            <button className="bg-muted/50 hover:bg-muted/70 transition-colors rounded-lg p-3 text-center">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <MessageSquare className="h-4 w-4 text-blue-500" />
+          {/* Quick Stats List */}
+          <div className="space-y-2">
+            <button className="w-full flex items-center gap-3 p-3 hover:bg-muted/50 transition-colors rounded-lg border border-border/40">
+              <MessageSquare className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+              <span className="flex-1 text-left font-medium text-sm">Messages</span>
+              <div className="flex items-center gap-2">
+                <span className="text-base font-semibold tabular-nums">{playerStats.messages}</span>
+                <svg className="w-4 h-4 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="m9 18 6-6-6-6"/>
+                </svg>
               </div>
-              <div className="text-lg font-semibold">{playerStats.messages}</div>
-              <div className="text-xs text-muted-foreground">Messages</div>
             </button>
             
-            <button className="bg-muted/50 hover:bg-muted/70 transition-colors rounded-lg p-3 text-center">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <Flag className="h-4 w-4 text-orange-500" />
+            <button className="w-full flex items-center gap-3 p-3 hover:bg-muted/50 transition-colors rounded-lg border border-border/40">
+              <Flag className="h-4 w-4 text-orange-600 dark:text-orange-400 flex-shrink-0" />
+              <span className="flex-1 text-left font-medium text-sm">Flagged</span>
+              <div className="flex items-center gap-2">
+                <span className="text-base font-semibold tabular-nums">{playerStats.flagged}</span>
+                <svg className="w-4 h-4 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="m9 18 6-6-6-6"/>
+                </svg>
               </div>
-              <div className="text-lg font-semibold">{playerStats.flagged}</div>
-              <div className="text-xs text-muted-foreground">Flagged</div>
             </button>
             
-            <button className="bg-muted/50 hover:bg-muted/70 transition-colors rounded-lg p-3 text-center">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <ShieldAlert className="h-4 w-4 text-red-500" />
+            <button className="w-full flex items-center gap-3 p-3 hover:bg-muted/50 transition-colors rounded-lg border border-border/40">
+              <ShieldAlert className="h-4 w-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+              <span className="flex-1 text-left font-medium text-sm">Violations</span>
+              <div className="flex items-center gap-2">
+                <span className="text-base font-semibold tabular-nums">{playerStats.violations}</span>
+                <svg className="w-4 h-4 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="m9 18 6-6-6-6"/>
+                </svg>
               </div>
-              <div className="text-lg font-semibold">{playerStats.violations}</div>
-              <div className="text-xs text-muted-foreground">Violations</div>
             </button>
           </div>
         </div>
 
         {/* Divider */}
-        <div className="border-t border-border" />
+        <div className="border-t border-border/60" />
 
         {/* Actions Section */}
-        <div className="space-y-4">
-          <h4 className="font-clash text-lg font-medium">Actions</h4>
+        <div className="space-y-3">
+          <h4 className="font-clash text-base font-medium">Actions</h4>
           
-          <div className="flex justify-center gap-4">
+          <div className="grid grid-cols-4 gap-2">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant={warningConfig.variant}
-                  size="lg"
-                  className={`h-12 w-12 p-0 ${warningConfig.className}`}
+                  size="sm"
+                  className={`h-11 w-full p-0 ${warningConfig.className} shadow-none font-medium`}
                   onClick={() => handleAction('WARNING')}
                 >
-                  <AlertTriangle className="h-5 w-5" />
+                  <AlertTriangle className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -162,11 +170,11 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
               <TooltipTrigger asChild>
                 <Button
                   variant={muteConfig.variant}
-                  size="lg"
-                  className={`h-12 w-12 p-0 ${muteConfig.className}`}
+                  size="sm"
+                  className={`h-11 w-full p-0 ${muteConfig.className} shadow-none font-medium`}
                   onClick={() => handleAction('MUTE')}
                 >
-                  <VolumeX className="h-5 w-5" />
+                  <VolumeX className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -178,11 +186,11 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
               <TooltipTrigger asChild>
                 <Button
                   variant={kickConfig.variant}
-                  size="lg"
-                  className={`h-12 w-12 p-0 ${kickConfig.className}`}
+                  size="sm"
+                  className={`h-11 w-full p-0 ${kickConfig.className} shadow-none font-medium`}
                   onClick={() => handleAction('KICK')}
                 >
-                  <UserX className="h-5 w-5" />
+                  <UserX className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -194,11 +202,11 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
               <TooltipTrigger asChild>
                 <Button
                   variant={banConfig.variant}
-                  size="lg"
-                  className={`h-12 w-12 p-0 ${banConfig.className}`}
+                  size="sm"
+                  className={`h-11 w-full p-0 ${banConfig.className} shadow-none font-medium`}
                   onClick={() => handleAction('BAN')}
                 >
-                  <Ban className="h-5 w-5" />
+                  <Ban className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>

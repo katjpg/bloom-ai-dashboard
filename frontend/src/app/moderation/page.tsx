@@ -37,7 +37,7 @@ export default function ModerationPage() {
       <div className="flex items-end justify-between">
         <div className="flex flex-col gap-2">
           <h1 className="font-clash text-3xl font-medium">
-            Moderation Dashboard
+            Moderation
           </h1>
           <p className="text-muted-foreground">
             Monitor and manage live chat interactions
@@ -67,28 +67,43 @@ export default function ModerationPage() {
         </TabsList>
 
         <TabsContent value="live-chat" className="flex flex-col gap-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Main chat feed - 2/3 width */}
-            <div className="lg:col-span-2">
-              <LiveChatFeed 
-                selectedExperienceId={selectedExperienceId} 
-                onPlayerSelect={handlePlayerSelect}
-              />
-            </div>
+          {selectedPlayer ? (
+            /* Player Info Mode - Responsive Layout */
+            <div className="grid grid-cols-1 @3xl/page:grid-cols-3 gap-6">
+              {/* Main chat feed */}
+              <div className="@3xl/page:col-span-2">
+                <LiveChatFeed 
+                  selectedExperienceId={selectedExperienceId} 
+                  onPlayerSelect={handlePlayerSelect}
+                />
+              </div>
 
-            {/* Right sidebar with mod info or player info - 1/3 width */}
-            <div className="lg:col-span-1">
-              {selectedPlayer ? (
+              {/* Player info - goes underneath on smaller screens */}
+              <div className="@3xl/page:col-span-1">
                 <PlayerInfo 
                   selectedPlayer={selectedPlayer}
                   onClose={handleClosePlayerInfo}
                   onPlayerAction={handlePlayerAction}
                 />
-              ) : (
-                <ModInfo selectedExperienceId={selectedExperienceId} />
-              )}
+              </div>
             </div>
-          </div>
+          ) : (
+            /* Default Mode - Standard Layout */
+            <div className="grid grid-cols-1 @3xl/page:grid-cols-3 gap-6">
+              {/* Main chat feed */}
+              <div className="@3xl/page:col-span-2">
+                <LiveChatFeed 
+                  selectedExperienceId={selectedExperienceId} 
+                  onPlayerSelect={handlePlayerSelect}
+                />
+              </div>
+
+              {/* Mod info sidebar */}
+              <div className="@3xl/page:col-span-1">
+                <ModInfo selectedExperienceId={selectedExperienceId} />
+              </div>
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="moderation-history" className="flex flex-col gap-6">

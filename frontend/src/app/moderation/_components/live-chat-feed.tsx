@@ -69,9 +69,9 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect }: L
   const hasActiveFilters = searchTerm !== "" || selectedPriorities.length > 0 || selectedViolations.length > 0
 
   return (
-    <Card className="h-full">
-      <CardHeader className="space-y-4">
-        <CardTitle className="font-clash text-xl font-medium">
+    <Card className="@container/card shadow-xs overflow-hidden h-full">
+      <CardHeader className="space-y-4 p-4 pb-0">
+        <CardTitle className="font-clash text-lg font-medium">
           Live Chat Feed ({filteredMessages.length})
         </CardTitle>
         
@@ -153,8 +153,8 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect }: L
         </div>
       </CardHeader>
       
-      <CardContent className="p-4">
-        <div className="space-y-3 max-h-[600px] overflow-y-auto">
+      <CardContent className="p-4 pt-4">
+        <div className="space-y-2.5 max-h-[600px] overflow-y-auto">
           {filteredMessages.length === 0 ? (
             <div className="text-center text-muted-foreground py-8">
               {hasActiveFilters ? "No messages match the current filters" : "No messages found"}

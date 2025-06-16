@@ -17,18 +17,18 @@ export default function CardsChat({ message, onPlayerSelect }: CardsChatProps) {
   
   return (
     <Card 
-      className={`mb-3 p-2 @container ${onPlayerSelect ? 'cursor-pointer hover:bg-muted/50 transition-colors' : ''}`}
+      className={`@container/card shadow-xs overflow-hidden ${onPlayerSelect ? 'cursor-pointer hover:bg-muted/30 transition-colors' : ''}`}
       onClick={() => onPlayerSelect?.(message)}
     >
-      <CardContent className="p-4">
+      <CardContent>
         <div className="flex items-start gap-3">
           <Avatar className="h-12 w-12 flex-shrink-0">
             <AvatarImage src={message.avatar_url} alt={message.player_name} />
-            <AvatarFallback>{message.player_name.slice(0, 2).toUpperCase()}</AvatarFallback>
+            <AvatarFallback className="text-xs font-medium">{message.player_name.slice(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
           
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
+            <div className="flex items-center gap-2 mb-1.5">
               <span className="font-medium text-sm">{message.player_name}</span>
               <Badge 
                 variant="secondary" 
@@ -36,12 +36,12 @@ export default function CardsChat({ message, onPlayerSelect }: CardsChatProps) {
               >
                 {message.role}
               </Badge>
-              <span className="text-xs text-muted-foreground ml-auto">
+              <span className="text-xs text-muted-foreground ml-auto font-medium">
                 {timeAgo}
               </span>
             </div>
             
-            <p className="text-sm mb-2 break-words">{message.message}</p>
+            <p className="text-sm mb-2 break-words leading-relaxed">{message.message}</p>
             
             <div className="flex flex-wrap gap-1">
               {priorityConfig && message.priority_level && (
