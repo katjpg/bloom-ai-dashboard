@@ -80,8 +80,8 @@ export default function ModerationPage() {
       <Tabs defaultValue="live-chat" className="gap-6">
         <TabsList className="w-full @3xl/page:w-fit">
           <TabsTrigger value="live-chat">Live Chat</TabsTrigger>
-          <TabsTrigger value="mod-queue" disabled>
-            Queue
+          <TabsTrigger value="mod-history" disabled>
+            History
           </TabsTrigger>
         </TabsList>
 
@@ -139,9 +139,9 @@ export default function ModerationPage() {
           )}
         </TabsContent>
 
-        <TabsContent value="mod-queue" className="flex flex-col gap-6">
+        <TabsContent value="mod-history" className="flex flex-col gap-6">
           <div className="text-center text-muted-foreground py-8">
-            Queue
+            History
           </div>
         </TabsContent>
       </Tabs>
