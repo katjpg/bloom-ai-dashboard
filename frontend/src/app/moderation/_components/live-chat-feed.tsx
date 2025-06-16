@@ -30,7 +30,7 @@ export default function LiveChatFeed({ filters }: LiveChatFeedProps) {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle className="font-clash text-xl font-semibold">
+        <CardTitle className="font-clash text-xl font-medium">
           Live Chat Feed ({filteredMessages.length})
         </CardTitle>
       </CardHeader>

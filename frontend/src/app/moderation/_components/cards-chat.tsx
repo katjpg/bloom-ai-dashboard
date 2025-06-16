@@ -15,10 +15,10 @@ export default function CardsChat({ message }: CardsChatProps) {
   const priorityConfig = message.priority_level ? getPriorityBadgeVariant(message.priority_level) : null
   
   return (
-    <Card className="mb-3 @container">
+    <Card className="mb-3 p-2 @container">
       <CardContent className="p-4">
         <div className="flex items-start gap-3">
-          <Avatar className="h-8 w-8 flex-shrink-0">
+          <Avatar className="h-12 w-12 flex-shrink-0">
             <AvatarImage src={message.avatar_url} alt={message.player_name} />
             <AvatarFallback>{message.player_name.slice(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>

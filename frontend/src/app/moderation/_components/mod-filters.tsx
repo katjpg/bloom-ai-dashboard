@@ -37,12 +37,12 @@ export default function ModFilters({ onFiltersChange }: ModFiltersProps) {
 
   return (
     <Card className="@container">
-      <CardHeader className="pb-4">
+      <CardHeader>
         <CardTitle className="font-clash text-lg font-medium">Quick Filters</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-4">
         {/* Priority Level Section */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <h4 className="text-sm font-medium text-muted-foreground">Priority Level</h4>
           <div className="space-y-3">
             {PRIORITY_FILTER_OPTIONS.map((option) => (
@@ -64,7 +64,7 @@ export default function ModFilters({ onFiltersChange }: ModFiltersProps) {
         </div>
 
         {/* Violation Type Section */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <h4 className="text-sm font-medium text-muted-foreground">Violation Type</h4>
           <div className="space-y-3">
             {VIOLATION_FILTER_OPTIONS.map((option) => (
