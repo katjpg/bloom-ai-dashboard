@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import React, { useMemo, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -22,15 +22,19 @@ import CardsChat from "./cards-chat"
 interface LiveChatFeedProps {
   selectedExperienceId: number
   onPlayerSelect?: (message: ChatMessage) => void
+  onModeChange?: (mode: ModeType) => void
+  onSelectedMessagesChange?: (messages: string[]) => void
+  clearSelectionTrigger?: number
 }
 
-type ModeType = "view" | "mod" | "auto-mod"
+export type ModeType = "view" | "mod" | "auto-mod"
 
-export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect }: LiveChatFeedProps) {
+export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onModeChange, onSelectedMessagesChange, clearSelectionTrigger }: LiveChatFeedProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedPriorities, setSelectedPriorities] = useState<PriorityLevel[]>([])
   const [selectedViolations, setSelectedViolations] = useState<ContentType[]>([])
   const [mode, setMode] = useState<ModeType>("view")
+  const [selectedMessages, setSelectedMessages] = useState<string[]>([])
 
   const filteredMessages = useMemo(() => {
     return mockChatMessages.filter((message) => {
@@ -71,6 +75,38 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect }: L
     setSelectedPriorities([])
     setSelectedViolations([])
   }
+
+  const handleMessageSelect = (messageId: string, isSelected: boolean) => {
+    setSelectedMessages(prev => 
+      isSelected 
+        ? [...prev, messageId]
+        : prev.filter(id => id !== messageId)
+    )
+  }
+
+  // Update mode and notify parent
+  const handleModeChange = (newMode: ModeType) => {
+    setMode(newMode)
+    onModeChange?.(newMode)
+    
+    // Clear selections when leaving mod mode
+    if (newMode !== 'mod') {
+      setSelectedMessages([])
+      onSelectedMessagesChange?.([])
+    }
+  }
+
+  // Update selected messages in parent
+  React.useEffect(() => {
+    onSelectedMessagesChange?.(selectedMessages)
+  }, [selectedMessages, onSelectedMessagesChange])
+
+  // Clear selections when triggered by parent
+  React.useEffect(() => {
+    if (clearSelectionTrigger && clearSelectionTrigger > 0) {
+      setSelectedMessages([])
+    }
+  }, [clearSelectionTrigger])
 
   const hasActiveFilters = searchTerm !== "" || selectedPriorities.length > 0 || selectedViolations.length > 0
   const totalActiveFilters = selectedPriorities.length + selectedViolations.length
@@ -160,7 +196,7 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect }: L
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-32">
-                <DropdownMenuRadioGroup value={mode} onValueChange={(value) => setMode(value as ModeType)}>
+                <DropdownMenuRadioGroup value={mode} onValueChange={(value) => handleModeChange(value as ModeType)}>
                   <DropdownMenuRadioItem value="view">View</DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="mod">Mod</DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="auto-mod">Auto-Mod</DropdownMenuRadioItem>
@@ -187,7 +223,14 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect }: L
             </div>
           ) : (
             filteredMessages.map((message) => (
-              <CardsChat key={message.id} message={message} onPlayerSelect={onPlayerSelect} />
+              <CardsChat 
+                key={message.id} 
+                message={message} 
+                onPlayerSelect={onPlayerSelect}
+                mode={mode}
+                isSelected={selectedMessages.includes(message.id)}
+                onMessageSelect={handleMessageSelect}
+              />
             ))
           )}
         </div>

@@ -9,17 +9,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import LiveChatFeed from "./_components/live-chat-feed"
+import LiveChatFeed, { ModeType } from "./_components/live-chat-feed"
 import ModInfo from "./_components/mod-info"
+import ModActions from "./_components/mod-actions"
 import PlayerInfo from "./_components/player-info"
 import { mockExperiences, ChatMessage } from "./_data"
 
 export default function ModerationPage() {
   const [selectedExperienceId, setSelectedExperienceId] = useState<number>(1)
   const [selectedPlayer, setSelectedPlayer] = useState<ChatMessage | null>(null)
+  const [mode, setMode] = useState<ModeType>("view")
+  const [selectedMessages, setSelectedMessages] = useState<string[]>([])
+  const [clearTrigger, setClearTrigger] = useState(0)
 
   const handlePlayerSelect = (message: ChatMessage) => {
-    setSelectedPlayer(message)
+    // Only select player in view mode
+    if (mode === 'view') {
+      setSelectedPlayer(message)
+    }
   }
 
   const handleClosePlayerInfo = () => {
@@ -29,6 +36,18 @@ export default function ModerationPage() {
   const handlePlayerAction = (action: string, playerId: number) => {
     console.log(`Action ${action} on player ${playerId}`)
     // Here you would typically call an API to perform the moderation action
+  }
+
+  const handleModAction = (action: string, options?: any) => {
+    console.log(`Mod action ${action} on ${selectedMessages.length} messages`, options)
+    // Here you would typically call an API to perform the moderation action
+    // For now, just simulate the action
+    return new Promise((resolve) => setTimeout(resolve, 1000))
+  }
+
+  const handleClearSelection = () => {
+    setSelectedMessages([])
+    setClearTrigger(prev => prev + 1)
   }
 
   return (
@@ -67,7 +86,7 @@ export default function ModerationPage() {
         </TabsList>
 
         <TabsContent value="live-chat" className="flex flex-col gap-6">
-          {selectedPlayer ? (
+          {selectedPlayer && mode === 'view' ? (
             /* Player Info Mode - Responsive Layout */
             <div className="grid grid-cols-1 @3xl/page:grid-cols-3 gap-6">
               {/* Main chat feed */}
@@ -75,6 +94,9 @@ export default function ModerationPage() {
                 <LiveChatFeed 
                   selectedExperienceId={selectedExperienceId} 
                   onPlayerSelect={handlePlayerSelect}
+                  onModeChange={setMode}
+                  onSelectedMessagesChange={setSelectedMessages}
+                  clearSelectionTrigger={clearTrigger}
                 />
               </div>
 
@@ -95,12 +117,23 @@ export default function ModerationPage() {
                 <LiveChatFeed 
                   selectedExperienceId={selectedExperienceId} 
                   onPlayerSelect={handlePlayerSelect}
+                  onModeChange={setMode}
+                  onSelectedMessagesChange={setSelectedMessages}
+                  clearSelectionTrigger={clearTrigger}
                 />
               </div>
 
-              {/* Mod info sidebar */}
+              {/* Sidebar - ModActions when in mod mode, ModInfo otherwise */}
               <div className="@3xl/page:col-span-1">
-                <ModInfo selectedExperienceId={selectedExperienceId} />
+                {mode === 'mod' ? (
+                  <ModActions
+                    selectedCount={selectedMessages.length}
+                    onClearSelection={handleClearSelection}
+                    onExecuteAction={handleModAction}
+                  />
+                ) : (
+                  <ModInfo selectedExperienceId={selectedExperienceId} />
+                )}
               </div>
             </div>
           )}
