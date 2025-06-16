@@ -1,6 +1,7 @@
 # Bloom Dashboard - Frontend
 
 > Roblox Content Moderation Platform | Built with Next.js 15, TypeScript, and Tailwind CSS
+
 > UPDATED: June 16th; 2:50 AM (WHOOPS)
 
 ## TODO
