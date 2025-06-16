@@ -45,7 +45,6 @@ class ActionType(str, Enum):
     KICK = "KICK"
     BAN = "BAN"
     DELETE_MESSAGE = "DELETE_MESSAGE"
-    ACCOUNT_RESTRICTION = "ACCOUNT_RESTRICTION"
 
 
 # ---------- Pydantic Models ----------
