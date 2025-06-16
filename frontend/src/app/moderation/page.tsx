@@ -11,10 +11,25 @@ import {
 } from "@/components/ui/select"
 import LiveChatFeed from "./_components/live-chat-feed"
 import ModInfo from "./_components/mod-info"
-import { mockExperiences } from "./_data"
+import PlayerInfo from "./_components/player-info"
+import { mockExperiences, ChatMessage } from "./_data"
 
 export default function ModerationPage() {
   const [selectedExperienceId, setSelectedExperienceId] = useState<number>(1)
+  const [selectedPlayer, setSelectedPlayer] = useState<ChatMessage | null>(null)
+
+  const handlePlayerSelect = (message: ChatMessage) => {
+    setSelectedPlayer(message)
+  }
+
+  const handleClosePlayerInfo = () => {
+    setSelectedPlayer(null)
+  }
+
+  const handlePlayerAction = (action: string, playerId: number) => {
+    console.log(`Action ${action} on player ${playerId}`)
+    // Here you would typically call an API to perform the moderation action
+  }
 
   return (
     <div className="@container/page flex flex-1 flex-col gap-8 p-6">
@@ -55,12 +70,23 @@ export default function ModerationPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Main chat feed - 2/3 width */}
             <div className="lg:col-span-2">
-              <LiveChatFeed selectedExperienceId={selectedExperienceId} />
+              <LiveChatFeed 
+                selectedExperienceId={selectedExperienceId} 
+                onPlayerSelect={handlePlayerSelect}
+              />
             </div>
 
-            {/* Right sidebar with mod info - 1/3 width */}
+            {/* Right sidebar with mod info or player info - 1/3 width */}
             <div className="lg:col-span-1">
-              <ModInfo selectedExperienceId={selectedExperienceId} />
+              {selectedPlayer ? (
+                <PlayerInfo 
+                  selectedPlayer={selectedPlayer}
+                  onClose={handleClosePlayerInfo}
+                  onPlayerAction={handlePlayerAction}
+                />
+              ) : (
+                <ModInfo selectedExperienceId={selectedExperienceId} />
+              )}
             </div>
           </div>
         </TabsContent>

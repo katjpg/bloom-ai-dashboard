@@ -8,14 +8,18 @@ import { getPIIBadgeVariant, getContentBadgeVariant, getPriorityBadgeVariant } f
 
 interface CardsChatProps {
   message: ChatMessage
+  onPlayerSelect?: (message: ChatMessage) => void
 }
 
-export default function CardsChat({ message }: CardsChatProps) {
+export default function CardsChat({ message, onPlayerSelect }: CardsChatProps) {
   const timeAgo = new Date(message.timestamp).toLocaleTimeString()
   const priorityConfig = message.priority_level ? getPriorityBadgeVariant(message.priority_level) : null
   
   return (
-    <Card className="mb-3 p-2 @container">
+    <Card 
+      className={`mb-3 p-2 @container ${onPlayerSelect ? 'cursor-pointer hover:bg-muted/50 transition-colors' : ''}`}
+      onClick={() => onPlayerSelect?.(message)}
+    >
       <CardContent className="p-4">
         <div className="flex items-start gap-3">
           <Avatar className="h-12 w-12 flex-shrink-0">

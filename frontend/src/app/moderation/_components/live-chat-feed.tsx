@@ -12,15 +12,16 @@ import {
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu"
 import { PriorityLevel, ContentType } from "@/lib/colors-mod"
-import { mockChatMessages, PRIORITY_FILTER_OPTIONS, VIOLATION_FILTER_OPTIONS } from "../_data"
+import { mockChatMessages, PRIORITY_FILTER_OPTIONS, VIOLATION_FILTER_OPTIONS, ChatMessage } from "../_data"
 import { Search, Filter, X } from "lucide-react"
 import CardsChat from "./cards-chat"
 
 interface LiveChatFeedProps {
   selectedExperienceId: number
+  onPlayerSelect?: (message: ChatMessage) => void
 }
 
-export default function LiveChatFeed({ selectedExperienceId }: LiveChatFeedProps) {
+export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect }: LiveChatFeedProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedPriorities, setSelectedPriorities] = useState<PriorityLevel[]>([])
   const [selectedViolations, setSelectedViolations] = useState<ContentType[]>([])
@@ -160,7 +161,7 @@ export default function LiveChatFeed({ selectedExperienceId }: LiveChatFeedProps
             </div>
           ) : (
             filteredMessages.map((message) => (
-              <CardsChat key={message.id} message={message} />
+              <CardsChat key={message.id} message={message} onPlayerSelect={onPlayerSelect} />
             ))
           )}
         </div>
