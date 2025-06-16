@@ -10,6 +10,9 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem,
+  DropdownMenuSeparator,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu"
 import { PriorityLevel, ContentType } from "@/lib/colors-mod"
 import { mockChatMessages, PRIORITY_FILTER_OPTIONS, VIOLATION_FILTER_OPTIONS, ChatMessage } from "../_data"
@@ -21,10 +24,13 @@ interface LiveChatFeedProps {
   onPlayerSelect?: (message: ChatMessage) => void
 }
 
+type ModeType = "view" | "mod" | "auto-mod"
+
 export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect }: LiveChatFeedProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedPriorities, setSelectedPriorities] = useState<PriorityLevel[]>([])
   const [selectedViolations, setSelectedViolations] = useState<ContentType[]>([])
+  const [mode, setMode] = useState<ModeType>("view")
 
   const filteredMessages = useMemo(() => {
     return mockChatMessages.filter((message) => {
@@ -67,6 +73,16 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect }: L
   }
 
   const hasActiveFilters = searchTerm !== "" || selectedPriorities.length > 0 || selectedViolations.length > 0
+  const totalActiveFilters = selectedPriorities.length + selectedViolations.length
+
+  const getModeLabel = (mode: ModeType) => {
+    switch (mode) {
+      case "view": return "View"
+      case "mod": return "Mod"
+      case "auto-mod": return "Auto-Mod"
+      default: return "View"
+    }
+  }
 
   return (
     <Card className="@container/card shadow-xs overflow-hidden h-full">
@@ -88,22 +104,26 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect }: L
             />
           </div>
           
-          {/* Filter Dropdowns */}
+          {/* Filter and Mode Controls */}
           <div className="flex gap-2">
-            {/* Priority Filter */}
+            {/* Combined Filter Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="gap-2">
                   <Filter className="h-4 w-4" />
-                  Priority
-                  {selectedPriorities.length > 0 && (
+                  Filter
+                  {totalActiveFilters > 0 && (
                     <span className="ml-1 bg-primary text-primary-foreground rounded-full px-1.5 py-0.5 text-xs">
-                      {selectedPriorities.length}
+                      {totalActiveFilters}
                     </span>
                   )}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-48">
+              <DropdownMenuContent className="w-56">
+                {/* Priority Section */}
+                <div className="px-2 py-1.5 text-sm font-medium text-muted-foreground">
+                  Priority
+                </div>
                 {PRIORITY_FILTER_OPTIONS.map((option) => (
                   <DropdownMenuCheckboxItem
                     key={option.value}
@@ -113,23 +133,13 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect }: L
                     {option.label}
                   </DropdownMenuCheckboxItem>
                 ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* Violation Filter */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="gap-2">
-                  <Filter className="h-4 w-4" />
+                
+                <DropdownMenuSeparator />
+                
+                {/* Violations Section */}
+                <div className="px-2 py-1.5 text-sm font-medium text-muted-foreground">
                   Violations
-                  {selectedViolations.length > 0 && (
-                    <span className="ml-1 bg-primary text-primary-foreground rounded-full px-1.5 py-0.5 text-xs">
-                      {selectedViolations.length}
-                    </span>
-                  )}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
+                </div>
                 {VIOLATION_FILTER_OPTIONS.map((option) => (
                   <DropdownMenuCheckboxItem
                     key={option.value}
@@ -139,6 +149,22 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect }: L
                     {option.label}
                   </DropdownMenuCheckboxItem>
                 ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Mode Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="gap-2">
+                  Mode: {getModeLabel(mode)}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-32">
+                <DropdownMenuRadioGroup value={mode} onValueChange={(value) => setMode(value as ModeType)}>
+                  <DropdownMenuRadioItem value="view">View</DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="mod">Mod</DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="auto-mod">Auto-Mod</DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
               </DropdownMenuContent>
             </DropdownMenu>
 
