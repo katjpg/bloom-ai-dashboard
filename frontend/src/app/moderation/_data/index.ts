@@ -2,12 +2,9 @@
 import { PriorityLevel, ContentType, ActionType, PIIType } from "@/lib/colors-mod"
 import { mockExperiences } from "../../(dashboard)/_data"
 
-// Backend enums from sentiment analysis state
-export enum UserRole {
-  PLAYER = "PLAYER",
-  MODERATOR = "MODERATOR", 
-  ADMIN = "ADMIN"
-}
+// Import and re-export UserRole from mod-history-data to avoid circular dependency
+import { UserRole } from "./mod-history-data"
+export { UserRole }
 
 export enum UserStatus {
   ONLINE = "ONLINE",
@@ -490,3 +487,14 @@ export const mockActiveUsers: ActiveUser[] = [
 
 // Export experiences for moderation
 export { mockExperiences }
+
+// Export moderation history types and data
+export type { ModerationHistory } from "./mod-history-data"
+export { 
+  mockModerationHistory, 
+  generateHistoryEntry, 
+  mapActionType, 
+  generateActionReason,
+  getHighestPriority,
+  generateId
+} from "./mod-history-data"
