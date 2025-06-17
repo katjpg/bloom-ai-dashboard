@@ -34,7 +34,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
-import { ModerationHistory } from "../_data/mod-history-data"
+import { ModerationHistory } from "../_data"
 import { getActionBadgeVariant } from "@/lib/colors-mod"
 import { ActionType } from "@/lib/colors-mod"
 

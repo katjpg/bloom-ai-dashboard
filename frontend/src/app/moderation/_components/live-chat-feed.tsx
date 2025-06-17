@@ -58,15 +58,31 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
     })
   }, [selectedExperienceId, searchTerm, selectedPriorities, selectedViolations])
 
-  const handlePriorityChange = (priority: PriorityLevel, checked: boolean) => {
+  const handlePriorityChange = (priority: string, checked: boolean) => {
+    if (priority === "all") {
+      if (checked) {
+        setSelectedPriorities([]) // "All" means no specific filter
+      }
+      return
+    }
+    
+    const priorityLevel = priority as PriorityLevel
     setSelectedPriorities(prev => 
-      checked ? [...prev, priority] : prev.filter(p => p !== priority)
+      checked ? [...prev, priorityLevel] : prev.filter(p => p !== priorityLevel)
     )
   }
 
-  const handleViolationChange = (violation: ContentType, checked: boolean) => {
+  const handleViolationChange = (violation: string, checked: boolean) => {
+    if (violation === "all") {
+      if (checked) {
+        setSelectedViolations([]) // "All" means no specific filter
+      }
+      return
+    }
+    
+    const contentType = violation as ContentType
     setSelectedViolations(prev => 
-      checked ? [...prev, violation] : prev.filter(v => v !== violation)
+      checked ? [...prev, contentType] : prev.filter(v => v !== contentType)
     )
   }
 
@@ -163,7 +179,7 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
                 {PRIORITY_FILTER_OPTIONS.map((option) => (
                   <DropdownMenuCheckboxItem
                     key={option.value}
-                    checked={selectedPriorities.includes(option.value)}
+                    checked={option.value === "all" ? selectedPriorities.length === 0 : selectedPriorities.includes(option.value as PriorityLevel)}
                     onCheckedChange={(checked) => handlePriorityChange(option.value, !!checked)}
                   >
                     {option.label}
@@ -179,7 +195,7 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
                 {VIOLATION_FILTER_OPTIONS.map((option) => (
                   <DropdownMenuCheckboxItem
                     key={option.value}
-                    checked={selectedViolations.includes(option.value)}
+                    checked={option.value === "all" ? selectedViolations.length === 0 : selectedViolations.includes(option.value as ContentType)}
                     onCheckedChange={(checked) => handleViolationChange(option.value, !!checked)}
                   >
                     {option.label}
