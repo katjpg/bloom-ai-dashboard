@@ -1,5 +1,5 @@
 import { TrendingUp, TrendingDown, MessageSquare, Award, Heart, BarChart3 } from "lucide-react"
-import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { mockAnalyticsMetrics, mockAnalyticsTrends, TrendDirection } from "../_data"
 
@@ -36,19 +36,6 @@ export default function CardsSentiment({ selectedExperienceId }: CardsSentimentP
             </Badge>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1 text-sm pt-2">
-          <div className="flex gap-2 font-medium leading-relaxed">
-            {(trends.totalMessages.trend as TrendDirection) === "up" ? "Growing activity" : "Declining activity"} 
-            {(trends.totalMessages.trend as TrendDirection) === "up" ? (
-              <TrendingUp className="size-4" />
-            ) : (
-              <TrendingDown className="size-4" />
-            )}
-          </div>
-          <div className="text-muted-foreground leading-relaxed">
-            Total community interactions
-          </div>
-        </CardFooter>
       </Card>
 
       {/* Points Awarded */}
@@ -72,19 +59,6 @@ export default function CardsSentiment({ selectedExperienceId }: CardsSentimentP
             </Badge>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1 text-sm pt-2">
-          <div className="flex gap-2 font-medium leading-relaxed">
-            {(trends.pointsAwarded.trend as TrendDirection) === "up" ? "Increasing rewards" : "Decreasing rewards"}
-            {(trends.pointsAwarded.trend as TrendDirection) === "up" ? (
-              <TrendingUp className="size-4" />
-            ) : (
-              <TrendingDown className="size-4" />
-            )}
-          </div>
-          <div className="text-muted-foreground leading-relaxed">
-            Total points from positive sentiment
-          </div>
-        </CardFooter>
       </Card>
 
       {/* Positive Actions */}
@@ -108,19 +82,6 @@ export default function CardsSentiment({ selectedExperienceId }: CardsSentimentP
             </Badge>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1 text-sm pt-2">
-          <div className="flex gap-2 font-medium leading-relaxed">
-            {(trends.positiveActions.trend as TrendDirection) === "up" ? "Growing positivity" : "Positivity needs attention"}
-            {(trends.positiveActions.trend as TrendDirection) === "up" ? (
-              <TrendingUp className="size-4" />
-            ) : (
-              <TrendingDown className="size-4" />
-            )}
-          </div>
-          <div className="text-muted-foreground leading-relaxed">
-            Encouragement, help, and support
-          </div>
-        </CardFooter>
       </Card>
 
       {/* Average Sentiment */}
@@ -144,19 +105,6 @@ export default function CardsSentiment({ selectedExperienceId }: CardsSentimentP
             </Badge>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1 text-sm pt-2">
-          <div className="flex gap-2 font-medium leading-relaxed">
-            {metrics.averageSentiment > 0 ? "Positive community" : metrics.averageSentiment < -10 ? "Negative sentiment" : "Neutral sentiment"}
-            {(trends.averageSentiment.trend as TrendDirection) === "up" ? (
-              <TrendingUp className="size-4" />
-            ) : (
-              <TrendingDown className="size-4" />
-            )}
-          </div>
-          <div className="text-muted-foreground leading-relaxed">
-            Scale from -100 to +100
-          </div>
-        </CardFooter>
       </Card>
     </div>
   )

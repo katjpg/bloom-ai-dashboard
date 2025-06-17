@@ -1,5 +1,5 @@
 import { TrendingUp, TrendingDown, Users, Activity, UserCheck, BarChart2 } from "lucide-react"
-import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { mockCommunityActionMetrics, mockCommunityActionTrends, TrendDirection } from "../_data"
 
@@ -36,19 +36,6 @@ export default function CardsActions({ selectedExperienceId }: CardsActionsProps
             </Badge>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1 text-sm pt-2">
-          <div className="flex gap-2 font-medium leading-relaxed">
-            {(trends.positiveActions.trend as TrendDirection) === "up" ? "Growing positivity" : "Positivity declining"} 
-            {(trends.positiveActions.trend as TrendDirection) === "up" ? (
-              <TrendingUp className="size-4" />
-            ) : (
-              <TrendingDown className="size-4" />
-            )}
-          </div>
-          <div className="text-muted-foreground leading-relaxed">
-            Positive actions vs total actions
-          </div>
-        </CardFooter>
       </Card>
 
       {/* Total Actions */}
@@ -72,19 +59,6 @@ export default function CardsActions({ selectedExperienceId }: CardsActionsProps
             </Badge>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1 text-sm pt-2">
-          <div className="flex gap-2 font-medium leading-relaxed">
-            {(trends.totalActions.trend as TrendDirection) === "up" ? "Activity increasing" : "Activity declining"} 
-            {(trends.totalActions.trend as TrendDirection) === "up" ? (
-              <TrendingUp className="size-4" />
-            ) : (
-              <TrendingDown className="size-4" />
-            )}
-          </div>
-          <div className="text-muted-foreground leading-relaxed">
-            All community interactions
-          </div>
-        </CardFooter>
       </Card>
 
       {/* Active Contributors */}
@@ -108,19 +82,6 @@ export default function CardsActions({ selectedExperienceId }: CardsActionsProps
             </Badge>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1 text-sm pt-2">
-          <div className="flex gap-2 font-medium leading-relaxed">
-            {(trends.activeContributors.trend as TrendDirection) === "up" ? "Community growing" : "Participation declining"}
-            {(trends.activeContributors.trend as TrendDirection) === "up" ? (
-              <TrendingUp className="size-4" />
-            ) : (
-              <TrendingDown className="size-4" />
-            )}
-          </div>
-          <div className="text-muted-foreground leading-relaxed">
-            Users performing actions
-          </div>
-        </CardFooter>
       </Card>
 
       {/* Actions Per User */}
@@ -144,19 +105,6 @@ export default function CardsActions({ selectedExperienceId }: CardsActionsProps
             </Badge>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1 text-sm pt-2">
-          <div className="flex gap-2 font-medium leading-relaxed">
-            {(trends.actionsPerUser.trend as TrendDirection) === "up" ? "Engagement improving" : "Engagement declining"}
-            {(trends.actionsPerUser.trend as TrendDirection) === "up" ? (
-              <TrendingUp className="size-4" />
-            ) : (
-              <TrendingDown className="size-4" />
-            )}
-          </div>
-          <div className="text-muted-foreground leading-relaxed">
-            Average actions per contributor
-          </div>
-        </CardFooter>
       </Card>
     </div>
   )

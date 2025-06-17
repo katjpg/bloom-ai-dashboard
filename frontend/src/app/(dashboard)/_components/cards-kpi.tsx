@@ -1,5 +1,5 @@
 import { TrendingUp, TrendingDown } from "lucide-react"
-import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { mockMetrics, mockTrends, TrendDirection } from "../_data"
 
@@ -23,19 +23,6 @@ export function CardsKPI() {
             </Badge>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1 text-sm pt-2">
-          <div className="flex gap-2 font-medium leading-relaxed">
-            {(mockTrends.totalMessages.trend as TrendDirection) === "up" ? "Growing engagement" : "Declining activity"} 
-            {(mockTrends.totalMessages.trend as TrendDirection) === "up" ? (
-              <TrendingUp className="size-4" />
-            ) : (
-              <TrendingDown className="size-4" />
-            )}
-          </div>
-          <div className="text-muted-foreground leading-relaxed">
-            Community interaction volume
-          </div>
-        </CardFooter>
       </Card>
 
       <Card className="@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card">
@@ -55,19 +42,6 @@ export function CardsKPI() {
             </Badge>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1 text-sm pt-2">
-          <div className="flex gap-2 font-medium leading-relaxed">
-            {(mockTrends.activeUsers.trend as TrendDirection) === "up" ? "Strong user retention" : "User retention needs attention"}
-            {(mockTrends.activeUsers.trend as TrendDirection) === "up" ? (
-              <TrendingUp className="size-4" />
-            ) : (
-              <TrendingDown className="size-4" />
-            )}
-          </div>
-          <div className="text-muted-foreground leading-relaxed">
-            Engagement exceeds targets
-          </div>
-        </CardFooter>
       </Card>
 
       <Card className="@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card">
@@ -87,19 +61,6 @@ export function CardsKPI() {
             </Badge>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1 text-sm pt-2">
-          <div className="flex gap-2 font-medium leading-relaxed">
-            {(mockTrends.safetyScore.trend as TrendDirection) === "up" ? "Improving safety metrics" : "Safety attention needed"}
-            {(mockTrends.safetyScore.trend as TrendDirection) === "up" ? (
-              <TrendingUp className="size-4" />
-            ) : (
-              <TrendingDown className="size-4" />
-            )}
-          </div>
-          <div className="text-muted-foreground leading-relaxed">
-            Community health indicator
-          </div>
-        </CardFooter>
       </Card>
 
       <Card className="@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card">
@@ -119,19 +80,6 @@ export function CardsKPI() {
             </Badge>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1 text-sm pt-2">
-          <div className="flex gap-2 font-medium leading-relaxed">
-            {(mockTrends.avgResponseTime.trend as TrendDirection) === "down" ? "Faster processing" : "Performance needs optimization"}
-            {(mockTrends.avgResponseTime.trend as TrendDirection) === "down" ? (
-              <TrendingDown className="size-4" />
-            ) : (
-              <TrendingUp className="size-4" />
-            )}
-          </div>
-          <div className="text-muted-foreground leading-relaxed">
-            System performance metric
-          </div>
-        </CardFooter>
       </Card>
     </div>
   )
