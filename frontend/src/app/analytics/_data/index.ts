@@ -111,9 +111,32 @@ export const mockCommunityActions: CommunityActionData[] = [
   }
 ]
 
-// Hourly sentiment data for trends
+// Time period types
+export type TimePeriod = "1d" | "7d" | "1m"
+
+// Time-based sentiment data interfaces
 export interface HourlySentimentData {
   hour: string
+  averageSentiment: number
+  messageCount: number
+  positiveCount: number
+  neutralCount: number
+  negativeCount: number
+}
+
+export interface DailySentimentData {
+  day: string
+  date: string
+  averageSentiment: number
+  messageCount: number
+  positiveCount: number
+  neutralCount: number
+  negativeCount: number
+}
+
+export interface WeeklySentimentData {
+  week: string
+  weekNumber: number
   averageSentiment: number
   messageCount: number
   positiveCount: number
@@ -147,3 +170,127 @@ export const mockHourlySentimentData: HourlySentimentData[] = [
   { hour: "22", averageSentiment: 31.2, messageCount: 456, positiveCount: 248, neutralCount: 148, negativeCount: 60 },
   { hour: "23", averageSentiment: 29.8, messageCount: 312, positiveCount: 169, neutralCount: 105, negativeCount: 38 }
 ]
+
+// Daily sentiment data for 7-day trends
+export const mockDailySentimentData: DailySentimentData[] = [
+  { 
+    day: "Mon", 
+    date: "2024-01-15", 
+    averageSentiment: 28.5, 
+    messageCount: 8245, 
+    positiveCount: 4723, 
+    neutralCount: 2854, 
+    negativeCount: 668 
+  },
+  { 
+    day: "Tue", 
+    date: "2024-01-16", 
+    averageSentiment: 32.8, 
+    messageCount: 9156, 
+    positiveCount: 5487, 
+    neutralCount: 2945, 
+    negativeCount: 724 
+  },
+  { 
+    day: "Wed", 
+    date: "2024-01-17", 
+    averageSentiment: 36.2, 
+    messageCount: 9842, 
+    positiveCount: 6125, 
+    neutralCount: 3023, 
+    negativeCount: 694 
+  },
+  { 
+    day: "Thu", 
+    date: "2024-01-18", 
+    averageSentiment: 41.7, 
+    messageCount: 10567, 
+    positiveCount: 6985, 
+    neutralCount: 2934, 
+    negativeCount: 648 
+  },
+  { 
+    day: "Fri", 
+    date: "2024-01-19", 
+    averageSentiment: 45.3, 
+    messageCount: 12389, 
+    positiveCount: 8247, 
+    neutralCount: 3456, 
+    negativeCount: 686 
+  },
+  { 
+    day: "Sat", 
+    date: "2024-01-20", 
+    averageSentiment: 38.9, 
+    messageCount: 11245, 
+    positiveCount: 7156, 
+    neutralCount: 3287, 
+    negativeCount: 802 
+  },
+  { 
+    day: "Sun", 
+    date: "2024-01-21", 
+    averageSentiment: 34.7, 
+    messageCount: 9834, 
+    positiveCount: 5967, 
+    neutralCount: 3145, 
+    negativeCount: 722 
+  }
+]
+
+// Weekly sentiment data for monthly trends
+export const mockWeeklySentimentData: WeeklySentimentData[] = [
+  { 
+    week: "Week 1", 
+    weekNumber: 1, 
+    averageSentiment: 26.4, 
+    messageCount: 68543, 
+    positiveCount: 38467, 
+    neutralCount: 23456, 
+    negativeCount: 6620 
+  },
+  { 
+    week: "Week 2", 
+    weekNumber: 2, 
+    averageSentiment: 31.8, 
+    messageCount: 72156, 
+    positiveCount: 43892, 
+    neutralCount: 22567, 
+    negativeCount: 5697 
+  },
+  { 
+    week: "Week 3", 
+    weekNumber: 3, 
+    averageSentiment: 38.2, 
+    messageCount: 75834, 
+    positiveCount: 48923, 
+    neutralCount: 21345, 
+    negativeCount: 5566 
+  },
+  { 
+    week: "Week 4", 
+    weekNumber: 4, 
+    averageSentiment: 34.7, 
+    messageCount: 71278, 
+    positiveCount: 45123, 
+    neutralCount: 20987, 
+    negativeCount: 5168 
+  }
+]
+
+// Utility functions for sentiment analysis
+export const getSentimentColor = (sentiment: number): string => {
+  if (sentiment >= 40) return "hsl(142 76% 36%)" // Strong positive - green
+  if (sentiment >= 15) return "hsl(142 71% 45%)" // Moderate positive - lighter green
+  if (sentiment >= -10) return "hsl(45 96% 53%)" // Neutral - yellow/amber
+  if (sentiment >= -30) return "hsl(25 95% 53%)" // Moderate negative - orange
+  return "hsl(0 84% 60%)" // Strong negative - red
+}
+
+export const getSentimentLabel = (sentiment: number): string => {
+  if (sentiment >= 40) return "Very Positive"
+  if (sentiment >= 15) return "Positive"
+  if (sentiment >= -10) return "Neutral"
+  if (sentiment >= -30) return "Negative"
+  return "Very Negative"
+}

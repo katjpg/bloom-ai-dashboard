@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select"
 import CardsSentiment from "./_components/cards-sentiment"
 import SentimentDistribution from "./_components/sentiment-distribution"
+import SentimentTrends from "./_components/sentiment-trends"
 import { mockExperiences } from "./_data"
 
 export default function AnalyticsPage() {
@@ -63,13 +64,8 @@ export default function AnalyticsPage() {
         </TabsContent>
 
         <TabsContent value="trends" className="flex flex-col gap-6">
-          {/* Placeholder for Trends tab */}
-          <div className="flex items-center justify-center h-96 bg-muted/30 rounded-lg border border-border/40">
-            <div className="text-center space-y-2">
-              <h3 className="font-clash text-xl font-medium text-muted-foreground">Trends</h3>
-              <p className="text-sm text-muted-foreground">Coming soon - sentiment trends over time</p>
-            </div>
-          </div>
+          {/* Sentiment Trends Chart */}
+          <SentimentTrends selectedExperienceId={selectedExperienceId} />
         </TabsContent>
 
         <TabsContent value="community-actions" className="flex flex-col gap-6">
