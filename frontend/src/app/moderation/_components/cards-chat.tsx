@@ -25,6 +25,11 @@ export default function CardsChat({ message, onPlayerSelect, mode, isSelected, o
   }
 
   const handleCardClick = (e: React.MouseEvent) => {
+    // Don't handle click if it's on the checkbox itself
+    if ((e.target as HTMLElement).closest('[data-checkbox]')) {
+      return
+    }
+    
     // In mod mode, clicking anywhere on the card toggles selection
     if (mode === 'mod') {
       handleCheckboxChange(!isSelected)

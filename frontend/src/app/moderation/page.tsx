@@ -59,8 +59,8 @@ export default function ModerationPage() {
         throw new Error('Current experience not found')
       }
       
-      // Generate history entry
-      const historyEntry = generateHistoryEntry({
+      // Generate history entries (one per unique user)
+      const historyEntries = generateHistoryEntry({
         action,
         options,
         selectedMessages: selectedMessagesWithData,
@@ -68,8 +68,8 @@ export default function ModerationPage() {
         experience: currentExperience
       })
       
-      // Add to history (newest first)
-      setModerationHistory(prev => [historyEntry, ...prev])
+      // Add all entries to history (newest first)
+      setModerationHistory(prev => [...historyEntries, ...prev])
       
       // Simulate API call
       return new Promise((resolve) => setTimeout(resolve, 1000))

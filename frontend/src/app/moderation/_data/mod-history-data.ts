@@ -130,53 +130,68 @@ export function generateId(): string {
   return `hist_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
 }
 
-// Create history entry from action context
+// Create history entries from action context - one entry per unique user
 export function generateHistoryEntry(params: {
   action: string
   options?: any
   selectedMessages: ChatMessage[]
   moderator: string
   experience: { id: number; title: string }
-}): ModerationHistory {
+}): ModerationHistory[] {
   const { action, options, selectedMessages, moderator, experience } = params
   
   if (selectedMessages.length === 0) {
     throw new Error('No messages selected for history entry')
   }
   
-  // Aggregate violation data
-  const allContentTypes = selectedMessages.flatMap(m => m.content_types || [])
-  const allPII = selectedMessages.flatMap(m => m.pii_detected || [])
-  const highestPriority = getHighestPriority(selectedMessages)
+  // Group messages by unique user
+  const messagesByUser = selectedMessages.reduce((acc, message) => {
+    const userId = message.player_id
+    if (!acc[userId]) {
+      acc[userId] = []
+    }
+    acc[userId].push(message)
+    return acc
+  }, {} as Record<number, ChatMessage[]>)
   
-  // Generate smart reason
-  const reason = generateActionReason(action, allContentTypes, allPII)
-  
-  return {
-    id: generateId(),
-    timestamp: new Date().toISOString(),
-    action: mapActionType(action),
-    moderator,
-    moderatorRole: UserRole.MODERATOR, // Default, could be enhanced
+  // Create separate history entry for each user
+  return Object.values(messagesByUser).map(userMessages => {
+    const firstMessage = userMessages[0]
     
-    playerId: selectedMessages[0].player_id,
-    playerName: selectedMessages[0].player_name,
-    experienceId: experience.id,
-    experienceName: experience.title,
+    // Aggregate violation data for this user's messages
+    const userContentTypes = userMessages.flatMap(m => m.content_types || [])
+    const userPII = userMessages.flatMap(m => m.pii_detected || [])
+    const userHighestPriority = getHighestPriority(userMessages)
     
-    messageIds: selectedMessages.map(m => m.id),
-    messageContent: selectedMessages[0].message,
-    affectedMessagesCount: selectedMessages.length,
+    // Generate smart reason based on this user's violations
+    const reason = generateActionReason(action, userContentTypes, userPII)
     
-    originalPriority: highestPriority,
-    originalContentTypes: [...new Set(allContentTypes)],
-    originalPII: [...new Set(allPII)],
-    
-    reason,
-    duration: options?.duration,
-    status: 'active',
-    isAutomated: false
-  }
+    return {
+      id: generateId(),
+      timestamp: new Date().toISOString(),
+      action: mapActionType(action),
+      moderator,
+      moderatorRole: UserRole.MODERATOR,
+      
+      playerId: firstMessage.player_id,
+      playerName: firstMessage.player_name,
+      experienceId: experience.id,
+      experienceName: experience.title,
+      
+      messageIds: userMessages.map(m => m.id),
+      messageContent: firstMessage.message,
+      affectedMessagesCount: userMessages.length,
+      
+      originalPriority: userHighestPriority,
+      originalContentTypes: [...new Set(userContentTypes)],
+      originalPII: [...new Set(userPII)],
+      
+      reason,
+      duration: options?.duration,
+      status: 'active',
+      isAutomated: false
+    }
+  })
 }
 
 // Mock historical data for initial display
