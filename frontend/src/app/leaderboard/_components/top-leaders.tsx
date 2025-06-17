@@ -109,22 +109,24 @@ export default function TopLeaders({ timePeriod }: TopLeadersProps) {
           </h2>
         </div>
 
-        <div className="flex justify-center items-end gap-4 md:gap-8 mb-8">
+        <div className="flex justify-center items-end gap-2 sm:gap-4 md:gap-8 mb-8 px-2">
           {/* Second Place */}
           {topThree[1] && (
-            <div className="text-center flex-1 max-w-[200px]">
+            <div className="text-center flex-1 min-w-0 max-w-[160px] sm:max-w-[180px] md:max-w-[200px]">
               <div className={`mb-4 transform transition-all duration-500 ${animateIn ? 'scale-100 translate-y-0' : 'scale-90 translate-y-2'}`}
                    style={{ transitionDelay: '100ms' }}>
-                <Avatar className={`h-20 w-20 mx-auto mb-3 ring-4 ${getPodiumColors(2).avatar} ring-offset-2 ring-offset-background`}>
+                <Avatar className={`h-16 w-16 sm:h-20 sm:w-20 mx-auto mb-3 ring-4 ${getPodiumColors(2).avatar} ring-offset-2 ring-offset-background`}>
                   <AvatarImage src={topThree[1]?.avatar_url} alt={topThree[1]?.username} />
-                  <AvatarFallback className="text-lg font-bold">
+                  <AvatarFallback className="text-sm sm:text-lg font-bold">
                     {topThree[1]?.username.slice(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
-                <h3 className="font-semibold text-lg truncate">{topThree[1]?.username}</h3>
-                <p className="text-sm text-muted-foreground mb-2">{topThree[1]?.positiveActions} actions</p>
+                <h3 className="font-semibold text-sm sm:text-lg truncate px-1" title={topThree[1]?.username}>
+                  {topThree[1]?.username}
+                </h3>
+                <p className="text-xs sm:text-sm text-muted-foreground mb-2">{topThree[1]?.positiveActions} actions</p>
                 <div className="flex items-center justify-center gap-2">
-                  <Badge variant="secondary" className="text-sm font-bold pointer-events-none">
+                  <Badge variant="secondary" className="text-xs sm:text-sm font-bold pointer-events-none">
                     {topThree[1]?.score.toLocaleString()} pts
                   </Badge>
                 </div>
@@ -143,21 +145,23 @@ export default function TopLeaders({ timePeriod }: TopLeadersProps) {
 
           {/* First Place */}
           {topThree[0] && (
-            <div className="text-center flex-1 max-w-[200px]">
+            <div className="text-center flex-1 min-w-0 max-w-[180px] sm:max-w-[200px] md:max-w-[220px]">
               <div className={`mb-4 transform transition-all duration-500 ${animateIn ? 'scale-100 translate-y-0' : 'scale-90 translate-y-2'}`}
                    style={{ transitionDelay: '300ms' }}>
                 <div className="relative">
-                  <Avatar className={`h-24 w-24 mx-auto mb-3 ring-4 ${getPodiumColors(1).avatar} ring-offset-2 ring-offset-background`}>
+                  <Avatar className={`h-20 w-20 sm:h-24 sm:w-24 mx-auto mb-3 ring-4 ${getPodiumColors(1).avatar} ring-offset-2 ring-offset-background`}>
                     <AvatarImage src={topThree[0]?.avatar_url} alt={topThree[0]?.username} />
-                    <AvatarFallback className="text-xl font-bold">
+                    <AvatarFallback className="text-lg sm:text-xl font-bold">
                       {topThree[0]?.username.slice(0, 2).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                 </div>
-                <h3 className="font-bold text-xl truncate">{topThree[0]?.username}</h3>
-                <p className="text-sm text-muted-foreground mb-2">{topThree[0]?.positiveActions} actions</p>
+                <h3 className="font-bold text-lg sm:text-xl truncate px-1" title={topThree[0]?.username}>
+                  {topThree[0]?.username}
+                </h3>
+                <p className="text-xs sm:text-sm text-muted-foreground mb-2">{topThree[0]?.positiveActions} actions</p>
                 <div className="flex items-center justify-center gap-2">
-                  <Badge variant="default" className="text-sm font-bold bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 pointer-events-none">
+                  <Badge variant="default" className="text-xs sm:text-sm font-bold bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 pointer-events-none">
                     {topThree[0]?.score.toLocaleString()} pts
                   </Badge>
                 </div>
@@ -176,19 +180,21 @@ export default function TopLeaders({ timePeriod }: TopLeadersProps) {
 
           {/* Third Place */}
           {topThree[2] && (
-            <div className="text-center flex-1 max-w-[200px]">
+            <div className="text-center flex-1 min-w-0 max-w-[160px] sm:max-w-[180px] md:max-w-[200px]">
               <div className={`mb-4 transform transition-all duration-500 ${animateIn ? 'scale-100 translate-y-0' : 'scale-90 translate-y-2'}`}
                    style={{ transitionDelay: '500ms' }}>
-                <Avatar className={`h-20 w-20 mx-auto mb-3 ring-4 ${getPodiumColors(3).avatar} ring-offset-2 ring-offset-background`}>
+                <Avatar className={`h-16 w-16 sm:h-20 sm:w-20 mx-auto mb-3 ring-4 ${getPodiumColors(3).avatar} ring-offset-2 ring-offset-background`}>
                   <AvatarImage src={topThree[2]?.avatar_url} alt={topThree[2]?.username} />
-                  <AvatarFallback className="text-lg font-bold">
+                  <AvatarFallback className="text-sm sm:text-lg font-bold">
                     {topThree[2]?.username.slice(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
-                <h3 className="font-semibold text-lg truncate">{topThree[2]?.username}</h3>
-                <p className="text-sm text-muted-foreground mb-2">{topThree[2]?.positiveActions} actions</p>
+                <h3 className="font-semibold text-sm sm:text-lg truncate px-1" title={topThree[2]?.username}>
+                  {topThree[2]?.username}
+                </h3>
+                <p className="text-xs sm:text-sm text-muted-foreground mb-2">{topThree[2]?.positiveActions} actions</p>
                 <div className="flex items-center justify-center gap-2">
-                  <Badge variant="secondary" className="text-sm font-bold pointer-events-none">
+                  <Badge variant="secondary" className="text-xs sm:text-sm font-bold pointer-events-none">
                     {topThree[2]?.score.toLocaleString()} pts
                   </Badge>
                 </div>
