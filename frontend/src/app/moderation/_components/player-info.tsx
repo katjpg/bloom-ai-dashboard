@@ -88,19 +88,10 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
           {/* Recent Message */}
           <div className="space-y-2">
             <div className="bg-muted/30 rounded-lg p-3 border border-border/40">
-              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+              <div className="mb-1.5">
                 <span className="text-xs text-muted-foreground font-medium">
                   {new Date(selectedPlayer.timestamp).toLocaleString()}
                 </span>
-                {selectedPlayer.priority_level && (
-                  <Badge 
-                    variant={getPriorityBadgeVariant(selectedPlayer.priority_level).variant}
-                    className={`text-xs ${getPriorityBadgeVariant(selectedPlayer.priority_level).className}`}
-                  >
-                    <div className="h-1.5 w-1.5 rounded-full mr-2" style={{ backgroundColor: getPriorityBadgeVariant(selectedPlayer.priority_level).dotColor }} />
-                    {selectedPlayer.priority_level}
-                  </Badge>
-                )}
               </div>
               <p className="text-sm break-words leading-relaxed">{selectedPlayer.message}</p>
             </div>

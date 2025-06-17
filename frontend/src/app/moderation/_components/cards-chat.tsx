@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ChatMessage } from "../_data"
-import { getPIIBadgeVariant, getContentBadgeVariant, getPriorityBadgeVariant } from "@/lib/colors-mod"
 import type { ModeType } from "./live-chat-feed"
 
 interface CardsChatProps {
@@ -18,7 +17,6 @@ interface CardsChatProps {
 
 export default function CardsChat({ message, onPlayerSelect, mode, isSelected, onMessageSelect }: CardsChatProps) {
   const timeAgo = new Date(message.timestamp).toLocaleTimeString()
-  const priorityConfig = message.priority_level ? getPriorityBadgeVariant(message.priority_level) : null
   
   const handleCheckboxChange = (checked: boolean) => {
     onMessageSelect?.(message.id, checked)
@@ -74,47 +72,7 @@ export default function CardsChat({ message, onPlayerSelect, mode, isSelected, o
               </span>
             </div>
             
-            <p className="text-sm mb-2 break-words leading-relaxed">{message.message}</p>
-            
-            <div className="flex flex-wrap gap-1">
-              {priorityConfig && message.priority_level && (
-                <Badge 
-                  variant={priorityConfig.variant}
-                  className={priorityConfig.className}
-                >
-                  <div className="h-1.5 w-1.5 rounded-full mr-2" style={{ backgroundColor: priorityConfig.dotColor }} />
-                  {message.priority_level}
-                </Badge>
-              )}
-              
-              {message.content_types?.slice(0, 2).map((contentType) => {
-                const config = getContentBadgeVariant(contentType)
-                return (
-                  <Badge 
-                    key={contentType}
-                    variant={config.variant}
-                    className={`text-xs ${config.className}`}
-                  >
-                    <div className="h-1.5 w-1.5 rounded-full mr-2" style={{ backgroundColor: config.dotColor }} />
-                    {contentType}
-                  </Badge>
-                )
-              })}
-              
-              {message.pii_detected?.map((piiType) => {
-                const config = getPIIBadgeVariant(piiType)
-                return (
-                  <Badge 
-                    key={piiType}
-                    variant={config.variant}
-                    className={`text-xs ${config.className}`}
-                  >
-                    <div className="h-1.5 w-1.5 rounded-full mr-2" style={{ backgroundColor: config.dotColor }} />
-                    PII: {piiType}
-                  </Badge>
-                )
-              })}
-            </div>
+            <p className="text-sm break-words leading-relaxed">{message.message}</p>
           </div>
         </div>
       </CardContent>
