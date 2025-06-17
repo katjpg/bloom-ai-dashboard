@@ -8,6 +8,8 @@ import {
   IconListDetails,
   IconSettings,
   IconUsers,
+  IconStack2,
+  IconMessage,
 } from "@tabler/icons-react"
 
 import {
@@ -53,6 +55,18 @@ const data = {
       title: "Moderation",
       url: "/moderation",
       icon: IconListDetails,
+      items: [
+        {
+          title: "Live Chat",
+          url: "/moderation",
+          icon: IconMessage,
+        },
+        {
+          title: "Queue",
+          url: "/moderation/queue",
+          icon: IconStack2,
+        },
+      ],
     },
     {
       title: "Analytics",
