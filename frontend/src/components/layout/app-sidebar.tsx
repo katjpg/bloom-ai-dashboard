@@ -10,6 +10,7 @@ import {
   IconUsers,
   IconStack2,
   IconMessage,
+  IconHistory,
 } from "@tabler/icons-react"
 
 import {
@@ -65,6 +66,11 @@ const data = {
           title: "Queue",
           url: "/moderation/queue",
           icon: IconStack2,
+        },
+        {
+          title: "History",
+          url: "/moderation/history",
+          icon: IconHistory,
         },
       ],
     },

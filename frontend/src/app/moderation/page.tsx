@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Select,
   SelectContent,
@@ -12,9 +11,9 @@ import {
 import LiveChatFeed, { ModeType } from "./_components/live-chat-feed"
 import ModInfo from "./_components/mod-info"
 import ModActions from "./_components/mod-actions"
-import ModHistory from "./_components/mod-history"
 import PlayerInfo from "./_components/player-info"
-import { mockExperiences, ChatMessage, mockChatMessages, ModerationHistory, mockModerationHistory, generateHistoryEntry } from "./_data"
+import { mockExperiences, ChatMessage, mockChatMessages, generateHistoryEntry } from "./_data"
+import { useModerationHistory } from "@/contexts/moderation-history-context"
 
 export default function ModerationPage() {
   const [selectedExperienceId, setSelectedExperienceId] = useState<number>(1)
@@ -22,7 +21,7 @@ export default function ModerationPage() {
   const [mode, setMode] = useState<ModeType>("view")
   const [selectedMessages, setSelectedMessages] = useState<string[]>([])
   const [clearTrigger, setClearTrigger] = useState(0)
-  const [moderationHistory, setModerationHistory] = useState<ModerationHistory[]>(mockModerationHistory)
+  const { addHistoryEntries } = useModerationHistory()
 
   const handlePlayerSelect = (message: ChatMessage) => {
     // Only select player in view mode
@@ -68,8 +67,8 @@ export default function ModerationPage() {
         experience: currentExperience
       })
       
-      // Add all entries to history (newest first)
-      setModerationHistory(prev => [...historyEntries, ...prev])
+      // Add all entries to history context (newest first)
+      addHistoryEntries(historyEntries)
       
       // Simulate API call
       return new Promise((resolve) => setTimeout(resolve, 1000))
@@ -111,76 +110,58 @@ export default function ModerationPage() {
         </Select>
       </div>
 
-      {/* Navigation Tabs */}
-      <Tabs defaultValue="live-chat" className="gap-6">
-        <TabsList className="w-full @3xl/page:w-fit">
-          <TabsTrigger value="live-chat">Live Chat</TabsTrigger>
-          <TabsTrigger value="mod-history">
-            History
-          </TabsTrigger>
-        </TabsList>
+      {/* Main Content - No tabs needed */}
+      {selectedPlayer && mode === 'view' ? (
+        /* Player Info Mode - Responsive Layout */
+        <div className="grid grid-cols-1 @3xl/page:grid-cols-3 gap-6">
+          {/* Main chat feed */}
+          <div className="@3xl/page:col-span-2">
+            <LiveChatFeed 
+              selectedExperienceId={selectedExperienceId} 
+              onPlayerSelect={handlePlayerSelect}
+              onModeChange={setMode}
+              onSelectedMessagesChange={setSelectedMessages}
+              clearSelectionTrigger={clearTrigger}
+            />
+          </div>
 
-        <TabsContent value="live-chat" className="flex flex-col gap-6">
-          {selectedPlayer && mode === 'view' ? (
-            /* Player Info Mode - Responsive Layout */
-            <div className="grid grid-cols-1 @3xl/page:grid-cols-3 gap-6">
-              {/* Main chat feed */}
-              <div className="@3xl/page:col-span-2">
-                <LiveChatFeed 
-                  selectedExperienceId={selectedExperienceId} 
-                  onPlayerSelect={handlePlayerSelect}
-                  onModeChange={setMode}
-                  onSelectedMessagesChange={setSelectedMessages}
-                  clearSelectionTrigger={clearTrigger}
-                />
-              </div>
+          {/* Player info - goes underneath on smaller screens */}
+          <div className="@3xl/page:col-span-1">
+            <PlayerInfo 
+              selectedPlayer={selectedPlayer}
+              onClose={handleClosePlayerInfo}
+              onPlayerAction={handlePlayerAction}
+            />
+          </div>
+        </div>
+      ) : (
+        /* Default Mode - Standard Layout */
+        <div className="grid grid-cols-1 @3xl/page:grid-cols-3 gap-6">
+          {/* Main chat feed */}
+          <div className="@3xl/page:col-span-2">
+            <LiveChatFeed 
+              selectedExperienceId={selectedExperienceId} 
+              onPlayerSelect={handlePlayerSelect}
+              onModeChange={setMode}
+              onSelectedMessagesChange={setSelectedMessages}
+              clearSelectionTrigger={clearTrigger}
+            />
+          </div>
 
-              {/* Player info - goes underneath on smaller screens */}
-              <div className="@3xl/page:col-span-1">
-                <PlayerInfo 
-                  selectedPlayer={selectedPlayer}
-                  onClose={handleClosePlayerInfo}
-                  onPlayerAction={handlePlayerAction}
-                />
-              </div>
-            </div>
-          ) : (
-            /* Default Mode - Standard Layout */
-            <div className="grid grid-cols-1 @3xl/page:grid-cols-3 gap-6">
-              {/* Main chat feed */}
-              <div className="@3xl/page:col-span-2">
-                <LiveChatFeed 
-                  selectedExperienceId={selectedExperienceId} 
-                  onPlayerSelect={handlePlayerSelect}
-                  onModeChange={setMode}
-                  onSelectedMessagesChange={setSelectedMessages}
-                  clearSelectionTrigger={clearTrigger}
-                />
-              </div>
-
-              {/* Sidebar - ModActions when in mod mode, ModInfo otherwise */}
-              <div className="@3xl/page:col-span-1">
-                {mode === 'mod' ? (
-                  <ModActions
-                    selectedCount={selectedMessages.length}
-                    onClearSelection={handleClearSelection}
-                    onExecuteAction={handleModAction}
-                  />
-                ) : (
-                  <ModInfo selectedExperienceId={selectedExperienceId} />
-                )}
-              </div>
-            </div>
-          )}
-        </TabsContent>
-
-        <TabsContent value="mod-history" className="flex flex-col gap-6">
-          <ModHistory 
-            history={moderationHistory}
-            selectedExperienceId={selectedExperienceId}
-          />
-        </TabsContent>
-      </Tabs>
+          {/* Sidebar - ModActions when in mod mode, ModInfo otherwise */}
+          <div className="@3xl/page:col-span-1">
+            {mode === 'mod' ? (
+              <ModActions
+                selectedCount={selectedMessages.length}
+                onClearSelection={handleClearSelection}
+                onExecuteAction={handleModAction}
+              />
+            ) : (
+              <ModInfo selectedExperienceId={selectedExperienceId} />
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

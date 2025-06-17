@@ -490,11 +490,27 @@ export { mockExperiences }
 
 // Export moderation history types and data
 export type { ModerationHistory } from "./mod-history-data"
-export { 
-  mockModerationHistory, 
+import { 
+  mockModerationHistory as _mockModerationHistory, 
   generateHistoryEntry, 
   mapActionType, 
   generateActionReason,
   getHighestPriority,
   generateId
 } from "./mod-history-data"
+
+export { 
+  generateHistoryEntry, 
+  mapActionType, 
+  generateActionReason,
+  getHighestPriority,
+  generateId
+}
+
+export const mockModerationHistory = _mockModerationHistory
+// Alias for backward compatibility
+export const moderationHistory = _mockModerationHistory
+
+// Export queue data
+export { mockQueueItems } from "./queue-data"
+export type { QueueItem } from "./queue-data"

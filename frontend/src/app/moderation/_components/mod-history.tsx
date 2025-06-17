@@ -33,7 +33,6 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 import { ModerationHistory } from "../_data/mod-history-data"
 import { getActionBadgeVariant } from "@/lib/colors-mod"
@@ -333,54 +332,49 @@ export default function ModHistory({ history, selectedExperienceId }: ModHistory
   })
 
   return (
-    <Card className="@container/card shadow-xs overflow-hidden">
-      <CardHeader className="space-y-4 p-4 pb-0">
-        <CardTitle className="font-clash text-lg font-medium">
-          Moderation History ({filteredHistory.length} entries)
-        </CardTitle>
-        
-        {/* Search and Filter Controls */}
-        <div className="flex items-center gap-2">
-          <Input
-            placeholder="Search history..."
-            value={globalFilter}
-            onChange={(event) => setGlobalFilter(event.target.value)}
-            className="max-w-sm"
-          />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="gap-2">
-                <Filter className="h-4 w-4" />
-                Columns
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <div className="py-1">
-                {table
-                  .getAllColumns()
-                  .filter((column) => column.getCanHide())
-                  .map((column) => {
-                    return (
-                      <div key={column.id} className="flex items-center px-2 py-1.5">
-                        <Checkbox
-                          checked={column.getIsVisible()}
-                          onCheckedChange={(value) =>
-                            column.toggleVisibility(!!value)
-                          }
-                          className="mr-2"
-                        />
-                        <span className="text-sm capitalize">{column.id}</span>
-                      </div>
-                    )
-                  })}
-              </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </CardHeader>
-      
-      <CardContent className="p-4 pt-4">
+    <div className="space-y-4">
+      {/* Search and Filter Controls */}
+      <div className="flex items-center gap-2">
+        <Input
+          placeholder="Search history..."
+          value={globalFilter}
+          onChange={(event) => setGlobalFilter(event.target.value)}
+          className="max-w-sm"
+        />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="gap-2">
+              <Filter className="h-4 w-4" />
+              Columns
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <div className="py-1">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <div key={column.id} className="flex items-center px-2 py-1.5">
+                      <Checkbox
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
+                        className="mr-2"
+                      />
+                      <span className="text-sm capitalize">{column.id}</span>
+                    </div>
+                  )
+                })}
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {/* Table */}
+      <div>
         <div className="rounded-md border">
           <Table>
             <TableHeader>
@@ -457,7 +451,7 @@ export default function ModHistory({ history, selectedExperienceId }: ModHistory
             </Button>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }

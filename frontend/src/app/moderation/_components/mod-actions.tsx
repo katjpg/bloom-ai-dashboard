@@ -40,6 +40,10 @@ export default function ModActions({ selectedCount, onClearSelection, onExecuteA
         setSelectedAction(null)
         setShowTimeoutOptions(false)
         onClearSelection()
+        
+        // Show success notification
+        // In a real app, you'd use a proper toast library
+        alert(`Successfully performed ${selectedAction} action`)
       }, 1500)
     } catch (error) {
       setProcessing(false)
