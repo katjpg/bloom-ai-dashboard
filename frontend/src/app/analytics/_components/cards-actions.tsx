@@ -1,4 +1,4 @@
-import { TrendingUp, TrendingDown, Users, Activity, UserCheck, BarChart2 } from "lucide-react"
+import { IconTrendingUp, IconTrendingDown, IconUsers, IconActivity, IconUserCheck, IconChartBar } from "@tabler/icons-react"
 import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { mockCommunityActionMetrics, mockCommunityActionTrends, TrendDirection } from "../_data"
@@ -19,7 +19,7 @@ export default function CardsActions({ selectedExperienceId }: CardsActionsProps
       <Card className="@container/card bg-gradient-to-t from-emerald-500/5 to-card shadow-xs dark:bg-card">
         <CardHeader>
           <CardDescription className="flex items-center gap-2">
-            <Activity className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            <IconActivity className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             Percent Positive Actions
           </CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -28,9 +28,9 @@ export default function CardsActions({ selectedExperienceId }: CardsActionsProps
           <CardAction>
             <Badge variant="outline" className="gap-1">
               {(trends.positiveActions.trend as TrendDirection) === "up" ? (
-                <TrendingUp className="h-3 w-3" />
+                <IconTrendingUp className="h-3 w-3" />
               ) : (
-                <TrendingDown className="h-3 w-3" />
+                <IconTrendingDown className="h-3 w-3" />
               )}
               {(trends.positiveActions.trend as TrendDirection) === "up" ? "+" : ""}{trends.positiveActions.change}%
             </Badge>
@@ -42,7 +42,7 @@ export default function CardsActions({ selectedExperienceId }: CardsActionsProps
       <Card className="@container/card bg-gradient-to-t from-blue-500/5 to-card shadow-xs dark:bg-card">
         <CardHeader>
           <CardDescription className="flex items-center gap-2">
-            <BarChart2 className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <IconChartBar className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             Total Actions
           </CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -51,9 +51,9 @@ export default function CardsActions({ selectedExperienceId }: CardsActionsProps
           <CardAction>
             <Badge variant="outline" className="gap-1">
               {(trends.totalActions.trend as TrendDirection) === "up" ? (
-                <TrendingUp className="h-3 w-3" />
+                <IconTrendingUp className="h-3 w-3" />
               ) : (
-                <TrendingDown className="h-3 w-3" />
+                <IconTrendingDown className="h-3 w-3" />
               )}
               {(trends.totalActions.trend as TrendDirection) === "up" ? "+" : ""}{trends.totalActions.change}%
             </Badge>
@@ -65,7 +65,7 @@ export default function CardsActions({ selectedExperienceId }: CardsActionsProps
       <Card className="@container/card bg-gradient-to-t from-violet-500/5 to-card shadow-xs dark:bg-card">
         <CardHeader>
           <CardDescription className="flex items-center gap-2">
-            <Users className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+            <IconUsers className="h-4 w-4 text-violet-600 dark:text-violet-400" />
             Active Contributors
           </CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -74,9 +74,9 @@ export default function CardsActions({ selectedExperienceId }: CardsActionsProps
           <CardAction>
             <Badge variant="outline" className="gap-1">
               {(trends.activeContributors.trend as TrendDirection) === "up" ? (
-                <TrendingUp className="h-3 w-3" />
+                <IconTrendingUp className="h-3 w-3" />
               ) : (
-                <TrendingDown className="h-3 w-3" />
+                <IconTrendingDown className="h-3 w-3" />
               )}
               {(trends.activeContributors.trend as TrendDirection) === "up" ? "+" : ""}{trends.activeContributors.change}%
             </Badge>
@@ -88,7 +88,7 @@ export default function CardsActions({ selectedExperienceId }: CardsActionsProps
       <Card className="@container/card bg-gradient-to-t from-amber-500/5 to-card shadow-xs dark:bg-card">
         <CardHeader>
           <CardDescription className="flex items-center gap-2">
-            <UserCheck className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+            <IconUserCheck className="h-4 w-4 text-amber-600 dark:text-amber-400" />
             Actions Per User
           </CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -97,9 +97,9 @@ export default function CardsActions({ selectedExperienceId }: CardsActionsProps
           <CardAction>
             <Badge variant="outline" className="gap-1">
               {(trends.actionsPerUser.trend as TrendDirection) === "up" ? (
-                <TrendingUp className="h-3 w-3" />
+                <IconTrendingUp className="h-3 w-3" />
               ) : (
-                <TrendingDown className="h-3 w-3" />
+                <IconTrendingDown className="h-3 w-3" />
               )}
               {(trends.actionsPerUser.trend as TrendDirection) === "up" ? "+" : ""}{trends.actionsPerUser.change}%
             </Badge>

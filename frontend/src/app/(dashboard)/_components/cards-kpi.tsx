@@ -1,4 +1,4 @@
-import { TrendingUp, TrendingDown } from "lucide-react"
+import { IconTrendingUp, IconTrendingDown } from "@tabler/icons-react"
 import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { mockMetrics, mockTrends, TrendDirection } from "../_data"
@@ -15,9 +15,9 @@ export function CardsKPI() {
           <CardAction>
             <Badge variant="outline" className="gap-1">
               {(mockTrends.totalMessages.trend as TrendDirection) === "up" ? (
-                <TrendingUp className="h-3 w-3" />
+                <IconTrendingUp className="h-3 w-3" />
               ) : (
-                <TrendingDown className="h-3 w-3" />
+                <IconTrendingDown className="h-3 w-3" />
               )}
               {(mockTrends.totalMessages.trend as TrendDirection) === "up" ? "+" : ""}{mockTrends.totalMessages.change}%
             </Badge>
@@ -34,9 +34,9 @@ export function CardsKPI() {
           <CardAction>
             <Badge variant="outline" className="gap-1">
               {(mockTrends.activeUsers.trend as TrendDirection) === "up" ? (
-                <TrendingUp className="h-3 w-3" />
+                <IconTrendingUp className="h-3 w-3" />
               ) : (
-                <TrendingDown className="h-3 w-3" />
+                <IconTrendingDown className="h-3 w-3" />
               )}
               {(mockTrends.activeUsers.trend as TrendDirection) === "up" ? "+" : ""}{mockTrends.activeUsers.change}%
             </Badge>
@@ -53,9 +53,9 @@ export function CardsKPI() {
           <CardAction>
             <Badge variant="outline" className="gap-1">
               {(mockTrends.safetyScore.trend as TrendDirection) === "up" ? (
-                <TrendingUp className="h-3 w-3" />
+                <IconTrendingUp className="h-3 w-3" />
               ) : (
-                <TrendingDown className="h-3 w-3" />
+                <IconTrendingDown className="h-3 w-3" />
               )}
               {(mockTrends.safetyScore.trend as TrendDirection) === "up" ? "+" : ""}{mockTrends.safetyScore.change}%
             </Badge>
@@ -72,9 +72,9 @@ export function CardsKPI() {
           <CardAction>
             <Badge variant="outline" className="gap-1">
               {(mockTrends.avgResponseTime.trend as TrendDirection) === "down" ? (
-                <TrendingDown className="h-3 w-3" />
+                <IconTrendingDown className="h-3 w-3" />
               ) : (
-                <TrendingUp className="h-3 w-3" />
+                <IconTrendingUp className="h-3 w-3" />
               )}
               {(mockTrends.avgResponseTime.trend as TrendDirection) === "down" ? "" : "+"}{mockTrends.avgResponseTime.change}%
             </Badge>

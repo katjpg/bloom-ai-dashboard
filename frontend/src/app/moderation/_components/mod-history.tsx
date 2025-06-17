@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal, Clock, User, Filter, MessageSquare } from "lucide-react"
+import { IconArrowsUpDown, IconChevronDown, IconDots, IconClock, IconUser, IconFilter, IconMessage } from "@tabler/icons-react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -102,9 +102,9 @@ export default function ModHistory({ history, selectedExperienceId }: ModHistory
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2 font-medium"
         >
-          <Clock className="h-4 w-4 mr-1" />
+          <IconClock className="h-4 w-4 mr-1" />
           Time
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <IconArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -153,9 +153,9 @@ export default function ModHistory({ history, selectedExperienceId }: ModHistory
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2 font-medium"
         >
-          <User className="h-4 w-4 mr-1" />
+          <IconUser className="h-4 w-4 mr-1" />
           Player
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <IconArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -189,9 +189,9 @@ export default function ModHistory({ history, selectedExperienceId }: ModHistory
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2 font-medium"
         >
-          <MessageSquare className="h-4 w-4 mr-1" />
+          <IconMessage className="h-4 w-4 mr-1" />
           Message
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <IconArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -280,7 +280,7 @@ export default function ModHistory({ history, selectedExperienceId }: ModHistory
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
                 <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
+                <IconDots className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -344,9 +344,9 @@ export default function ModHistory({ history, selectedExperienceId }: ModHistory
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="gap-2">
-              <Filter className="h-4 w-4" />
+              <IconFilter className="h-4 w-4" />
               Columns
-              <ChevronDown className="h-4 w-4" />
+              <IconChevronDown className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

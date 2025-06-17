@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { PriorityLevel, ContentType } from "@/lib/colors-mod"
 import { mockChatMessages, PRIORITY_FILTER_OPTIONS, VIOLATION_FILTER_OPTIONS, ChatMessage } from "../_data"
-import { Search, Filter, X } from "lucide-react"
+import { IconSearch, IconFilter, IconX } from "@tabler/icons-react"
 import CardsChat from "./cards-chat"
 
 interface LiveChatFeedProps {
@@ -131,7 +131,7 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
         <div className="flex flex-col sm:flex-row gap-3">
           {/* Search Bar */}
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+            <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input
               placeholder="Search messages or players..."
               value={searchTerm}
@@ -146,7 +146,7 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="gap-2">
-                  <Filter className="h-4 w-4" />
+                  <IconFilter className="h-4 w-4" />
                   Filter
                   {totalActiveFilters > 0 && (
                     <span className="ml-1 bg-primary text-primary-foreground rounded-full px-1.5 py-0.5 text-xs">
@@ -207,7 +207,7 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
             {/* Clear Filters Button */}
             {hasActiveFilters && (
               <Button variant="ghost" size="sm" onClick={clearAllFilters} className="gap-1">
-                <X className="h-4 w-4" />
+                <IconX className="h-4 w-4" />
                 Clear
               </Button>
             )}

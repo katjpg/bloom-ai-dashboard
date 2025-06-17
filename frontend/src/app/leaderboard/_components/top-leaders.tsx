@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Trophy, Medal, Award, TrendingUp, TrendingDown } from "lucide-react"
+import { IconTrophy, IconMedal, IconAward } from "@tabler/icons-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -46,9 +46,9 @@ export default function TopLeaders({ timePeriod }: TopLeadersProps) {
   const getPositionIcon = (position: number) => {
     const iconClass = "h-6 w-6"
     switch(position) {
-      case 1: return <Trophy className={`${iconClass} text-yellow-500`} />
-      case 2: return <Medal className={`${iconClass} text-gray-400`} />
-      case 3: return <Award className={`${iconClass} text-amber-600`} />
+      case 1: return <IconTrophy className={`${iconClass} text-yellow-500`} />
+      case 2: return <IconMedal className={`${iconClass} text-gray-400`} />
+      case 3: return <IconAward className={`${iconClass} text-amber-600`} />
       default: return null
     }
   }

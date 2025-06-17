@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { AlertTriangle, VolumeX, UserX, Ban, X, MessageSquare, Flag, ShieldAlert } from "lucide-react"
+import { IconAlertTriangle, IconVolumeOff, IconUserX, IconBan, IconX, IconMessage, IconFlag, IconShield } from "@tabler/icons-react"
 import { ChatMessage, UserStatus } from "../_data"
 import { getActionBadgeVariant, ActionType } from "@/lib/colors-mod"
 
@@ -49,7 +49,7 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
           onClick={onClose}
           className="absolute top-3 right-3 h-7 w-7 p-0 hover:bg-muted/50 z-10"
         >
-          <X className="h-3.5 w-3.5" />
+          <IconX className="h-3.5 w-3.5" />
         </Button>
 
         {/* Player Profile Section */}
@@ -99,7 +99,7 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
           {/* Quick Stats List */}
           <div className="space-y-2">
             <button className="w-full flex items-center gap-3 p-3 hover:bg-muted/50 transition-colors rounded-lg border border-border/40">
-              <MessageSquare className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+              <IconMessage className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0" />
               <span className="flex-1 text-left font-medium text-sm">Messages</span>
               <div className="flex items-center gap-2">
                 <span className="text-base font-semibold tabular-nums">{playerStats.messages}</span>
@@ -110,7 +110,7 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
             </button>
             
             <button className="w-full flex items-center gap-3 p-3 hover:bg-muted/50 transition-colors rounded-lg border border-border/40">
-              <Flag className="h-4 w-4 text-orange-600 dark:text-orange-400 flex-shrink-0" />
+              <IconFlag className="h-4 w-4 text-orange-600 dark:text-orange-400 flex-shrink-0" />
               <span className="flex-1 text-left font-medium text-sm">Flagged</span>
               <div className="flex items-center gap-2">
                 <span className="text-base font-semibold tabular-nums">{playerStats.flagged}</span>
@@ -121,7 +121,7 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
             </button>
             
             <button className="w-full flex items-center gap-3 p-3 hover:bg-muted/50 transition-colors rounded-lg border border-border/40">
-              <ShieldAlert className="h-4 w-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+              <IconShield className="h-4 w-4 text-red-600 dark:text-red-400 flex-shrink-0" />
               <span className="flex-1 text-left font-medium text-sm">Violations</span>
               <div className="flex items-center gap-2">
                 <span className="text-base font-semibold tabular-nums">{playerStats.violations}</span>
@@ -149,7 +149,7 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
                   className={`h-11 w-full p-0 ${warningConfig.className} shadow-none font-medium`}
                   onClick={() => handleAction('WARNING')}
                 >
-                  <AlertTriangle className="h-4 w-4" />
+                  <IconAlertTriangle className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -165,7 +165,7 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
                   className={`h-11 w-full p-0 ${muteConfig.className} shadow-none font-medium`}
                   onClick={() => handleAction('MUTE')}
                 >
-                  <VolumeX className="h-4 w-4" />
+                  <IconVolumeOff className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -181,7 +181,7 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
                   className={`h-11 w-full p-0 ${kickConfig.className} shadow-none font-medium`}
                   onClick={() => handleAction('KICK')}
                 >
-                  <UserX className="h-4 w-4" />
+                  <IconUserX className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -197,7 +197,7 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
                   className={`h-11 w-full p-0 ${banConfig.className} shadow-none font-medium`}
                   onClick={() => handleAction('BAN')}
                 >
-                  <Ban className="h-4 w-4" />
+                  <IconBan className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>

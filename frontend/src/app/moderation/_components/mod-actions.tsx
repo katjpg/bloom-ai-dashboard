@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from 'react'
-import { Check, X, Edit3, AlertTriangle, Clock, Flag, Ban } from 'lucide-react'
+import { IconCheck, IconX, IconEdit, IconAlertTriangle, IconClock, IconFlag, IconBan } from '@tabler/icons-react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
@@ -54,21 +54,21 @@ export default function ModActions({ selectedCount, onClearSelection, onExecuteA
   const actionConfigs = {
     // Message Actions
     approve: { 
-      icon: Check, 
+      icon: IconCheck, 
       color: 'text-green-600 dark:text-green-400', 
       bgColor: 'bg-green-600/10 dark:bg-green-600/20', 
       borderColor: 'border-green-600/60',
       hoverBg: 'hover:bg-green-600/15'
     },
     delete: { 
-      icon: X, 
+      icon: IconX, 
       color: 'text-red-600 dark:text-red-400', 
       bgColor: 'bg-red-600/10 dark:bg-red-600/20', 
       borderColor: 'border-red-600/60',
       hoverBg: 'hover:bg-red-600/15'
     },
     edit: { 
-      icon: Edit3, 
+      icon: IconEdit, 
       color: 'text-blue-600 dark:text-blue-400', 
       bgColor: 'bg-blue-600/10 dark:bg-blue-600/20', 
       borderColor: 'border-blue-600/60',
@@ -76,28 +76,28 @@ export default function ModActions({ selectedCount, onClearSelection, onExecuteA
     },
     // User Actions
     warn: { 
-      icon: AlertTriangle, 
+      icon: IconAlertTriangle, 
       color: 'text-yellow-600 dark:text-yellow-400', 
       bgColor: 'bg-yellow-600/10 dark:bg-yellow-600/20', 
       borderColor: 'border-yellow-600/60',
       hoverBg: 'hover:bg-yellow-600/15'
     },
     timeout: { 
-      icon: Clock, 
+      icon: IconClock, 
       color: 'text-orange-600 dark:text-orange-400', 
       bgColor: 'bg-orange-600/10 dark:bg-orange-600/20', 
       borderColor: 'border-orange-600/60',
       hoverBg: 'hover:bg-orange-600/15'
     },
     escalate: { 
-      icon: Flag, 
+      icon: IconFlag, 
       color: 'text-purple-600 dark:text-purple-400', 
       bgColor: 'bg-purple-600/10 dark:bg-purple-600/20', 
       borderColor: 'border-purple-600/60',
       hoverBg: 'hover:bg-purple-600/15'
     },
     ban: { 
-      icon: Ban, 
+      icon: IconBan, 
       color: 'text-red-700 dark:text-red-300', 
       bgColor: 'bg-red-700/10 dark:bg-red-700/25', 
       borderColor: 'border-red-700/70',

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { TrendingUp } from "lucide-react"
+import { IconTrendingUp } from "@tabler/icons-react"
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 import {
   Card,
@@ -126,7 +126,7 @@ export function ChartMessage() {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm pt-4 pb-6">
         <div className="flex gap-2 font-medium leading-relaxed">
-          Community health trending positive <TrendingUp className="size-4" />
+          Community health trending positive <IconTrendingUp className="size-4" />
         </div>
         <div className="text-muted-foreground leading-relaxed">
           {approvedPercentage}% of messages approved automatically

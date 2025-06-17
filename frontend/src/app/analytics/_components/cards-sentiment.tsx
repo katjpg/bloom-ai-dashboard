@@ -1,4 +1,4 @@
-import { TrendingUp, TrendingDown, MessageSquare, Award, Heart, BarChart3 } from "lucide-react"
+import { IconTrendingUp, IconTrendingDown, IconMessage, IconAward, IconHeart, IconChartBarPopular } from "@tabler/icons-react"
 import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { mockAnalyticsMetrics, mockAnalyticsTrends, TrendDirection } from "../_data"
@@ -19,7 +19,7 @@ export default function CardsSentiment({ selectedExperienceId }: CardsSentimentP
       <Card className="@container/card bg-gradient-to-t from-blue-500/5 to-card shadow-xs dark:bg-card">
         <CardHeader>
           <CardDescription className="flex items-center gap-2">
-            <MessageSquare className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <IconMessage className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             Total Messages
           </CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -28,9 +28,9 @@ export default function CardsSentiment({ selectedExperienceId }: CardsSentimentP
           <CardAction>
             <Badge variant="outline" className="gap-1">
               {(trends.totalMessages.trend as TrendDirection) === "up" ? (
-                <TrendingUp className="h-3 w-3" />
+                <IconTrendingUp className="h-3 w-3" />
               ) : (
-                <TrendingDown className="h-3 w-3" />
+                <IconTrendingDown className="h-3 w-3" />
               )}
               {(trends.totalMessages.trend as TrendDirection) === "up" ? "+" : ""}{trends.totalMessages.change}%
             </Badge>
@@ -42,7 +42,7 @@ export default function CardsSentiment({ selectedExperienceId }: CardsSentimentP
       <Card className="@container/card bg-gradient-to-t from-emerald-500/5 to-card shadow-xs dark:bg-card">
         <CardHeader>
           <CardDescription className="flex items-center gap-2">
-            <Award className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            <IconAward className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             Points Awarded
           </CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -51,9 +51,9 @@ export default function CardsSentiment({ selectedExperienceId }: CardsSentimentP
           <CardAction>
             <Badge variant="outline" className="gap-1">
               {(trends.pointsAwarded.trend as TrendDirection) === "up" ? (
-                <TrendingUp className="h-3 w-3" />
+                <IconTrendingUp className="h-3 w-3" />
               ) : (
-                <TrendingDown className="h-3 w-3" />
+                <IconTrendingDown className="h-3 w-3" />
               )}
               {(trends.pointsAwarded.trend as TrendDirection) === "up" ? "+" : ""}{trends.pointsAwarded.change}%
             </Badge>
@@ -65,7 +65,7 @@ export default function CardsSentiment({ selectedExperienceId }: CardsSentimentP
       <Card className="@container/card bg-gradient-to-t from-rose-500/5 to-card shadow-xs dark:bg-card">
         <CardHeader>
           <CardDescription className="flex items-center gap-2">
-            <Heart className="h-4 w-4 text-rose-600 dark:text-rose-400" />
+            <IconHeart className="h-4 w-4 text-rose-600 dark:text-rose-400" />
             Positive Actions
           </CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -74,9 +74,9 @@ export default function CardsSentiment({ selectedExperienceId }: CardsSentimentP
           <CardAction>
             <Badge variant="outline" className="gap-1">
               {(trends.positiveActions.trend as TrendDirection) === "up" ? (
-                <TrendingUp className="h-3 w-3" />
+                <IconTrendingUp className="h-3 w-3" />
               ) : (
-                <TrendingDown className="h-3 w-3" />
+                <IconTrendingDown className="h-3 w-3" />
               )}
               {(trends.positiveActions.trend as TrendDirection) === "up" ? "+" : ""}{trends.positiveActions.change}%
             </Badge>
@@ -88,7 +88,7 @@ export default function CardsSentiment({ selectedExperienceId }: CardsSentimentP
       <Card className="@container/card bg-gradient-to-t from-amber-500/5 to-card shadow-xs dark:bg-card">
         <CardHeader>
           <CardDescription className="flex items-center gap-2">
-            <BarChart3 className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+            <IconChartBarPopular className="h-4 w-4 text-amber-600 dark:text-amber-400" />
             Average Sentiment
           </CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -97,9 +97,9 @@ export default function CardsSentiment({ selectedExperienceId }: CardsSentimentP
           <CardAction>
             <Badge variant="outline" className="gap-1">
               {(trends.averageSentiment.trend as TrendDirection) === "up" ? (
-                <TrendingUp className="h-3 w-3" />
+                <IconTrendingUp className="h-3 w-3" />
               ) : (
-                <TrendingDown className="h-3 w-3" />
+                <IconTrendingDown className="h-3 w-3" />
               )}
               {(trends.averageSentiment.trend as TrendDirection) === "up" ? "+" : ""}{trends.averageSentiment.change}%
             </Badge>

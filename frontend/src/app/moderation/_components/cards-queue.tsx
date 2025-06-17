@@ -5,15 +5,14 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { 
-  Clock,
-  AlertTriangle,
-  Shield,
-  Eye,
-  User,
-  FileText,
-  Globe,
-  MessageSquare
-} from "lucide-react"
+  IconClock,
+  IconAlertTriangle,
+  IconShield,
+  IconEye,
+  IconUser,
+  IconFileText,
+  IconWorld
+} from "@tabler/icons-react"
 import { 
   PriorityLevel, 
   ContentType,
@@ -46,24 +45,24 @@ export default function CardsQueue({
   const getPriorityIcon = (priority: PriorityLevel) => {
     switch (priority) {
       case PriorityLevel.CRITICAL:
-        return <AlertTriangle className="h-5 w-5" />
+        return <IconAlertTriangle className="h-5 w-5" />
       case PriorityLevel.HIGH:
-        return <Shield className="h-5 w-5" />
+        return <IconShield className="h-5 w-5" />
       default:
-        return <Clock className="h-5 w-5" />
+        return <IconClock className="h-5 w-5" />
     }
   }
 
   const getTypeIcon = (type: string) => {
     switch (type) {
       case "message":
-        return <FileText className="h-5 w-5" />
+        return <IconFileText className="h-5 w-5" />
       case "user":
-        return <User className="h-5 w-5" />
+        return <IconUser className="h-5 w-5" />
       case "experience":
-        return <Globe className="h-5 w-5" />
+        return <IconWorld className="h-5 w-5" />
       default:
-        return <FileText className="h-5 w-5" />
+        return <IconFileText className="h-5 w-5" />
     }
   }
 
@@ -211,7 +210,7 @@ export default function CardsQueue({
               className="flex-1 h-10"
               onClick={() => onReview?.(item.id)}
             >
-              <Eye className="h-4 w-4 mr-2" />
+              <IconEye className="h-4 w-4 mr-2" />
               Review Details
             </Button>
             {item.status === "pending" && (

@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Users, Clock } from "lucide-react"
+import { IconUsers, IconClock } from "@tabler/icons-react"
 import { mockActiveUsers, mockExperiences } from "../_data"
 
 interface ModInfoProps {
@@ -40,11 +40,11 @@ export default function ModInfo({ selectedExperienceId = 1 }: ModInfoProps) {
             <h3 className="font-clash font-semibold text-lg line-clamp-1">{selectedExperience.title}</h3>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1.5">
-                <Users className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                <IconUsers className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                 <span className="font-medium tabular-nums">{selectedExperience.playerCount.toLocaleString()}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
+                <IconClock className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
                 <span className="font-medium">{selectedExperience.lastUpdated}</span>
               </div>
             </div>

@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { ChevronRight, Shield, Users, Clock } from "lucide-react"
+import { IconChevronRight, IconShield, IconUsers, IconClock } from "@tabler/icons-react"
 import { mockExperiences } from "../_data"
 
 export function CardsExperience() {
@@ -71,7 +71,7 @@ export function CardsExperience() {
                 </Badge>
                 
                 <div className="flex items-center gap-1 text-sm">
-                  <Shield className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                  <IconShield className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                   <span className="font-semibold text-blue-600 dark:text-blue-400 tabular-nums">
                     {experience.safetyScore}%
                   </span>
@@ -86,11 +86,11 @@ export function CardsExperience() {
               {/* Stats Row */}
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
-                  <Users className="w-3.5 h-3.5" />
+                  <IconUsers className="w-3.5 h-3.5" />
                   <span className="tabular-nums font-medium">{experience.playerCount.toLocaleString()}</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5" />
+                  <IconClock className="w-3.5 h-3.5" />
                   <span className="font-medium">{experience.lastUpdated}</span>
                 </div>
               </div>
@@ -108,7 +108,7 @@ export function CardsExperience() {
                 variant={experience.isActive ? "default" : "outline"}
               >
                 Manage Experience
-                <ChevronRight className="w-4 h-4 ml-2" />
+                <IconChevronRight className="w-4 h-4 ml-2" />
               </Button>
             </CardContent>
           </Card>

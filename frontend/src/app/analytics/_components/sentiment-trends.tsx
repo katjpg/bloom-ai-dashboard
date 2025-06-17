@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo, memo } from "react"
-import { TrendingUp, TrendingDown } from "lucide-react"
+import { IconTrendingUp, IconTrendingDown } from "@tabler/icons-react"
 import { CartesianGrid, Line, LineChart, YAxis, XAxis, ReferenceLine } from "recharts"
 
 import {
@@ -286,9 +286,9 @@ const SentimentTrends = memo(function SentimentTrends({ selectedExperienceId }: 
         <div className="flex gap-2 font-medium leading-relaxed">
           {trendDirection === "up" ? "Trending up" : "Trending down"} by {trendPercentage.toFixed(1)}% 
           {trendDirection === "up" ? (
-            <TrendingUp className="h-4 w-4 text-green-600" />
+            <IconTrendingUp className="h-4 w-4 text-green-600" />
           ) : (
-            <TrendingDown className="h-4 w-4 text-red-600" />
+            <IconTrendingDown className="h-4 w-4 text-red-600" />
           )}
         </div>
         <div className="flex items-center gap-2 text-muted-foreground leading-relaxed">

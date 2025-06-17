@@ -12,10 +12,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { 
-  CheckCircle, 
-  Plus,
-  Filter
-} from "lucide-react"
+  IconCircleCheck
+} from "@tabler/icons-react"
 import { 
   PriorityLevel
 } from "@/lib/colors-mod"
@@ -101,7 +99,7 @@ export default function QueuePage() {
           <Card>
             <CardContent className="flex items-center justify-center py-12">
               <div className="text-center space-y-2">
-                <CheckCircle className="h-12 w-12 mx-auto text-green-500" />
+                <IconCircleCheck className="h-12 w-12 mx-auto text-green-500" />
                 <h3 className="font-clash text-lg font-medium">Queue is Empty</h3>
                 <p className="text-sm text-muted-foreground">
                   No items match your current filters

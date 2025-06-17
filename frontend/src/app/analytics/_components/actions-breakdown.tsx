@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo, memo } from "react"
-import { TrendingUp, TrendingDown } from "lucide-react"
+import { IconTrendingUp, IconTrendingDown } from "@tabler/icons-react"
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts"
 
 import {
@@ -264,7 +264,7 @@ const ActionsBreakdown = memo(function ActionsBreakdown({ selectedExperienceId }
           
           <CardFooter className="flex-col items-start gap-2 text-sm border-t">
             <div className="flex gap-2 font-medium leading-relaxed">
-              Growing community support <TrendingUp className="h-4 w-4" />
+              Growing community support <IconTrendingUp className="h-4 w-4" />
             </div>
             <div className="text-muted-foreground leading-relaxed">
               {totalPositive.toLocaleString()} positive actions recorded
@@ -332,7 +332,7 @@ const ActionsBreakdown = memo(function ActionsBreakdown({ selectedExperienceId }
           
           <CardFooter className="flex-col items-start gap-2 text-sm border-t">
             <div className="flex gap-2 font-medium leading-relaxed">
-              Improving moderation <TrendingDown className="h-4 w-4" />
+              Improving moderation <IconTrendingDown className="h-4 w-4" />
             </div>
             <div className="text-muted-foreground leading-relaxed">
               {totalNegative.toLocaleString()} negative actions detected
