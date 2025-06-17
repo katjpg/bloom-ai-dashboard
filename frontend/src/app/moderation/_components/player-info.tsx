@@ -97,6 +97,7 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
                     variant={getPriorityBadgeVariant(selectedPlayer.priority_level).variant}
                     className={`text-xs ${getPriorityBadgeVariant(selectedPlayer.priority_level).className}`}
                   >
+                    <div className="h-1.5 w-1.5 rounded-full mr-2" style={{ backgroundColor: getPriorityBadgeVariant(selectedPlayer.priority_level).dotColor }} />
                     {selectedPlayer.priority_level}
                   </Badge>
                 )}

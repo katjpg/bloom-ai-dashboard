@@ -136,6 +136,7 @@ export default function ModHistory({ history, selectedExperienceId }: ModHistory
         return (
           <div className="flex items-center gap-2">
             <Badge variant={config.variant} className={`${config.className} text-xs`}>
+              <div className="h-1.5 w-1.5 rounded-full mr-2" style={{ backgroundColor: config.dotColor }} />
               {config.label}
             </Badge>
             {duration && (

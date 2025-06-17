@@ -82,6 +82,7 @@ export default function CardsChat({ message, onPlayerSelect, mode, isSelected, o
                   variant={priorityConfig.variant}
                   className={priorityConfig.className}
                 >
+                  <div className="h-1.5 w-1.5 rounded-full mr-2" style={{ backgroundColor: priorityConfig.dotColor }} />
                   {message.priority_level}
                 </Badge>
               )}
@@ -94,6 +95,7 @@ export default function CardsChat({ message, onPlayerSelect, mode, isSelected, o
                     variant={config.variant}
                     className={`text-xs ${config.className}`}
                   >
+                    <div className="h-1.5 w-1.5 rounded-full mr-2" style={{ backgroundColor: config.dotColor }} />
                     {contentType}
                   </Badge>
                 )
@@ -107,6 +109,7 @@ export default function CardsChat({ message, onPlayerSelect, mode, isSelected, o
                     variant={config.variant}
                     className={`text-xs ${config.className}`}
                   >
+                    <div className="h-1.5 w-1.5 rounded-full mr-2" style={{ backgroundColor: config.dotColor }} />
                     PII: {piiType}
                   </Badge>
                 )
