@@ -186,8 +186,8 @@ const SentimentTrends = memo(function SentimentTrends({ selectedExperienceId }: 
                 domain={[-100, 100]}
                 tickLine={false}
                 axisLine={false}
-                tickMargin={8}
-                tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                tickMargin={12}
+                tick={{ fill: "hsl(var(--muted-foreground))" }}
                 tickFormatter={(value) => `${value > 0 ? '+' : ''}${value}`}
                 width={40}
               />
@@ -197,8 +197,8 @@ const SentimentTrends = memo(function SentimentTrends({ selectedExperienceId }: 
                 dataKey="period"
                 tickLine={false}
                 axisLine={false}
-                tickMargin={8}
-                tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                tickMargin={12}
+                tick={{ fill: "hsl(var(--muted-foreground))" }}
                 interval={selectedPeriod === "1d" ? 2 : 0}
                 height={40}
               />
@@ -283,7 +283,7 @@ const SentimentTrends = memo(function SentimentTrends({ selectedExperienceId }: 
       </CardContent>
       
       <CardFooter className="flex-col items-start gap-2 text-sm border-t px-4 py-4 md:px-6">
-        <div className="flex gap-2 font-medium leading-none">
+        <div className="flex gap-2 font-medium leading-relaxed">
           {trendDirection === "up" ? "Trending up" : "Trending down"} by {trendPercentage.toFixed(1)}% 
           {trendDirection === "up" ? (
             <TrendingUp className="h-4 w-4 text-green-600" />
@@ -291,13 +291,13 @@ const SentimentTrends = memo(function SentimentTrends({ selectedExperienceId }: 
             <TrendingDown className="h-4 w-4 text-red-600" />
           )}
         </div>
-        <div className="flex items-center gap-2 text-muted-foreground leading-none">
+        <div className="flex items-center gap-2 text-muted-foreground leading-relaxed">
           <span>Current sentiment: </span>
           <span className="font-semibold" style={{ color: getSentimentColor(currentSentiment) }}>
             {currentSentiment > 0 ? '+' : ''}{currentSentiment.toFixed(1)} ({getSentimentLabel(currentSentiment)})
           </span>
         </div>
-        <div className="flex items-center gap-2 text-muted-foreground leading-none">
+        <div className="flex items-center gap-2 text-muted-foreground leading-relaxed">
           <span>Overall sentiment: </span>
           <span className="font-semibold" style={{ color: lineColor }}>
             {overallSentiment > 0 ? '+' : ''}{overallSentiment.toFixed(1)} ({getSentimentLabel(overallSentiment)})
