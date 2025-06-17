@@ -213,55 +213,53 @@ const ActionsBreakdown = memo(function ActionsBreakdown({ selectedExperienceId }
             </CardDescription>
           </CardHeader>
           
-          <CardContent className="p-0">
-            <div className="px-4 py-6 md:px-6">
-              <ChartContainer
-                config={positiveChartConfig}
-                className="aspect-auto h-[400px] w-full"
+          <CardContent className="p-6">
+            <ChartContainer
+              config={positiveChartConfig}
+              className="aspect-auto h-[400px] w-full"
+            >
+              <BarChart
+                accessibilityLayer
+                data={positiveData}
+                layout="vertical"
+                margin={{
+                  right: 20,
+                  left: -30,
+                  top: 0,
+                  bottom: 0,
+                }}
               >
-                <BarChart
-                  accessibilityLayer
-                  data={positiveData}
+                <CartesianGrid horizontal={false} />
+                <YAxis
+                  dataKey="action"
+                  type="category"
+                  tickLine={false}
+                  tickMargin={10}
+                  axisLine={false}
+                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
+                  width={130}
+                />
+                <XAxis dataKey="count" type="number" hide />
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent indicator="line" />}
+                />
+                <Bar
+                  dataKey="count"
                   layout="vertical"
-                  margin={{
-                    right: 20,
-                    left: -30,
-                    top: 0,
-                    bottom: 0,
-                  }}
+                  fill="var(--color-count)"
+                  radius={4}
                 >
-                  <CartesianGrid horizontal={false} />
-                  <YAxis
-                    dataKey="action"
-                    type="category"
-                    tickLine={false}
-                    tickMargin={10}
-                    axisLine={false}
-                    tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
-                    width={130}
-                  />
-                  <XAxis dataKey="count" type="number" hide />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent indicator="line" />}
-                  />
-                  <Bar
+                  <LabelList
                     dataKey="count"
-                    layout="vertical"
-                    fill="var(--color-count)"
-                    radius={4}
-                  >
-                    <LabelList
-                      dataKey="count"
-                      position="right"
-                      offset={8}
-                      className="fill-foreground"
-                      fontSize={12}
-                    />
-                  </Bar>
-                </BarChart>
-              </ChartContainer>
-            </div>
+                    position="right"
+                    offset={8}
+                    className="fill-foreground"
+                    fontSize={12}
+                  />
+                </Bar>
+              </BarChart>
+            </ChartContainer>
           </CardContent>
           
           <CardFooter className="flex-col items-start gap-2 text-sm border-t">
@@ -274,7 +272,7 @@ const ActionsBreakdown = memo(function ActionsBreakdown({ selectedExperienceId }
           </CardFooter>
         </Card>
 
-        {/* Negative Actions Chart - Updated to match positive card styling */}
+        {/* Negative Actions Chart */}
         <Card className="@container/chart shadow-xs">
           <CardHeader className="flex flex-col justify-center border-b">
             <CardTitle className="font-clash text-lg font-medium">Negative Actions</CardTitle>
@@ -283,55 +281,53 @@ const ActionsBreakdown = memo(function ActionsBreakdown({ selectedExperienceId }
             </CardDescription>
           </CardHeader>
           
-          <CardContent className="p-0">
-            <div className="px-4 py-6 md:px-6">
-              <ChartContainer
-                config={negativeChartConfig}
-                className="aspect-auto h-[400px] w-full"
+          <CardContent className="p-6">
+            <ChartContainer
+              config={negativeChartConfig}
+              className="aspect-auto h-[400px] w-full"
+            >
+              <BarChart
+                accessibilityLayer
+                data={negativeData}
+                layout="vertical"
+                margin={{
+                  right: 20,
+                  left: -30,
+                  top: 0,
+                  bottom: 0,
+                }}
               >
-                <BarChart
-                  accessibilityLayer
-                  data={negativeData}
+                <CartesianGrid horizontal={false} />
+                <YAxis
+                  dataKey="action"
+                  type="category"
+                  tickLine={false}
+                  tickMargin={10}
+                  axisLine={false}
+                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
+                  width={130}
+                />
+                <XAxis dataKey="count" type="number" hide />
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent indicator="line" />}
+                />
+                <Bar
+                  dataKey="count"
                   layout="vertical"
-                  margin={{
-                    right: 20,
-                    left: -30,
-                    top: 0,
-                    bottom: 0,
-                  }}
+                  fill="var(--color-count)"
+                  radius={4}
                 >
-                  <CartesianGrid horizontal={false} />
-                  <YAxis
-                    dataKey="action"
-                    type="category"
-                    tickLine={false}
-                    tickMargin={10}
-                    axisLine={false}
-                    tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
-                    width={130}
-                  />
-                  <XAxis dataKey="count" type="number" hide />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent indicator="line" />}
-                  />
-                  <Bar
+                  <LabelList
                     dataKey="count"
-                    layout="vertical"
-                    fill="var(--color-count)"
-                    radius={4}
-                  >
-                    <LabelList
-                      dataKey="count"
-                      position="right"
-                      offset={8}
-                      className="fill-foreground"
-                      fontSize={12}
-                    />
-                  </Bar>
-                </BarChart>
-              </ChartContainer>
-            </div>
+                    position="right"
+                    offset={8}
+                    className="fill-foreground"
+                    fontSize={12}
+                  />
+                </Bar>
+              </BarChart>
+            </ChartContainer>
           </CardContent>
           
           <CardFooter className="flex-col items-start gap-2 text-sm border-t">

@@ -3,11 +3,10 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { AlertTriangle, VolumeX, UserX, Ban, X, MessageSquare, Flag, ShieldAlert } from "lucide-react"
 import { ChatMessage, UserStatus } from "../_data"
-import { getActionBadgeVariant, getPriorityBadgeVariant, ActionType } from "@/lib/colors-mod"
+import { getActionBadgeVariant, ActionType } from "@/lib/colors-mod"
 
 interface PlayerInfoProps {
   selectedPlayer: ChatMessage
