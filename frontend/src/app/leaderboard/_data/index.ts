@@ -7,6 +7,8 @@ export interface LeaderboardPlayer {
   trend: "up" | "down" | "stable"
   recentChange: number
   rank: number
+  experienceId: number
+  experienceName: string
 }
 
 export type TimePeriod = "today" | "week" | "month" | "alltime"
@@ -14,66 +16,66 @@ export type TimePeriod = "today" | "week" | "month" | "alltime"
 // Mock leaderboard data for different time periods (Roblox-style usernames)
 export const mockLeaderboardData: Record<TimePeriod, LeaderboardPlayer[]> = {
   today: [
-    { id: 1, username: "CoolBuilderPro23", score: 234, positiveActions: 47, trend: "up", recentChange: 15, rank: 1 },
-    { id: 2, username: "MegaCreator999", score: 198, positiveActions: 42, trend: "up", recentChange: 8, rank: 2 },
-    { id: 3, username: "SuperGamer_XD", score: 167, positiveActions: 38, trend: "down", recentChange: -3, rank: 3 },
-    { id: 4, username: "EpicPlayer2024", score: 145, positiveActions: 31, trend: "up", recentChange: 12, rank: 4 },
-    { id: 5, username: "RobloxMaster456", score: 132, positiveActions: 28, trend: "up", recentChange: 6, rank: 5 },
-    { id: 6, username: "GameDevHero", score: 118, positiveActions: 25, trend: "stable", recentChange: 0, rank: 6 },
-    { id: 7, username: "BuilderKing2023", score: 105, positiveActions: 22, trend: "up", recentChange: 4, rank: 7 },
-    { id: 8, username: "AwesomePlayer88", score: 92, positiveActions: 19, trend: "down", recentChange: -2, rank: 8 },
+    { id: 1, username: "FriendlyBuilder2011", score: 48, positiveActions: 12, trend: "up", recentChange: 6, rank: 1, experienceId: 1, experienceName: "Bloom" },
+    { id: 2, username: "MasterBuilder999", score: 42, positiveActions: 11, trend: "up", recentChange: 4, rank: 2, experienceId: 2, experienceName: "Creative Studios" },
+    { id: 3, username: "LearningExplorer", score: 38, positiveActions: 9, trend: "up", recentChange: 3, rank: 3, experienceId: 1, experienceName: "Bloom" },
+    { id: 4, username: "KindHelper2013", score: 34, positiveActions: 8, trend: "up", recentChange: 5, rank: 4, experienceId: 1, experienceName: "Bloom" },
+    { id: 5, username: "YoungArtist123", score: 30, positiveActions: 7, trend: "stable", recentChange: 0, rank: 5, experienceId: 1, experienceName: "Bloom" },
+    { id: 6, username: "CreativeKid2013", score: 28, positiveActions: 6, trend: "up", recentChange: 2, rank: 6, experienceId: 2, experienceName: "Creative Studios" },
+    { id: 7, username: "QuestMaster2014", score: 24, positiveActions: 5, trend: "down", recentChange: -1, rank: 7, experienceId: 3, experienceName: "Adventure Academy" },
+    { id: 8, username: "MathWizardKid", score: 22, positiveActions: 4, trend: "up", recentChange: 1, rank: 8, experienceId: 1, experienceName: "Bloom" },
   ],
   week: [
-    { id: 1, username: "MegaCreator999", score: 1243, positiveActions: 287, trend: "up", recentChange: 45, rank: 1 },
-    { id: 2, username: "CoolBuilderPro23", score: 1156, positiveActions: 251, trend: "up", recentChange: 38, rank: 2 },
-    { id: 3, username: "EpicPlayer2024", score: 987, positiveActions: 198, trend: "up", recentChange: 67, rank: 3 },
-    { id: 4, username: "SuperGamer_XD", score: 876, positiveActions: 167, trend: "down", recentChange: -12, rank: 4 },
-    { id: 5, username: "BuilderKing2023", score: 743, positiveActions: 145, trend: "up", recentChange: 29, rank: 5 },
-    { id: 6, username: "RobloxMaster456", score: 689, positiveActions: 132, trend: "up", recentChange: 23, rank: 6 },
-    { id: 7, username: "GameDevHero", score: 634, positiveActions: 118, trend: "stable", recentChange: 2, rank: 7 },
-    { id: 8, username: "AwesomePlayer88", score: 567, positiveActions: 105, trend: "down", recentChange: -8, rank: 8 },
+    { id: 1, username: "FriendlyBuilder2011", score: 286, positiveActions: 72, trend: "up", recentChange: 28, rank: 1, experienceId: 1, experienceName: "Bloom" },
+    { id: 2, username: "MasterBuilder999", score: 248, positiveActions: 63, trend: "up", recentChange: 22, rank: 2, experienceId: 2, experienceName: "Creative Studios" },
+    { id: 3, username: "LearningExplorer", score: 212, positiveActions: 54, trend: "up", recentChange: 18, rank: 3, experienceId: 1, experienceName: "Bloom" },
+    { id: 4, username: "KindHelper2013", score: 194, positiveActions: 48, trend: "up", recentChange: 15, rank: 4, experienceId: 1, experienceName: "Bloom" },
+    { id: 5, username: "CreativeKid2013", score: 176, positiveActions: 42, trend: "up", recentChange: 12, rank: 5, experienceId: 2, experienceName: "Creative Studios" },
+    { id: 6, username: "YoungArtist123", score: 158, positiveActions: 38, trend: "stable", recentChange: 2, rank: 6, experienceId: 1, experienceName: "Bloom" },
+    { id: 7, username: "QuestMaster2014", score: 142, positiveActions: 34, trend: "down", recentChange: -6, rank: 7, experienceId: 3, experienceName: "Adventure Academy" },
+    { id: 8, username: "MathWizardKid", score: 128, positiveActions: 30, trend: "up", recentChange: 8, rank: 8, experienceId: 1, experienceName: "Bloom" },
   ],
   month: [
-    { id: 1, username: "CoolBuilderPro23", score: 4567, positiveActions: 1234, trend: "up", recentChange: 156, rank: 1 },
-    { id: 2, username: "MegaCreator999", score: 4123, positiveActions: 1087, trend: "up", recentChange: 143, rank: 2 },
-    { id: 3, username: "EpicPlayer2024", score: 3456, positiveActions: 876, trend: "up", recentChange: 234, rank: 3 },
-    { id: 4, username: "BuilderKing2023", score: 2987, positiveActions: 743, trend: "up", recentChange: 187, rank: 4 },
-    { id: 5, username: "SuperGamer_XD", score: 2765, positiveActions: 689, trend: "down", recentChange: -45, rank: 5 },
-    { id: 6, username: "RobloxMaster456", score: 2543, positiveActions: 634, trend: "up", recentChange: 98, rank: 6 },
-    { id: 7, username: "GameDevHero", score: 2234, positiveActions: 567, trend: "stable", recentChange: 12, rank: 7 },
-    { id: 8, username: "AwesomePlayer88", score: 1987, positiveActions: 498, trend: "down", recentChange: -23, rank: 8 },
+    { id: 1, username: "FriendlyBuilder2011", score: 1124, positiveActions: 287, trend: "up", recentChange: 98, rank: 1, experienceId: 1, experienceName: "Bloom" },
+    { id: 2, username: "MasterBuilder999", score: 976, positiveActions: 243, trend: "up", recentChange: 76, rank: 2, experienceId: 2, experienceName: "Creative Studios" },
+    { id: 3, username: "LearningExplorer", score: 834, positiveActions: 208, trend: "up", recentChange: 67, rank: 3, experienceId: 1, experienceName: "Bloom" },
+    { id: 4, username: "KindHelper2013", score: 748, positiveActions: 186, trend: "up", recentChange: 54, rank: 4, experienceId: 1, experienceName: "Bloom" },
+    { id: 5, username: "CreativeKid2013", score: 692, positiveActions: 172, trend: "up", recentChange: 43, rank: 5, experienceId: 2, experienceName: "Creative Studios" },
+    { id: 6, username: "YoungArtist123", score: 634, positiveActions: 158, trend: "stable", recentChange: 8, rank: 6, experienceId: 1, experienceName: "Bloom" },
+    { id: 7, username: "QuestMaster2014", score: 586, positiveActions: 145, trend: "down", recentChange: -18, rank: 7, experienceId: 3, experienceName: "Adventure Academy" },
+    { id: 8, username: "MathWizardKid", score: 524, positiveActions: 132, trend: "up", recentChange: 32, rank: 8, experienceId: 1, experienceName: "Bloom" },
   ],
   alltime: [
-    { id: 1, username: "CoolBuilderPro23", score: 15673, positiveActions: 4234, trend: "up", recentChange: 234, rank: 1 },
-    { id: 2, username: "MegaCreator999", score: 14298, positiveActions: 3876, trend: "up", recentChange: 189, rank: 2 },
-    { id: 3, username: "SuperGamer_XD", score: 12456, positiveActions: 3234, trend: "up", recentChange: 167, rank: 3 },
-    { id: 4, username: "EpicPlayer2024", score: 11234, positiveActions: 2987, trend: "up", recentChange: 298, rank: 4 },
-    { id: 5, username: "BuilderKing2023", score: 9876, positiveActions: 2543, trend: "up", recentChange: 234, rank: 5 },
-    { id: 6, username: "RobloxMaster456", score: 8765, positiveActions: 2234, trend: "up", recentChange: 145, rank: 6 },
-    { id: 7, username: "GameDevHero", score: 7654, positiveActions: 1987, trend: "stable", recentChange: 23, rank: 7 },
-    { id: 8, username: "AwesomePlayer88", score: 6543, positiveActions: 1743, trend: "up", recentChange: 67, rank: 8 },
+    { id: 1, username: "FriendlyBuilder2011", score: 3248, positiveActions: 824, trend: "up", recentChange: 156, rank: 1, experienceId: 1, experienceName: "Bloom" },
+    { id: 2, username: "MasterBuilder999", score: 2896, positiveActions: 734, trend: "up", recentChange: 134, rank: 2, experienceId: 2, experienceName: "Creative Studios" },
+    { id: 3, username: "LearningExplorer", score: 2564, positiveActions: 642, trend: "up", recentChange: 98, rank: 3, experienceId: 1, experienceName: "Bloom" },
+    { id: 4, username: "KindHelper2013", score: 2234, positiveActions: 558, trend: "up", recentChange: 87, rank: 4, experienceId: 1, experienceName: "Bloom" },
+    { id: 5, username: "CreativeKid2013", score: 1986, positiveActions: 496, trend: "up", recentChange: 76, rank: 5, experienceId: 2, experienceName: "Creative Studios" },
+    { id: 6, username: "YoungArtist123", score: 1782, positiveActions: 445, trend: "stable", recentChange: 12, rank: 6, experienceId: 1, experienceName: "Bloom" },
+    { id: 7, username: "QuestMaster2014", score: 1634, positiveActions: 408, trend: "up", recentChange: 45, rank: 7, experienceId: 3, experienceName: "Adventure Academy" },
+    { id: 8, username: "MathWizardKid", score: 1456, positiveActions: 364, trend: "up", recentChange: 67, rank: 8, experienceId: 1, experienceName: "Bloom" },
   ]
 }
 
 export const mockLeaderboardStats = {
   today: {
-    activeContributors: 89,
-    positiveActions: 324,
-    positivityRate: 94.2
+    activeContributors: 24,
+    positiveActions: 67,
+    positivityRate: 95.8
   },
   week: {
-    activeContributors: 247,
-    positiveActions: 1847,
-    positivityRate: 91.8
+    activeContributors: 52,
+    positiveActions: 381,
+    positivityRate: 94.2
   },
   month: {
-    activeContributors: 456,
-    positiveActions: 7234,
-    positivityRate: 89.3
+    activeContributors: 89,
+    positiveActions: 1681,
+    positivityRate: 92.6
   },
   alltime: {
-    activeContributors: 1234,
-    positiveActions: 24567,
-    positivityRate: 87.6
+    activeContributors: 187,
+    positiveActions: 4680,
+    positivityRate: 91.2
   }
 }

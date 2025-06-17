@@ -42,9 +42,9 @@ export interface CommunityActionData {
 
 // Mock analytics data
 export const mockAnalyticsMetrics: AnalyticsMetrics = {
-  totalMessages: 15847,
-  pointsAwarded: 31694, // Roughly 2x totalMessages (positive sentiment average)
-  positiveActions: 8923, // About 56% of total messages
+  totalMessages: 2847,
+  pointsAwarded: 5694, // Roughly 2x totalMessages (positive sentiment average)
+  positiveActions: 1597, // About 56% of total messages
   averageSentiment: 34.7 // Positive sentiment community
 }
 
@@ -70,49 +70,49 @@ export const mockSentimentScale: SentimentScale = {
 export const mockPositiveCommunityActions: CommunityActionData[] = [
   {
     action: CommunityAction.ENCOURAGEMENT,
-    count: 2847,
+    count: 510,
     percentage: 31.9,
     trend: "up",
     change: 12.4
   },
   {
     action: CommunityAction.HELPFUL_ADVICE,
-    count: 1923,
+    count: 343,
     percentage: 21.5,
     trend: "up",
     change: 8.7
   },
   {
     action: CommunityAction.TEAM_COORDINATION,
-    count: 1654,
+    count: 295,
     percentage: 18.5,
     trend: "up",
     change: 15.2
   },
   {
     action: CommunityAction.WELCOME_NEWCOMER,
-    count: 1289,
+    count: 230,
     percentage: 14.4,
     trend: "up",
     change: 22.1
   },
   {
     action: CommunityAction.APPRECIATION,
-    count: 867,
+    count: 155,
     percentage: 9.7,
     trend: "up",
     change: 6.3
   },
   {
     action: CommunityAction.KNOWLEDGE_SHARING,
-    count: 343,
+    count: 61,
     percentage: 3.8,
     trend: "down",
     change: -2.1
   },
   {
     action: CommunityAction.CELEBRATION,
-    count: 267,
+    count: 48,
     percentage: 3.0,
     trend: "up",
     change: 18.5
@@ -123,63 +123,63 @@ export const mockPositiveCommunityActions: CommunityActionData[] = [
 export const mockNegativeCommunityActions: CommunityActionData[] = [
   {
     action: CommunityAction.SPAMMING,
-    count: 234,
+    count: 42,
     percentage: 35.8,
     trend: "down",
     change: -15.2
   },
   {
     action: CommunityAction.ARGUMENT_STARTING,
-    count: 156,
+    count: 28,
     percentage: 23.9,
     trend: "up",
     change: 8.4
   },
   {
     action: CommunityAction.BRAGGING,
-    count: 89,
+    count: 16,
     percentage: 13.6,
     trend: "down",
     change: -6.7
   },
   {
     action: CommunityAction.TROLLING,
-    count: 67,
+    count: 12,
     percentage: 10.3,
     trend: "down",
     change: -22.1
   },
   {
     action: CommunityAction.EXCLUSION,
-    count: 45,
+    count: 8,
     percentage: 6.9,
     trend: "down",
     change: -12.8
   },
   {
     action: CommunityAction.SHOW_OFF,
-    count: 34,
+    count: 6,
     percentage: 5.2,
     trend: "up",
     change: 4.3
   },
   {
     action: CommunityAction.PUT_DOWN,
-    count: 18,
+    count: 3,
     percentage: 2.8,
     trend: "down",
     change: -18.9
   },
   {
     action: CommunityAction.GRIEFING,
-    count: 10,
+    count: 2,
     percentage: 1.5,
     trend: "down",
     change: -33.3
   },
   {
     action: CommunityAction.BULLYING,
-    count: 7,
+    count: 1,
     percentage: 1.1,
     trend: "down",
     change: -46.2
@@ -223,30 +223,30 @@ export interface WeeklySentimentData {
 }
 
 export const mockHourlySentimentData: HourlySentimentData[] = [
-  { hour: "00", averageSentiment: 28.3, messageCount: 186, positiveCount: 98, neutralCount: 67, negativeCount: 21 },
-  { hour: "01", averageSentiment: 31.2, messageCount: 165, positiveCount: 89, neutralCount: 58, negativeCount: 18 },
-  { hour: "02", averageSentiment: 25.7, messageCount: 142, positiveCount: 73, neutralCount: 54, negativeCount: 15 },
-  { hour: "03", averageSentiment: 29.1, messageCount: 158, positiveCount: 84, neutralCount: 56, negativeCount: 18 },
-  { hour: "04", averageSentiment: 33.4, messageCount: 201, positiveCount: 112, neutralCount: 67, negativeCount: 22 },
-  { hour: "05", averageSentiment: 35.8, messageCount: 234, positiveCount: 132, neutralCount: 78, negativeCount: 24 },
-  { hour: "06", averageSentiment: 38.2, messageCount: 287, positiveCount: 167, neutralCount: 89, negativeCount: 31 },
-  { hour: "07", averageSentiment: 41.7, messageCount: 312, positiveCount: 189, neutralCount: 95, negativeCount: 28 },
-  { hour: "08", averageSentiment: 45.3, messageCount: 398, positiveCount: 245, neutralCount: 118, negativeCount: 35 },
-  { hour: "09", averageSentiment: 42.8, messageCount: 445, positiveCount: 267, neutralCount: 134, negativeCount: 44 },
-  { hour: "10", averageSentiment: 39.6, messageCount: 482, positiveCount: 278, neutralCount: 152, negativeCount: 52 },
-  { hour: "11", averageSentiment: 37.4, messageCount: 521, positiveCount: 289, neutralCount: 172, negativeCount: 60 },
-  { hour: "12", averageSentiment: 35.9, messageCount: 567, positiveCount: 312, neutralCount: 186, negativeCount: 69 },
-  { hour: "13", averageSentiment: 33.2, messageCount: 598, positiveCount: 324, neutralCount: 201, negativeCount: 73 },
-  { hour: "14", averageSentiment: 31.8, messageCount: 634, positiveCount: 342, neutralCount: 213, negativeCount: 79 },
-  { hour: "15", averageSentiment: 29.7, messageCount: 678, positiveCount: 356, neutralCount: 234, negativeCount: 88 },
-  { hour: "16", averageSentiment: 32.1, messageCount: 712, positiveCount: 378, neutralCount: 245, negativeCount: 89 },
-  { hour: "17", averageSentiment: 34.6, messageCount: 743, positiveCount: 401, neutralCount: 258, negativeCount: 84 },
-  { hour: "18", averageSentiment: 36.8, messageCount: 698, positiveCount: 389, neutralCount: 234, negativeCount: 75 },
-  { hour: "19", averageSentiment: 38.9, messageCount: 654, positiveCount: 367, neutralCount: 211, negativeCount: 76 },
-  { hour: "20", averageSentiment: 35.4, messageCount: 587, positiveCount: 323, neutralCount: 192, negativeCount: 72 },
-  { hour: "21", averageSentiment: 33.7, messageCount: 523, positiveCount: 287, neutralCount: 171, negativeCount: 65 },
-  { hour: "22", averageSentiment: 31.2, messageCount: 456, positiveCount: 248, neutralCount: 148, negativeCount: 60 },
-  { hour: "23", averageSentiment: 29.8, messageCount: 312, positiveCount: 169, neutralCount: 105, negativeCount: 38 }
+  { hour: "00", averageSentiment: 28.3, messageCount: 28, positiveCount: 15, neutralCount: 10, negativeCount: 3 },
+  { hour: "01", averageSentiment: 31.2, messageCount: 24, positiveCount: 13, neutralCount: 9, negativeCount: 2 },
+  { hour: "02", averageSentiment: 25.7, messageCount: 19, positiveCount: 10, neutralCount: 7, negativeCount: 2 },
+  { hour: "03", averageSentiment: 29.1, messageCount: 22, positiveCount: 12, neutralCount: 8, negativeCount: 2 },
+  { hour: "04", averageSentiment: 33.4, messageCount: 31, positiveCount: 17, neutralCount: 11, negativeCount: 3 },
+  { hour: "05", averageSentiment: 35.8, messageCount: 38, positiveCount: 21, neutralCount: 13, negativeCount: 4 },
+  { hour: "06", averageSentiment: 38.2, messageCount: 45, positiveCount: 26, neutralCount: 15, negativeCount: 4 },
+  { hour: "07", averageSentiment: 41.7, messageCount: 52, positiveCount: 31, neutralCount: 16, negativeCount: 5 },
+  { hour: "08", averageSentiment: 45.3, messageCount: 67, positiveCount: 41, neutralCount: 20, negativeCount: 6 },
+  { hour: "09", averageSentiment: 42.8, messageCount: 74, positiveCount: 44, neutralCount: 23, negativeCount: 7 },
+  { hour: "10", averageSentiment: 39.6, messageCount: 83, positiveCount: 47, neutralCount: 27, negativeCount: 9 },
+  { hour: "11", averageSentiment: 37.4, messageCount: 89, positiveCount: 49, neutralCount: 30, negativeCount: 10 },
+  { hour: "12", averageSentiment: 35.9, messageCount: 95, positiveCount: 52, neutralCount: 32, negativeCount: 11 },
+  { hour: "13", averageSentiment: 33.2, messageCount: 102, positiveCount: 55, neutralCount: 35, negativeCount: 12 },
+  { hour: "14", averageSentiment: 31.8, messageCount: 108, positiveCount: 58, neutralCount: 37, negativeCount: 13 },
+  { hour: "15", averageSentiment: 29.7, messageCount: 115, positiveCount: 60, neutralCount: 40, negativeCount: 15 },
+  { hour: "16", averageSentiment: 32.1, messageCount: 121, positiveCount: 64, neutralCount: 42, negativeCount: 15 },
+  { hour: "17", averageSentiment: 34.6, messageCount: 127, positiveCount: 68, neutralCount: 44, negativeCount: 15 },
+  { hour: "18", averageSentiment: 36.8, messageCount: 118, positiveCount: 66, neutralCount: 40, negativeCount: 12 },
+  { hour: "19", averageSentiment: 38.9, messageCount: 111, positiveCount: 62, neutralCount: 36, negativeCount: 13 },
+  { hour: "20", averageSentiment: 35.4, messageCount: 98, positiveCount: 54, neutralCount: 33, negativeCount: 11 },
+  { hour: "21", averageSentiment: 33.7, messageCount: 87, positiveCount: 48, neutralCount: 29, negativeCount: 10 },
+  { hour: "22", averageSentiment: 31.2, messageCount: 76, positiveCount: 42, neutralCount: 26, negativeCount: 8 },
+  { hour: "23", averageSentiment: 29.8, messageCount: 52, positiveCount: 28, neutralCount: 18, negativeCount: 6 }
 ]
 
 // Daily sentiment data for 7-day trends
@@ -419,12 +419,12 @@ export interface WeeklyActionData {
 
 // Mock community action metrics
 export const mockCommunityActionMetrics: CommunityActionMetrics = {
-  totalActions: 9576, // Sum of positive (8923) + negative (653)
-  positiveActions: 8923,
-  negativeActions: 653,
-  activeContributors: 1247,
-  actionsPerUser: 7.7,
-  positivePercentage: 93.2
+  totalActions: 1715, // Sum of positive (1597) + negative (118)
+  positiveActions: 1597,
+  negativeActions: 118,
+  activeContributors: 187,
+  actionsPerUser: 9.2,
+  positivePercentage: 93.1
 }
 
 export const mockCommunityActionTrends: CommunityActionTrends = {

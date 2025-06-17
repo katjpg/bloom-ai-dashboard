@@ -40,8 +40,8 @@ export interface RobloxExperience {
 
 // Mock data
 export const mockMetrics: MockMetrics = {
-  totalMessages: 12847,
-  activeUsers: 1205,
+  totalMessages: 2847,
+  activeUsers: 187,
   safetyScore: 94.2,
   avgResponseTime: 125
 }
@@ -54,91 +54,61 @@ export const mockTrends: MockTrends = {
 }
 
 export const mockMessageVolumeData: MessageVolumeData[] = [
-  { hour: "00", approved: 186, flagged: 12, violations: 3 },
-  { hour: "01", approved: 165, flagged: 8, violations: 2 },
-  { hour: "02", approved: 142, flagged: 6, violations: 1 },
-  { hour: "03", approved: 158, flagged: 9, violations: 2 },
-  { hour: "04", approved: 201, flagged: 15, violations: 4 },
-  { hour: "05", approved: 234, flagged: 18, violations: 5 },
-  { hour: "06", approved: 287, flagged: 22, violations: 6 },
-  { hour: "07", approved: 312, flagged: 25, violations: 7 },
-  { hour: "08", approved: 398, flagged: 31, violations: 8 },
-  { hour: "09", approved: 445, flagged: 35, violations: 9 },
-  { hour: "10", approved: 482, flagged: 38, violations: 10 },
-  { hour: "11", approved: 521, flagged: 41, violations: 11 },
-  { hour: "12", approved: 567, flagged: 45, violations: 12 },
-  { hour: "13", approved: 598, flagged: 47, violations: 13 },
-  { hour: "14", approved: 634, flagged: 50, violations: 14 },
-  { hour: "15", approved: 678, flagged: 53, violations: 15 },
-  { hour: "16", approved: 712, flagged: 56, violations: 16 },
-  { hour: "17", approved: 743, flagged: 58, violations: 17 },
-  { hour: "18", approved: 698, flagged: 55, violations: 15 },
-  { hour: "19", approved: 654, flagged: 51, violations: 14 },
-  { hour: "20", approved: 587, flagged: 46, violations: 12 },
-  { hour: "21", approved: 523, flagged: 41, violations: 11 },
-  { hour: "22", approved: 456, flagged: 36, violations: 9 },
-  { hour: "23", approved: 312, flagged: 24, violations: 6 }
+  { hour: "00", approved: 28, flagged: 2, violations: 1 },
+  { hour: "01", approved: 24, flagged: 1, violations: 0 },
+  { hour: "02", approved: 19, flagged: 1, violations: 0 },
+  { hour: "03", approved: 22, flagged: 1, violations: 0 },
+  { hour: "04", approved: 31, flagged: 2, violations: 1 },
+  { hour: "05", approved: 38, flagged: 3, violations: 1 },
+  { hour: "06", approved: 45, flagged: 3, violations: 1 },
+  { hour: "07", approved: 52, flagged: 4, violations: 1 },
+  { hour: "08", approved: 67, flagged: 5, violations: 2 },
+  { hour: "09", approved: 74, flagged: 6, violations: 2 },
+  { hour: "10", approved: 83, flagged: 6, violations: 2 },
+  { hour: "11", approved: 89, flagged: 7, violations: 2 },
+  { hour: "12", approved: 95, flagged: 7, violations: 3 },
+  { hour: "13", approved: 102, flagged: 8, violations: 3 },
+  { hour: "14", approved: 108, flagged: 8, violations: 3 },
+  { hour: "15", approved: 115, flagged: 9, violations: 3 },
+  { hour: "16", approved: 121, flagged: 9, violations: 4 },
+  { hour: "17", approved: 127, flagged: 10, violations: 4 },
+  { hour: "18", approved: 118, flagged: 9, violations: 3 },
+  { hour: "19", approved: 111, flagged: 8, violations: 3 },
+  { hour: "20", approved: 98, flagged: 7, violations: 2 },
+  { hour: "21", approved: 87, flagged: 6, violations: 2 },
+  { hour: "22", approved: 76, flagged: 5, violations: 2 },
+  { hour: "23", approved: 52, flagged: 4, violations: 1 }
 ]
 
 export const mockExperiences: RobloxExperience[] = [
   {
     id: 1,
-    title: "Adventure Quest",
-    description: "Epic fantasy adventure with quests, dungeons, and magical creatures. Join thousands of players in this immersive RPG experience.",
+    title: "Bloom",
+    description: "A safe community space for young gamers to learn, create, and make friends. Features educational mini-games and positive social interactions.",
     isActive: true,
-    safetyScore: 94.8,
-    lastUpdated: "2 hours ago",
-    playerCount: 12847,
+    safetyScore: 96.8,
+    lastUpdated: "15 minutes ago",
+    playerCount: 89,
     thumbnail: "/api/placeholder/400/225"
   },
   {
     id: 2,
-    title: "City Builder Pro",
-    description: "Build and manage your dream city with advanced construction tools and economic simulation features.",
-    isActive: false,
-    safetyScore: 91.2,
-    lastUpdated: "1 day ago",
-    playerCount: 8934,
+    title: "Creative Studios",
+    description: "Build amazing creations with friends! Collaborative building tools and creative challenges await.",
+    isActive: true,
+    safetyScore: 94.2,
+    lastUpdated: "32 minutes ago",
+    playerCount: 67,
     thumbnail: "/api/placeholder/400/225"
   },
   {
     id: 3,
-    title: "Racing Championship",
-    description: "High-speed racing with customizable cars, multiple tracks, and competitive tournaments.",
-    isActive: true,
-    safetyScore: 96.1,
-    lastUpdated: "30 minutes ago",
-    playerCount: 15623,
-    thumbnail: "/api/placeholder/400/225"
-  },
-  {
-    id: 4,
-    title: "Space Explorer",
-    description: "Explore the cosmos, discover new planets, and build your own space station in this sci-fi adventure.",
-    isActive: true,
-    safetyScore: 93.7,
-    lastUpdated: "1 hour ago",
-    playerCount: 7892,
-    thumbnail: "/api/placeholder/400/225"
-  },
-  {
-    id: 5,
-    title: "Pet Paradise",
-    description: "Adopt, care for, and train virtual pets in a colorful world full of fun activities and mini-games.",
+    title: "Adventure Academy",
+    description: "Embark on educational quests and solve puzzles together. Learning meets adventure in this engaging experience.",
     isActive: false,
-    safetyScore: 98.3,
-    lastUpdated: "3 days ago",
-    playerCount: 5641,
-    thumbnail: "/api/placeholder/400/225"
-  },
-  {
-    id: 6,
-    title: "Survival Island",
-    description: "Test your survival skills on a mysterious island with crafting, building, and exploration elements.",
-    isActive: true,
-    safetyScore: 89.6,
-    lastUpdated: "45 minutes ago",
-    playerCount: 11256,
+    safetyScore: 92.1,
+    lastUpdated: "2 hours ago",
+    playerCount: 31,
     thumbnail: "/api/placeholder/400/225"
   }
 ]

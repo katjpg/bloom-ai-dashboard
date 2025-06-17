@@ -65,12 +65,12 @@ export interface ActiveUser {
 
 // Mock chat data with realistic gaming scenarios by experience
 export const mockChatMessages: ChatMessage[] = [
-  // Adventure Quest (Experience ID: 1) - Fantasy RPG messages
+  // Bloom (Experience ID: 1) - Educational and positive community messages
   {
     id: "msg_001",
-    player_id: 12847,
-    player_name: "GamerKing2024",
-    message: "Hey everyone! Ready for the next raid? Let's team up!",
+    player_id: 89234,
+    player_name: "FriendlyBuilder2011",
+    message: "Hi everyone! Just finished the math puzzle. Anyone want to work on the next one together?",
     avatar_url: "/api/placeholder/40/40",
     timestamp: "2024-06-15T20:17:00Z",
     role: UserRole.PLAYER,
@@ -79,59 +79,57 @@ export const mockChatMessages: ChatMessage[] = [
   },
   {
     id: "msg_002", 
-    player_id: 8934,
-    player_name: "NoobSlayer99",
-    message: "You idiots suck at this dungeon, just quit and leave",
+    player_id: 67891,
+    player_name: "LearningExplorer",
+    message: "Can someone help me with the science experiment? I'm stuck on step 3",
     avatar_url: "/api/placeholder/40/40",
     timestamp: "2024-06-15T20:18:30Z",
-    role: UserRole.PLAYER,
-    status: UserStatus.ONLINE,
-    experience_id: 1,
-    priority_level: PriorityLevel.HIGH,
-    content_types: [ContentType.HR, ContentType.H]
-  },
-  {
-    id: "msg_003",
-    player_id: 15623,
-    player_name: "MagicWizard",
-    message: "Found a legendary sword! Anyone want to trade for rare gems?",
-    avatar_url: "/api/placeholder/40/40", 
-    timestamp: "2024-06-15T20:19:15Z",
     role: UserRole.PLAYER,
     status: UserStatus.ONLINE,
     experience_id: 1
   },
   {
-    id: "msg_004",
-    player_id: 7892,
-    player_name: "QuestHelper",
-    message: "Welcome to Adventure Quest! Check the quest board for daily missions.",
-    avatar_url: "/api/placeholder/40/40",
-    timestamp: "2024-06-15T20:20:45Z",
+    id: "msg_003",
+    player_id: 45678,
+    player_name: "BloomModerator",
+    message: "Welcome to Bloom! Remember to be kind and help each other learn. Have fun!",
+    avatar_url: "/api/placeholder/40/40", 
+    timestamp: "2024-06-15T20:19:15Z",
     role: UserRole.MODERATOR,
     status: UserStatus.ONLINE,
     experience_id: 1
   },
   {
+    id: "msg_004",
+    player_id: 23456,
+    player_name: "YoungArtist123",
+    message: "Look at my rainbow castle! Took me 30 minutes to build with the blocks",
+    avatar_url: "/api/placeholder/40/40",
+    timestamp: "2024-06-15T20:20:45Z",
+    role: UserRole.PLAYER,
+    status: UserStatus.ONLINE,
+    experience_id: 1
+  },
+  {
     id: "msg_005",
-    player_id: 5641,
-    player_name: "ToxicPlayer2009",
-    message: "I'm gonna find you IRL and beat the hell out of you for stealing my loot",
+    player_id: 12345,
+    player_name: "SafeKid2012",
+    message: "My phone number is 555-123-4567 if anyone wants to be friends outside the game",
     avatar_url: "/api/placeholder/40/40",
     timestamp: "2024-06-15T20:21:12Z", 
     role: UserRole.PLAYER,
     status: UserStatus.ONLINE,
     experience_id: 1,
     priority_level: PriorityLevel.CRITICAL,
-    content_types: [ContentType.H2, ContentType.V]
+    pii_detected: [PIIType.TELEPHONENUM]
   },
 
-  // City Builder Pro (Experience ID: 2) - Construction themed messages
+  // Creative Studios (Experience ID: 2) - Building and creation messages
   {
     id: "msg_006",
-    player_id: 11256,
-    player_name: "BuilderMaster",
-    message: "Check out my new skyscraper design! Used advanced engineering.",
+    player_id: 34567,
+    player_name: "MasterBuilder999",
+    message: "Check out my spaceship design! Used all the new rainbow blocks",
     avatar_url: "/api/placeholder/40/40",
     timestamp: "2024-06-15T20:22:33Z",
     role: UserRole.PLAYER,
@@ -140,9 +138,9 @@ export const mockChatMessages: ChatMessage[] = [
   },
   {
     id: "msg_007",
-    player_id: 9876,
-    player_name: "CityPlanner",
-    message: "Need help with traffic optimization? Check my tutorial series!",
+    player_id: 56789,
+    player_name: "CreativeKid2013",
+    message: "Does anyone know how to make the spinning wheel work? Need help!",
     avatar_url: "/api/placeholder/40/40",
     timestamp: "2024-06-15T20:23:21Z",
     role: UserRole.PLAYER, 
@@ -151,9 +149,9 @@ export const mockChatMessages: ChatMessage[] = [
   },
   {
     id: "msg_008",
-    player_id: 3421,
-    player_name: "NewBuilder",
-    message: "How do I place roads? The tutorial isn't working for me.",
+    player_id: 78901,
+    player_name: "HelpfulFriend",
+    message: "@CreativeKid2013 You need to connect the gear first! I can show you",
     avatar_url: "/api/placeholder/40/40",
     timestamp: "2024-06-15T20:24:18Z",
     role: UserRole.PLAYER,
@@ -161,12 +159,12 @@ export const mockChatMessages: ChatMessage[] = [
     experience_id: 2
   },
 
-  // Racing Championship (Experience ID: 3) - Racing themed messages  
+  // Adventure Academy (Experience ID: 3) - Educational quest messages  
   {
     id: "msg_009",
-    player_id: 6547,
-    player_name: "SpeedDemon",
-    message: "Just broke the track record! New time: 1:23.45",
+    player_id: 90123,
+    player_name: "QuestMaster2014",
+    message: "Just solved the ancient pyramid puzzle! The history facts were so cool",
     avatar_url: "/api/placeholder/40/40",
     timestamp: "2024-06-15T20:25:45Z",
     role: UserRole.PLAYER,
@@ -175,9 +173,9 @@ export const mockChatMessages: ChatMessage[] = [
   },
   {
     id: "msg_010",
-    player_id: 1234,
-    player_name: "RaceChampion",
-    message: "GG everyone! That was an amazing race. See you on the next track!",
+    player_id: 11234,
+    player_name: "SmartExplorer",
+    message: "The volcano quest taught me about geology! Science is awesome",
     avatar_url: "/api/placeholder/40/40",
     timestamp: "2024-06-15T20:26:30Z",
     role: UserRole.PLAYER,
@@ -186,125 +184,16 @@ export const mockChatMessages: ChatMessage[] = [
   },
   {
     id: "msg_011",
-    player_id: 8888,
-    player_name: "DriftKing",
-    message: "Anyone know the best car setup for the mountain track?",
+    player_id: 13579,
+    player_name: "TroubleMaker2010",
+    message: "This game is so dumb and stupid. I hate learning stuff",
     avatar_url: "/api/placeholder/40/40",
     timestamp: "2024-06-15T20:27:12Z",
     role: UserRole.PLAYER,
     status: UserStatus.ONLINE,
-    experience_id: 3
-  },
-  {
-    id: "msg_012",
-    player_id: 4567,
-    player_name: "RoadRager",
-    message: "I'm gonna crash into everyone and wreck their cars! No mercy!",
-    avatar_url: "/api/placeholder/40/40", 
-    timestamp: "2024-06-15T20:28:00Z",
-    role: UserRole.PLAYER,
-    status: UserStatus.ONLINE,
     experience_id: 3,
-    priority_level: PriorityLevel.HIGH,
-    content_types: [ContentType.V, ContentType.HR]
-  },
-
-  // Space Explorer (Experience ID: 4) - Sci-fi themed messages
-  {
-    id: "msg_013",
-    player_id: 9999,
-    player_name: "SpaceAdmin",
-    message: "New planet discovered! Join the exploration mission at coordinates X-47.",
-    avatar_url: "/api/placeholder/40/40", 
-    timestamp: "2024-06-15T20:29:00Z",
-    role: UserRole.ADMIN,
-    status: UserStatus.ONLINE,
-    experience_id: 4
-  },
-  {
-    id: "msg_014",
-    player_id: 5555,
-    player_name: "AlienHunter",
-    message: "Found alien tech! Trading for rare materials.",
-    avatar_url: "/api/placeholder/40/40", 
-    timestamp: "2024-06-15T20:30:00Z",
-    role: UserRole.PLAYER,
-    status: UserStatus.ONLINE,
-    experience_id: 4
-  },
-  {
-    id: "msg_015",
-    player_id: 7777,
-    player_name: "CosmicExplorer",
-    message: "My spaceship is faster than yours! Race to Mars?",
-    avatar_url: "/api/placeholder/40/40", 
-    timestamp: "2024-06-15T20:31:00Z",
-    role: UserRole.PLAYER,
-    status: UserStatus.ONLINE,
-    experience_id: 4
-  },
-
-  // Pet Paradise (Experience ID: 5) - Pet care themed messages
-  {
-    id: "msg_016",
-    player_id: 2222,
-    player_name: "PetLover",
-    message: "Look at my new puppy! Isn't he adorable?",
-    avatar_url: "/api/placeholder/40/40", 
-    timestamp: "2024-06-15T20:32:00Z",
-    role: UserRole.PLAYER,
-    status: UserStatus.ONLINE,
-    experience_id: 5
-  },
-  {
-    id: "msg_017",
-    player_id: 3333,
-    player_name: "AnimalTrainer",
-    message: "Teaching pets new tricks! Join my training academy.",
-    avatar_url: "/api/placeholder/40/40", 
-    timestamp: "2024-06-15T20:33:00Z",
-    role: UserRole.PLAYER,
-    status: UserStatus.ONLINE,
-    experience_id: 5
-  },
-
-  // Survival Island (Experience ID: 6) - Survival themed messages
-  {
-    id: "msg_018",
-    player_id: 4444,
-    player_name: "IslandSurvivor",
-    message: "Found fresh water source near the volcano! Sharing coordinates.",
-    avatar_url: "/api/placeholder/40/40", 
-    timestamp: "2024-06-15T20:34:00Z",
-    role: UserRole.PLAYER,
-    status: UserStatus.ONLINE,
-    experience_id: 6
-  },
-  {
-    id: "msg_019",
-    player_id: 5555,
-    player_name: "ResourceHoarder",
-    message: "My credit card is 4532-1234-5678-9012 if you want to buy me premium tools",
-    avatar_url: "/api/placeholder/40/40", 
-    timestamp: "2024-06-15T20:35:00Z",
-    role: UserRole.PLAYER,
-    status: UserStatus.ONLINE,
-    experience_id: 6,
-    priority_level: PriorityLevel.CRITICAL,
-    pii_detected: [PIIType.CREDITCARDNUMBER]
-  },
-  {
-    id: "msg_020",
-    player_id: 6666,
-    player_name: "TribalChief",
-    message: "All outsiders are not welcome on this island! Get out!",
-    avatar_url: "/api/placeholder/40/40", 
-    timestamp: "2024-06-15T20:36:00Z",
-    role: UserRole.PLAYER,
-    status: UserStatus.ONLINE,
-    experience_id: 6,
-    priority_level: PriorityLevel.HIGH,
-    content_types: [ContentType.H]
+    priority_level: PriorityLevel.MODERATE,
+    content_types: [ContentType.HR]
   }
 ]
 
@@ -328,160 +217,154 @@ export const VIOLATION_FILTER_OPTIONS = [
 
 // Mock active users data by experience
 export const mockActiveUsers: ActiveUser[] = [
-  // Adventure Quest (Experience ID: 1)
+  // Bloom (Experience ID: 1) - 89 players
   {
     id: "user_001",
-    player_id: 12847,
-    player_name: "Beth Flores",
-    avatar_url: "/api/placeholder/40/40",
-    status: UserStatus.ONLINE,
-    join_time: "2 hours ago",
-    experience_id: 1
-  },
-  {
-    id: "user_002", 
-    player_id: 8934,
-    player_name: "Albert Steward",
-    avatar_url: "/api/placeholder/40/40",
-    status: UserStatus.ONLINE,
-    join_time: "1 hour ago",
-    experience_id: 1
-  },
-  {
-    id: "user_003",
-    player_id: 15623,
-    player_name: "Morris Fox",
+    player_id: 89234,
+    player_name: "FriendlyBuilder2011",
     avatar_url: "/api/placeholder/40/40",
     status: UserStatus.ONLINE,
     join_time: "45 minutes ago",
     experience_id: 1
   },
   {
-    id: "user_004",
-    player_id: 7892,
-    player_name: "Ricardo Watson",
+    id: "user_002", 
+    player_id: 67891,
+    player_name: "LearningExplorer",
     avatar_url: "/api/placeholder/40/40",
     status: UserStatus.ONLINE,
-    join_time: "30 minutes ago",
+    join_time: "32 minutes ago",
+    experience_id: 1
+  },
+  {
+    id: "user_003",
+    player_id: 45678,
+    player_name: "BloomModerator",
+    avatar_url: "/api/placeholder/40/40",
+    status: UserStatus.ONLINE,
+    join_time: "2 hours ago",
+    experience_id: 1
+  },
+  {
+    id: "user_004",
+    player_id: 23456,
+    player_name: "YoungArtist123",
+    avatar_url: "/api/placeholder/40/40",
+    status: UserStatus.ONLINE,
+    join_time: "18 minutes ago",
     experience_id: 1
   },
   {
     id: "user_005",
-    player_id: 5641,
-    player_name: "Leslie Howard",
+    player_id: 12345,
+    player_name: "SafeKid2012",
+    avatar_url: "/api/placeholder/40/40",
+    status: UserStatus.ONLINE,
+    join_time: "12 minutes ago",
+    experience_id: 1
+  },
+  {
+    id: "user_006",
+    player_id: 98765,
+    player_name: "CuriousLearner",
+    avatar_url: "/api/placeholder/40/40",
+    status: UserStatus.ONLINE,
+    join_time: "8 minutes ago",
+    experience_id: 1
+  },
+  {
+    id: "user_007",
+    player_id: 87654,
+    player_name: "KindHelper2013",
     avatar_url: "/api/placeholder/40/40",
     status: UserStatus.ONLINE,
     join_time: "25 minutes ago",
     experience_id: 1
   },
-
-  // City Builder Pro (Experience ID: 2)
   {
-    id: "user_006",
-    player_id: 11256,
-    player_name: "Jenny Robertson",
-    avatar_url: "/api/placeholder/40/40",
-    status: UserStatus.ONLINE,
-    join_time: "20 minutes ago",
-    experience_id: 2
-  },
-  {
-    id: "user_007",
-    player_id: 9876,
-    player_name: "Esther Murphy",
+    id: "user_008",
+    player_id: 76543,
+    player_name: "MathWizardKid",
     avatar_url: "/api/placeholder/40/40",
     status: UserStatus.ONLINE,
     join_time: "15 minutes ago",
-    experience_id: 2
-  },
-  {
-    id: "user_008",
-    player_id: 3421,
-    player_name: "Morris Fox",
-    avatar_url: "/api/placeholder/40/40",
-    status: UserStatus.ONLINE,
-    join_time: "10 minutes ago",
-    experience_id: 2
+    experience_id: 1
   },
 
-  // Racing Championship (Experience ID: 3)
+  // Creative Studios (Experience ID: 2) - 67 players
   {
     id: "user_009",
-    player_id: 6547,
-    player_name: "Albert Steward",
-    avatar_url: "/api/placeholder/40/40",
-    status: UserStatus.ONLINE,
-    join_time: "5 minutes ago",
-    experience_id: 3
-  },
-  {
-    id: "user_010",
-    player_id: 1234,
-    player_name: "Racing Pro",
-    avatar_url: "/api/placeholder/40/40",
-    status: UserStatus.ONLINE,
-    join_time: "12 minutes ago",
-    experience_id: 3
-  },
-
-  // Space Explorer (Experience ID: 4)
-  {
-    id: "user_011",
-    player_id: 9999,
-    player_name: "Space Captain",
-    avatar_url: "/api/placeholder/40/40",
-    status: UserStatus.ONLINE,
-    join_time: "8 minutes ago",
-    experience_id: 4
-  },
-  {
-    id: "user_012",
-    player_id: 5555,
-    player_name: "Cosmic Pilot",
-    avatar_url: "/api/placeholder/40/40",
-    status: UserStatus.ONLINE,
-    join_time: "6 minutes ago",
-    experience_id: 4
-  },
-
-  // Pet Paradise (Experience ID: 5)
-  {
-    id: "user_013",
-    player_id: 2222,
-    player_name: "Pet Trainer",
-    avatar_url: "/api/placeholder/40/40",
-    status: UserStatus.ONLINE,
-    join_time: "18 minutes ago",
-    experience_id: 5
-  },
-  {
-    id: "user_014",
-    player_id: 3333,
-    player_name: "Animal Friend",
-    avatar_url: "/api/placeholder/40/40",
-    status: UserStatus.ONLINE,
-    join_time: "22 minutes ago",
-    experience_id: 5
-  },
-
-  // Survival Island (Experience ID: 6)
-  {
-    id: "user_015",
-    player_id: 4444,
-    player_name: "Island Scout",
-    avatar_url: "/api/placeholder/40/40",
-    status: UserStatus.ONLINE,
-    join_time: "14 minutes ago",
-    experience_id: 6
-  },
-  {
-    id: "user_016",
-    player_id: 6666,
-    player_name: "Survival Expert",
+    player_id: 34567,
+    player_name: "MasterBuilder999",
     avatar_url: "/api/placeholder/40/40",
     status: UserStatus.ONLINE,
     join_time: "28 minutes ago",
-    experience_id: 6
+    experience_id: 2
+  },
+  {
+    id: "user_010",
+    player_id: 56789,
+    player_name: "CreativeKid2013",
+    avatar_url: "/api/placeholder/40/40",
+    status: UserStatus.ONLINE,
+    join_time: "22 minutes ago",
+    experience_id: 2
+  },
+  {
+    id: "user_011",
+    player_id: 78901,
+    player_name: "HelpfulFriend",
+    avatar_url: "/api/placeholder/40/40",
+    status: UserStatus.ONLINE,
+    join_time: "19 minutes ago",
+    experience_id: 2
+  },
+  {
+    id: "user_012",
+    player_id: 23890,
+    player_name: "BlockMaster2012",
+    avatar_url: "/api/placeholder/40/40",
+    status: UserStatus.ONLINE,
+    join_time: "35 minutes ago",
+    experience_id: 2
+  },
+  {
+    id: "user_013",
+    player_id: 45612,
+    player_name: "ArtisticBuilder",
+    avatar_url: "/api/placeholder/40/40",
+    status: UserStatus.ONLINE,
+    join_time: "41 minutes ago",
+    experience_id: 2
+  },
+
+  // Adventure Academy (Experience ID: 3) - 31 players
+  {
+    id: "user_014",
+    player_id: 90123,
+    player_name: "QuestMaster2014",
+    avatar_url: "/api/placeholder/40/40",
+    status: UserStatus.ONLINE,
+    join_time: "52 minutes ago",
+    experience_id: 3
+  },
+  {
+    id: "user_015",
+    player_id: 11234,
+    player_name: "SmartExplorer",
+    avatar_url: "/api/placeholder/40/40",
+    status: UserStatus.ONLINE,
+    join_time: "38 minutes ago",
+    experience_id: 3
+  },
+  {
+    id: "user_016",
+    player_id: 13579,
+    player_name: "TroubleMaker2010",
+    avatar_url: "/api/placeholder/40/40",
+    status: UserStatus.ONLINE,
+    join_time: "26 minutes ago",
+    experience_id: 3
   }
 ]
 
