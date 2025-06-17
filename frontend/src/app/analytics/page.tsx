@@ -12,6 +12,8 @@ import {
 import CardsSentiment from "./_components/cards-sentiment"
 import SentimentDistribution from "./_components/sentiment-distribution"
 import SentimentTrends from "./_components/sentiment-trends"
+import CardsActions from "./_components/cards-actions"
+import ActionsBreakdown from "./_components/actions-breakdown"
 import { mockExperiences } from "./_data"
 
 export default function AnalyticsPage() {
@@ -49,7 +51,6 @@ export default function AnalyticsPage() {
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="trends">Trends</TabsTrigger>
           <TabsTrigger value="community-actions">Community Actions</TabsTrigger>
-          <TabsTrigger value="message-details">Message Details</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="flex flex-col gap-6">
@@ -69,24 +70,16 @@ export default function AnalyticsPage() {
         </TabsContent>
 
         <TabsContent value="community-actions" className="flex flex-col gap-6">
-          {/* Placeholder for Community Actions tab */}
-          <div className="flex items-center justify-center h-96 bg-muted/30 rounded-lg border border-border/40">
-            <div className="text-center space-y-2">
-              <h3 className="font-clash text-xl font-medium text-muted-foreground">Community Actions</h3>
-              <p className="text-sm text-muted-foreground">Coming soon - breakdown of positive/negative actions</p>
-            </div>
+          {/* Community Actions Content */}
+          <div className="space-y-6">
+            {/* Community Action Metrics Cards */}
+            <CardsActions selectedExperienceId={selectedExperienceId} />
+            
+            {/* Actions Breakdown Charts */}
+            <ActionsBreakdown selectedExperienceId={selectedExperienceId} />
           </div>
         </TabsContent>
 
-        <TabsContent value="message-details" className="flex flex-col gap-6">
-          {/* Placeholder for Message Details tab */}
-          <div className="flex items-center justify-center h-96 bg-muted/30 rounded-lg border border-border/40">
-            <div className="text-center space-y-2">
-              <h3 className="font-clash text-xl font-medium text-muted-foreground">Message Details</h3>
-              <p className="text-sm text-muted-foreground">Coming soon - detailed message analysis</p>
-            </div>
-          </div>
-        </TabsContent>
       </Tabs>
     </div>
   )
