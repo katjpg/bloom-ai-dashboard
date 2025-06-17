@@ -32,7 +32,7 @@ interface SentimentTrendsProps {
   selectedExperienceId: number
 }
 
-// Chart configuration 
+// Chart configuration - moved outside component for performance
 const chartConfig = {
   averageSentiment: {
     label: "Sentiment Score",
@@ -40,10 +40,10 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-// Time period labels
+// Time period labels 
 const TIME_PERIODS: TimePeriod[] = ["1d", "7d", "1m"]
 
-// Format time for 1d view 
+// Format time for 1d view - moved outside component
 const formatHourTime = (hour: string) => {
   const hourNum = parseInt(hour)
   if (hourNum === 0) return "12AM"
@@ -53,7 +53,7 @@ const formatHourTime = (hour: string) => {
 }
 
 const SentimentTrends = memo(function SentimentTrends({ selectedExperienceId }: SentimentTrendsProps) {
-  // Filter data by selectedExperienceId (use API!!)
+  // Filter data by selectedExperienceId
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("1d")
 
@@ -128,26 +128,27 @@ const SentimentTrends = memo(function SentimentTrends({ selectedExperienceId }: 
 
   return (
     <Card className="@container/card shadow-xs">
-      <CardHeader className="flex flex-col items-stretch border-b !p-0 sm:flex-row">
-        <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
+      <CardHeader className="flex flex-col space-y-4 border-b p-0 md:flex-row md:space-y-0 md:items-center md:justify-between">
+        {/* Title section - full width on mobile, flex-1 on desktop */}
+        <div className="flex flex-col justify-center gap-1 px-4 py-4 md:px-6 md:py-5 md:flex-1">
           <CardTitle className="font-clash text-lg font-medium">Sentiment Trends</CardTitle>
           <CardDescription>
             Sentiment score over time ({periodLabel})
           </CardDescription>
         </div>
         
-        {/* Time Period Controls */}
-        <div className="flex flex-col justify-center gap-1 px-6 py-4 sm:py-6">
-          <div className="flex gap-1 rounded-lg bg-muted p-1">
+        {/* Time Period Controls - responsive layout */}
+        <div className="flex flex-col justify-center px-4 pb-4 md:px-6 md:py-5">
+          <div className="flex w-full rounded-lg bg-muted p-1 md:w-auto">
             {TIME_PERIODS.map((period) => (
               <Button
                 key={period}
                 variant={selectedPeriod === period ? "default" : "ghost"}
                 size="sm"
-                className={`h-7 px-3 text-xs font-medium transition-all ${
+                className={`flex-1 h-8 px-3 text-xs font-medium transition-all md:flex-none md:min-w-[3rem] ${
                   selectedPeriod === period 
                     ? "bg-background text-foreground shadow-sm" 
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-background/50"
                 }`}
                 onClick={() => setSelectedPeriod(period)}
               >
@@ -158,124 +159,130 @@ const SentimentTrends = memo(function SentimentTrends({ selectedExperienceId }: 
         </div>
       </CardHeader>
       
-      <CardContent className="px-2 sm:p-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[350px] w-full"
-        >
-          <LineChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              left: 20,
-              right: 20,
-              top: 20,
-              bottom: 20,
-            }}
+      <CardContent className="p-0">
+        <div className="px-4 py-6 md:px-6">
+          <ChartContainer
+            config={chartConfig}
+            className="aspect-auto h-[300px] w-full md:h-[350px]"
           >
-            <CartesianGrid 
-              vertical={false} 
-              stroke="hsl(var(--border))"
-              strokeOpacity={0.3}
-            />
-            
-            {/* Y-axis with -100 to +100 range */}
-            <YAxis 
-              domain={[-100, 100]}
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-              tickFormatter={(value) => `${value > 0 ? '+' : ''}${value}`}
-            />
-            
-            {/* X-axis */}
-            <XAxis 
-              dataKey="period"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-              interval={selectedPeriod === "1d" ? 2 : 0} // Show every 3rd hour for 1d view
-            />
-            
-            {/* Reference lines for key sentiment levels */}
-            <ReferenceLine 
-              y={0} 
-              stroke="hsl(var(--muted-foreground))" 
-              strokeDasharray="2 2" 
-              strokeOpacity={0.5}
-            />
-            <ReferenceLine 
-              y={40} 
-              stroke="hsl(142 76% 36%)" 
-              strokeDasharray="2 2" 
-              strokeOpacity={0.3}
-            />
-            <ReferenceLine 
-              y={-40} 
-              stroke="hsl(0 84% 60%)" 
-              strokeDasharray="2 2" 
-              strokeOpacity={0.3}
-            />
-            
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent
-                  indicator="line"
-                  hideLabel
-                  formatter={(value, name, payload) => [
-                    <div key={name} className="flex flex-col gap-1">
-                      <div className="flex items-center gap-2">
-                        <div 
-                          className="h-2 w-2 rounded-full"
-                          style={{ backgroundColor: payload.payload?.fill }}
-                        />
-                        <span className="font-medium">
-                          {Number(value) > 0 ? '+' : ''}{Number(value).toFixed(1)}
-                        </span>
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {getSentimentLabel(Number(value))}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {payload.payload?.messageCount?.toLocaleString()} messages
-                      </div>
-                    </div>
-                  ]}
-                />
-              }
-            />
-            
-            <Line
-              dataKey="averageSentiment"
-              type="monotone"
-              stroke={lineColor} // Dynamic color based on overall sentiment
-              strokeWidth={2}
-              strokeOpacity={1} // Increased from 0.8 for better visibility
-              dot={({ cx, cy, payload }) => (
-                <circle
-                  cx={cx}
-                  cy={cy}
-                  r={5}
-                  fill={payload.fill} // Keep individual dot colors based on point sentiment
-                  stroke={payload.fill}
-                  strokeWidth={2}
-                />
-              )}
-              activeDot={{
-                r: 7,
-                fill: "hsl(var(--background))",
-                stroke: lineColor, // Match the dynamic line color
-                strokeWidth: 2,
+            <LineChart
+              accessibilityLayer
+              data={chartData}
+              margin={{
+                left: 12,
+                right: 12,
+                top: 20,
+                bottom: 20,
               }}
-            />
-          </LineChart>
-        </ChartContainer>
+            >
+              <CartesianGrid 
+                vertical={false} 
+                stroke="hsl(var(--border))"
+                strokeOpacity={0.3}
+              />
+              
+              {/* Y-axis with -100 to +100 range */}
+              <YAxis 
+                domain={[-100, 100]}
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                tickFormatter={(value) => `${value > 0 ? '+' : ''}${value}`}
+                width={40}
+              />
+              
+              {/* X-axis */}
+              <XAxis 
+                dataKey="period"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                interval={selectedPeriod === "1d" ? 2 : 0}
+                height={40}
+              />
+              
+              {/* Reference lines for key sentiment levels */}
+              <ReferenceLine 
+                y={0} 
+                stroke="hsl(var(--muted-foreground))" 
+                strokeDasharray="2 2" 
+                strokeOpacity={0.5}
+              />
+              <ReferenceLine 
+                y={40} 
+                stroke="hsl(142 76% 36%)" 
+                strokeDasharray="2 2" 
+                strokeOpacity={0.3}
+              />
+              <ReferenceLine 
+                y={-40} 
+                stroke="hsl(0 84% 60%)" 
+                strokeDasharray="2 2" 
+                strokeOpacity={0.3}
+              />
+              
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent
+                    indicator="line"
+                    hideLabel
+                    formatter={(value, name, payload) => [
+                      <div key={name} className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                          <div 
+                            className="h-2 w-2 rounded-full"
+                            style={{ backgroundColor: payload.payload?.fill }}
+                          />
+                          <span className="font-medium">
+                            {Number(value) > 0 ? '+' : ''}{Number(value).toFixed(1)}
+                          </span>
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {getSentimentLabel(Number(value))}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {payload.payload?.messageCount?.toLocaleString()} messages
+                        </div>
+                      </div>
+                    ]}
+                  />
+                }
+              />
+              
+              <Line
+                dataKey="averageSentiment"
+                type="monotone"
+                stroke={lineColor} // Dynamic color based on overall sentiment
+                strokeWidth={2}
+                strokeOpacity={1}
+                dot={({ cx, cy, payload }) => (
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={4}
+                    fill={payload.fill}
+                    stroke={payload.fill}
+                    strokeWidth={2}
+                    className="drop-shadow-sm"
+                  />
+                )}
+                activeDot={{
+                  r: 6,
+                  fill: "hsl(var(--background))",
+                  stroke: lineColor,
+                  strokeWidth: 2,
+                  className: "drop-shadow-md",
+                }}
+              />
+            </LineChart>
+          </ChartContainer>
+        </div>
       </CardContent>
       
-      <CardFooter className="flex-col items-start gap-2 text-sm border-t pt-4">
+      <CardFooter className="flex-col items-start gap-2 text-sm border-t px-4 py-4 md:px-6">
         <div className="flex gap-2 font-medium leading-none">
           {trendDirection === "up" ? "Trending up" : "Trending down"} by {trendPercentage.toFixed(1)}% 
           {trendDirection === "up" ? (
