@@ -14,6 +14,10 @@ export interface Message {
     created_at: string;
     moderation_action?: string;
     moderation_reason?: string;
+    // Flagging properties (added for in-memory flagging system)
+    flagged?: boolean;
+    flagged_at?: string;
+    flag_reason?: string;
 }
 
 export interface SentimentAnalysisRequest {
