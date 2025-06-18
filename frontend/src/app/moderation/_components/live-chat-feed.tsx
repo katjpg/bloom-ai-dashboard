@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useMemo, useState } from "react"
+import React, { useMemo, useState, useEffect, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -15,9 +15,11 @@ import {
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu"
 import { PriorityLevel, ContentType } from "@/lib/colors-mod"
-import { mockChatMessages, PRIORITY_FILTER_OPTIONS, VIOLATION_FILTER_OPTIONS, ChatMessage } from "../_data"
-import { IconSearch, IconFilter, IconX } from "@tabler/icons-react"
+import { PRIORITY_FILTER_OPTIONS, VIOLATION_FILTER_OPTIONS, ChatMessage, UserRole, UserStatus } from "../_data"
+import { IconSearch, IconFilter, IconX, IconRefresh } from "@tabler/icons-react"
 import CardsChat from "./cards-chat"
+import { useLiveMessages } from "@/hooks/useLiveMessages"
+import { Message } from "@/types/sentiment"
 
 interface LiveChatFeedProps {
   selectedExperienceId: number
@@ -36,8 +38,55 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
   const [mode, setMode] = useState<ModeType>("view")
   const [selectedMessages, setSelectedMessages] = useState<string[]>([])
 
+  // Use the live messages hook
+  const { messages: apiMessages, error, loading, fetchMessages } = useLiveMessages()
+
+  // Handle manual refresh
+  const handleRefresh = useCallback(() => {
+    console.log('Manual refresh triggered');
+    fetchMessages(true); // Force refresh
+  }, [fetchMessages]);
+  
+  // Initial fetch and polling
+  useEffect(() => {
+    console.log('Setting up initial fetch and polling');
+    
+    // Fetch immediately on mount
+    fetchMessages(true);
+
+    // Set up polling
+    const interval = setInterval(() => {
+      console.log('Polling fetch triggered');
+      fetchMessages(false); // Regular polling, not forced
+    }, 10000); // Poll every 10 seconds
+
+    // Clean up interval on unmount
+    return () => {
+      console.log('Cleaning up polling interval');
+      clearInterval(interval);
+    };
+  }, [fetchMessages]);
+
+  // Convert API messages to ChatMessage format
+  const chatMessages = useMemo(() => {
+    return apiMessages.map((msg): ChatMessage => ({
+      id: msg.message_id,
+      player_id: msg.player_id,
+      player_name: msg.player_name,
+      message: msg.message,
+      avatar_url: '', // Will be fetched by CardsChat component
+      timestamp: msg.created_at,
+      role: UserRole.MEMBER, // Default role
+      status: UserStatus.ACTIVE, // Default status
+      experience_id: selectedExperienceId, // Use current experience
+      priority_level: msg.moderation_action ? PriorityLevel.HIGH : undefined,
+      content_types: msg.moderation_reason ? [ContentType.PROFANITY] : undefined,
+      safety_score: msg.sentiment_score
+    }));
+  }, [apiMessages, selectedExperienceId]);
+
   const filteredMessages = useMemo(() => {
-    return mockChatMessages.filter((message) => {
+    return chatMessages.filter((message) => {
       // Filter by selected experience first
       const experienceMatch = message.experience_id === selectedExperienceId
       
@@ -56,7 +105,7 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
       
       return experienceMatch && searchMatch && priorityMatch && violationMatch
     })
-  }, [selectedExperienceId, searchTerm, selectedPriorities, selectedViolations])
+  }, [chatMessages, selectedExperienceId, searchTerm, selectedPriorities, selectedViolations])
 
   const handlePriorityChange = (priority: string, checked: boolean) => {
     if (priority === "all") {
@@ -139,9 +188,24 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
   return (
     <Card className="@container/card shadow-xs overflow-hidden h-full">
       <CardHeader className="space-y-4 p-4 pb-0">
-        <CardTitle className="font-clash text-lg font-medium">
-          Live Chat Feed ({filteredMessages.length})
-        </CardTitle>
+        <div className="flex justify-between items-center">
+          <CardTitle className="font-clash text-lg font-medium">
+            Live Chat Feed ({filteredMessages.length})
+          </CardTitle>
+          <div className="flex items-center gap-2">
+            {error && <span className="text-sm text-destructive">{error}</span>}
+            <Button 
+              variant="outline" 
+              onClick={handleRefresh} 
+              disabled={loading}
+              size="sm"
+              className="gap-1"
+            >
+              <IconRefresh className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+              {loading ? 'Loading...' : 'Refresh'}
+            </Button>
+          </div>
+        </div>
         
         {/* Search and Filter Controls */}
         <div className="flex flex-col sm:flex-row gap-3">
@@ -233,7 +297,11 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
       
       <CardContent className="p-4 pt-4">
         <div className="space-y-2.5 max-h-[600px] overflow-y-auto">
-          {filteredMessages.length === 0 ? (
+          {loading && apiMessages.length === 0 ? (
+            <div className="text-center text-muted-foreground py-8">
+              Loading messages...
+            </div>
+          ) : filteredMessages.length === 0 ? (
             <div className="text-center text-muted-foreground py-8">
               {hasActiveFilters ? "No messages match the current filters" : "No messages found"}
             </div>

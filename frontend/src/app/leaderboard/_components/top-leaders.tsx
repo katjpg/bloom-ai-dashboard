@@ -3,18 +3,59 @@
 import { useState, useEffect } from "react"
 import { IconTrophy, IconMedal, IconAward } from "@tabler/icons-react"
 import { Card, CardContent } from "@/components/ui/card"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Skeleton } from "@/components/ui/skeleton"
 import { TopPlayer } from "@/types/sentiment"
 import { Dispatch, SetStateAction } from "react"
+import { robloxApi } from "@/lib/api/roblox"
 
 interface TopLeadersProps {
   players: TopPlayer[]
   loading: boolean
   onLimitChange: Dispatch<SetStateAction<number>>
   currentLimit: number
+}
+
+// Custom Avatar component that fetches Roblox avatar
+const RobloxAvatar = ({ playerId, username, className }: { playerId: number, username: string, className: string }) => {
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    let mounted = true
+    
+    const fetchAvatar = async () => {
+      try {
+        const url = await robloxApi.getAvatarHeadshotUrl(playerId)
+        if (mounted) {
+          setAvatarUrl(url)
+          setIsLoading(false)
+        }
+      } catch (error) {
+        console.error('Failed to fetch avatar:', error)
+        if (mounted) {
+          setIsLoading(false)
+        }
+      }
+    }
+
+    fetchAvatar()
+    
+    return () => {
+      mounted = false
+    }
+  }, [playerId])
+
+  return (
+    <Avatar className={className}>
+      {!isLoading && avatarUrl && <AvatarImage src={avatarUrl} alt={`${username}'s avatar`} />}
+      <AvatarFallback className={`${className.includes('h-20') || className.includes('h-24') ? 'text-lg sm:text-xl' : 'text-sm sm:text-lg'} font-bold`}>
+        {username.slice(0, 2).toUpperCase()}
+      </AvatarFallback>
+    </Avatar>
+  )
 }
 
 export default function TopLeaders({ players, loading, onLimitChange, currentLimit }: TopLeadersProps) {
@@ -93,11 +134,11 @@ export default function TopLeaders({ players, loading, onLimitChange, currentLim
     <div className={`text-center flex-1 min-w-0 ${position === 1 ? 'max-w-[180px] sm:max-w-[200px] md:max-w-[220px]' : 'max-w-[160px] sm:max-w-[180px] md:max-w-[200px]'}`}>
       <div className={`mb-4 transform transition-all duration-500 ${animateIn ? 'scale-100 translate-y-0' : 'scale-90 translate-y-2'}`}
            style={{ transitionDelay: delay }}>
-        <Avatar className={`${position === 1 ? 'h-20 w-20 sm:h-24 sm:w-24' : 'h-16 w-16 sm:h-20 sm:w-20'} mx-auto mb-3 ring-4 ${getPodiumColors(position).avatar} ring-offset-2 ring-offset-background`}>
-          <AvatarFallback className={`${position === 1 ? 'text-lg sm:text-xl' : 'text-sm sm:text-lg'} font-bold`}>
-            {player?.username.slice(0, 2).toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
+        <RobloxAvatar 
+          playerId={player?.player_id}
+          username={player?.username}
+          className={`${position === 1 ? 'h-20 w-20 sm:h-24 sm:w-24' : 'h-16 w-16 sm:h-20 sm:w-20'} mx-auto mb-3 ring-4 ${getPodiumColors(position).avatar} ring-offset-2 ring-offset-background`}
+        />
         <h3 className={`${position === 1 ? 'font-bold text-lg sm:text-xl' : 'font-semibold text-sm sm:text-lg'} truncate px-1`} title={player?.username}>
           {player?.username}
         </h3>
@@ -218,11 +259,11 @@ export default function TopLeaders({ players, loading, onLimitChange, currentLim
                       {player.rank}
                     </div>
                     
-                    <Avatar className="h-12 w-12">
-                      <AvatarFallback className="font-bold">
-                        {player.username.slice(0, 2).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
+                    <RobloxAvatar 
+                      playerId={player.player_id}
+                      username={player.username}
+                      className="h-12 w-12"
+                    />
                     
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
