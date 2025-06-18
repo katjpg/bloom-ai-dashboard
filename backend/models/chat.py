@@ -1,9 +1,8 @@
 from pydantic import BaseModel
-from datetime import datetime
+from typing import Optional
 
 class ChatMessage(BaseModel):
+    message: str
     message_id: str
-    content: str
-    user_id: int
-    timestamp: datetime
-    deleted: bool = False
+    player_id: Optional[int] = None
+    player_name: Optional[str] = None

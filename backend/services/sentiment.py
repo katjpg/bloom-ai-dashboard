@@ -1,16 +1,9 @@
 import logging
-from typing import Optional
 from collections import defaultdict
-from datetime import datetime
 
 from agents.sentiment import (
     analyze_message_sentiment,
     ChatMessage,
-    UserProfile,
-    UserInfo,
-    PlayerScore,
-    UserRole,
-    UserStatus,
     SentimentAnalysisState,
 )
 
@@ -20,45 +13,25 @@ logger = logging.getLogger(__name__)
 class SentimentService:
     def __init__(self):
         self.user_scores: dict[int, int] = defaultdict(int)
-        self.user_profiles: dict[int, UserProfile] = {}
-
-    def get_user_profile(self, user_id: int, username: str = None) -> UserProfile:
-        """Get or create user profile"""
-        if user_id not in self.user_profiles:
-            self.user_profiles[user_id] = UserProfile(
-                user_id=user_id,
-                username=username or f"user_{user_id}",
-                info=UserInfo(
-                    account_created=datetime.now(),
-                    last_seen=datetime.now(),
-                    status=UserStatus.ONLINE,
-                ),
-                player_score=PlayerScore(
-                    user_id=user_id, score=self.user_scores[user_id]
-                ),
-            )
-        else:
-            self.user_profiles[user_id].info.last_seen = datetime.now()
-            self.user_profiles[user_id].player_score.score = self.user_scores[user_id]
-
-        return self.user_profiles[user_id]
+        self.usernames: dict[int, str] = {}
 
     async def analyze_message_sentiment(
         self, message: ChatMessage
     ) -> SentimentAnalysisState:
         """Analyze sentiment and update user scores"""
         try:
-            user_profile = self.get_user_profile(message.user_id)
-            sentiment_result = await analyze_message_sentiment(message, user_profile)
+            sentiment_result = await analyze_message_sentiment(message, None)
 
             if sentiment_result.reward_system:
-                self.user_scores[
-                    message.user_id
-                ] += sentiment_result.reward_system.points_awarded
-                user_profile.player_score.score = self.user_scores[message.user_id]
+                user_id = message.player_id or 0
+                self.user_scores[user_id] += sentiment_result.reward_system.points_awarded
+                
+                # Store username for leaderboard
+                if message.player_name:
+                    self.usernames[user_id] = message.player_name
 
                 logger.info(
-                    f"Updated score for user {message.user_id}: {self.user_scores[message.user_id]} "
+                    f"Updated score for user {user_id}: {self.user_scores[user_id]} "
                     f"(+{sentiment_result.reward_system.points_awarded})"
                 )
 
@@ -70,10 +43,9 @@ class SentimentService:
 
     def get_user_score(self, user_id: int) -> dict:
         """Get user score information"""
-        user_profile = self.get_user_profile(user_id)
         return {
             "user_id": user_id,
-            "username": user_profile.username,
+            "username": self.usernames.get(user_id, f"user_{user_id}"),
             "current_score": self.user_scores[user_id],
         }
 
@@ -85,13 +57,10 @@ class SentimentService:
 
         board = []
         for user_id, score in sorted_scores[:limit]:
-            user_profile = self.user_profiles.get(user_id)
             board.append(
                 {
                     "user_id": user_id,
-                    "username": (
-                        user_profile.username if user_profile else f"user_{user_id}"
-                    ),
+                    "username": self.usernames.get(user_id, f"user_{user_id}"),
                     "score": score,
                 }
             )

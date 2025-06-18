@@ -132,7 +132,7 @@ class StartModeration(BaseNode[ModerationState]):
 @dataclass
 class DetectPII(BaseNode[ModerationState]):
     async def run(self, ctx: GraphRunContext) -> Union[CheckIntent, End]:
-        pii_data = await detect_pii(ctx.state.message.content)
+        pii_data = await detect_pii(ctx.state.message.message)
 
         if not isinstance(pii_data, list):
             pii_data = []
@@ -169,7 +169,7 @@ class DetectPII(BaseNode[ModerationState]):
 class CheckIntent(BaseNode[ModerationState]):
     async def run(self, ctx: GraphRunContext) -> Union[ModerateContent, End]:
         try:
-            result = await PIIAgent.run(ctx.state.message.content)
+            result = await PIIAgent.run(ctx.state.message.message)
             intent = result.output if hasattr(result, "output") else result
 
             if ctx.state.pii_result:
@@ -197,7 +197,7 @@ class CheckIntent(BaseNode[ModerationState]):
 @dataclass
 class ModerateContent(BaseNode[ModerationState]):
     async def run(self, ctx: GraphRunContext) -> Union[DetermineAction, End]:
-        content_data = await moderate_content(ctx.state.message.content)
+        content_data = await moderate_content(ctx.state.message.message)
 
         if not content_data or not isinstance(content_data, list):
             content_data = DEFAULT_CONTENT_RESPONSE
@@ -229,7 +229,7 @@ class ModerateContent(BaseNode[ModerationState]):
 class DetermineAction(BaseNode[ModerationState]):
     async def run(self, ctx: GraphRunContext) -> End:
         try:
-            prompt = f"Content type: {ctx.state.content_result.main_category.value}, Message: {ctx.state.message.content}"
+            prompt = f"Content type: {ctx.state.content_result.main_category.value}, Message: {ctx.state.message.message}"
             result = await ModAgent.run(prompt)
             action = result.output if hasattr(result, "output") else result
             ctx.state.recommended_action = action

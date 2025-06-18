@@ -147,7 +147,7 @@ class CheckContentLength(BaseNode[SentimentAnalysisState]):
     async def run(
         self, ctx: GraphRunContext
     ) -> Union[AnalyzeSentiment, AnalyzeCommunityIntent]:
-        content_length = len(ctx.state.chat_analysis.chat.content)
+        content_length = len(ctx.state.chat_analysis.chat.message)
 
         if content_length >= MIN_CONTENT_LENGTH:
             return AnalyzeSentiment()
@@ -159,7 +159,7 @@ class CheckContentLength(BaseNode[SentimentAnalysisState]):
 @dataclass
 class AnalyzeSentiment(BaseNode[SentimentAnalysisState]):
     async def run(self, ctx: GraphRunContext) -> AnalyzeCommunityIntent:
-        api_response = await analyze_sentiment(ctx.state.chat_analysis.chat.content)
+        api_response = await analyze_sentiment(ctx.state.chat_analysis.chat.message)
         sentiment_score = calculate_sentiment_score(api_response)
         ctx.state.chat_analysis.sentiment_score = sentiment_score
         return AnalyzeCommunityIntent()
@@ -170,7 +170,7 @@ class AnalyzeCommunityIntent(BaseNode[SentimentAnalysisState]):
     async def run(self, ctx: GraphRunContext) -> CalculateRewards:
         try:
             result = await CommunityIntentAgent.run(
-                ctx.state.chat_analysis.chat.content
+                ctx.state.chat_analysis.chat.message
             )
             intent_result = result.output if hasattr(result, "output") else result
 
