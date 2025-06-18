@@ -76,11 +76,11 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
       message: msg.message,
       avatar_url: '', // Will be fetched by CardsChat component
       timestamp: msg.created_at,
-      role: UserRole.MEMBER, // Default role
-      status: UserStatus.ACTIVE, // Default status
+      role: UserRole.PLAYER, // Default role
+      status: UserStatus.ONLINE, // Default status
       experience_id: selectedExperienceId, // Use current experience
       priority_level: msg.moderation_action ? PriorityLevel.HIGH : undefined,
-      content_types: msg.moderation_reason ? [ContentType.PROFANITY] : undefined,
+      content_types: msg.moderation_reason ? [ContentType.H] : undefined, // Use H for hate speech as generic violation
       safety_score: msg.sentiment_score
     }));
   }, [apiMessages, selectedExperienceId]);
