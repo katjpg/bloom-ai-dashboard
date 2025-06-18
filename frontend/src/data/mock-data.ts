@@ -238,23 +238,17 @@ export enum UserStatus {
 
 export enum CommunityAction {
   // Positive Actions
-  ENCOURAGEMENT = "ENCOURAGEMENT",
-  HELPFUL_ADVICE = "HELPFUL_ADVICE",
-  WELCOME_NEWCOMER = "WELCOME_NEWCOMER",
-  TEAM_COORDINATION = "TEAM_COORDINATION",
-  APPRECIATION = "APPRECIATION",
-  CELEBRATION = "CELEBRATION",
-  KNOWLEDGE_SHARING = "KNOWLEDGE_SHARING",
+  ENCOURAGEMENT = "ENCOURAGEMENT",      // Supporting teammates, cheering others on
+  HELPING = "HELPING",                  // Teaching, sharing resources, mentoring
+  CELEBRATING = "CELEBRATING",          // Recognizing achievements, complimenting creations
+  TEAM_BUILDING = "TEAM_BUILDING",      // Building friendships, inclusive behavior
+  
   // Negative Actions
-  TROLLING = "TROLLING",
-  GRIEFING = "GRIEFING", 
-  SPAMMING = "SPAMMING",
-  EXCLUSION = "EXCLUSION",
-  BRAGGING = "BRAGGING",
-  ARGUMENT_STARTING = "ARGUMENT_STARTING",
-  BULLYING = "BULLYING",
-  SHOW_OFF = "SHOW_OFF",
-  PUT_DOWN = "PUT_DOWN"
+  GRIEFING = "GRIEFING",                // Intentionally ruining gameplay/creations
+  TOXICITY = "TOXICITY",                // Trolling, rage behavior, aggressive communication
+  EXCLUSION = "EXCLUSION",              // Deliberately excluding or gatekeeping
+  INAPPROPRIATE = "INAPPROPRIATE",      // Scamming, harassment, rule violations
+  SPAM = "SPAM"                         // Repetitive/disruptive messaging
 }
 
 // ===== EXPERIENCE DATA =====
@@ -866,12 +860,9 @@ export const getSentimentLabel = (sentiment: number): string => {
 export const getActionTypeColor = (action: CommunityAction): string => {
   const positiveActions = [
     CommunityAction.ENCOURAGEMENT,
-    CommunityAction.HELPFUL_ADVICE,
-    CommunityAction.WELCOME_NEWCOMER,
-    CommunityAction.TEAM_COORDINATION,
-    CommunityAction.APPRECIATION,
-    CommunityAction.CELEBRATION,
-    CommunityAction.KNOWLEDGE_SHARING
+    CommunityAction.HELPING,
+    CommunityAction.CELEBRATING,
+    CommunityAction.TEAM_BUILDING
   ]
   
   if (positiveActions.includes(action)) {
@@ -884,21 +875,14 @@ export const getActionTypeColor = (action: CommunityAction): string => {
 export const getActionLabel = (action: CommunityAction): string => {
   const labels: Record<CommunityAction, string> = {
     [CommunityAction.ENCOURAGEMENT]: "Encouragement",
-    [CommunityAction.HELPFUL_ADVICE]: "Helpful Advice", 
-    [CommunityAction.WELCOME_NEWCOMER]: "Welcome Newcomer",
-    [CommunityAction.TEAM_COORDINATION]: "Team Coordination",
-    [CommunityAction.APPRECIATION]: "Appreciation",
-    [CommunityAction.CELEBRATION]: "Celebration",
-    [CommunityAction.KNOWLEDGE_SHARING]: "Knowledge Sharing",
-    [CommunityAction.TROLLING]: "Trolling",
+    [CommunityAction.HELPING]: "Helping",
+    [CommunityAction.CELEBRATING]: "Celebrating",
+    [CommunityAction.TEAM_BUILDING]: "Team Building",
     [CommunityAction.GRIEFING]: "Griefing",
-    [CommunityAction.SPAMMING]: "Spamming",
+    [CommunityAction.TOXICITY]: "Toxicity",
     [CommunityAction.EXCLUSION]: "Exclusion",
-    [CommunityAction.BRAGGING]: "Bragging",
-    [CommunityAction.ARGUMENT_STARTING]: "Argument Starting",
-    [CommunityAction.BULLYING]: "Bullying",
-    [CommunityAction.SHOW_OFF]: "Show Off",
-    [CommunityAction.PUT_DOWN]: "Put Down"
+    [CommunityAction.INAPPROPRIATE]: "Inappropriate",
+    [CommunityAction.SPAM]: "Spam"
   }
   
   return labels[action] || action
@@ -907,12 +891,9 @@ export const getActionLabel = (action: CommunityAction): string => {
 export const isPositiveAction = (action: CommunityAction): boolean => {
   const positiveActions = [
     CommunityAction.ENCOURAGEMENT,
-    CommunityAction.HELPFUL_ADVICE,
-    CommunityAction.WELCOME_NEWCOMER,
-    CommunityAction.TEAM_COORDINATION,
-    CommunityAction.APPRECIATION,
-    CommunityAction.CELEBRATION,
-    CommunityAction.KNOWLEDGE_SHARING
+    CommunityAction.HELPING,
+    CommunityAction.CELEBRATING,
+    CommunityAction.TEAM_BUILDING
   ]
   
   return positiveActions.includes(action)

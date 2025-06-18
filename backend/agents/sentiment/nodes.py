@@ -41,13 +41,13 @@ POSITIVE_LABEL = "LABEL_2"
 
 # Agent Prompts
 COMMUNITY_INTENT_PROMPT = """
-Analyze gaming messages for community intent for Roblox experiences
+Analyze gaming messages for community intent in Roblox experiences.
 
-POSITIVE actions to detect:
-- ENCOURAGEMENT: Supporting teammates, motivating others, positive reinforcement
-- HELPING: Teaching gameplay, sharing resources, offering assistance or advice
-- CELEBRATING: Recognizing achievements, complimenting creations, celebrating wins
-- TEAM_BUILDING: Building friendships, inclusive behavior, welcoming newcomers
+POSITIVE actions to detect (actions that HELP/BENEFIT others):
+- ENCOURAGEMENT: Giving support, motivating others, providing positive reinforcement
+- HELPING: Offering assistance, teaching, providing advice or resources TO others
+- CELEBRATING: Recognizing others' achievements, complimenting others' creations
+- TEAM_BUILDING: Welcoming newcomers, including others, building friendships
 
 NEGATIVE actions to detect:
 - GRIEFING: Intentionally ruining gameplay, destroying creations, sabotaging others
@@ -56,21 +56,29 @@ NEGATIVE actions to detect:
 - INAPPROPRIATE: Scamming attempts, harassment, rule violations, concerning requests
 - SPAM: Repetitive messages, chat flooding, disruptive off-topic content
 
+Important distinctions:
+- ASKING for help is NOT "HELPING" - only OFFERING help counts as positive
+- SEEKING encouragement is NOT "ENCOURAGEMENT" - only GIVING encouragement counts
+- Questions, requests, or seeking assistance are neutral (return null)
+
 Instructions:
-- Focus on the PRIMARY intent behind the message
-- Consider gaming context and teen social dynamics
+- Only classify as positive if the message actively benefits other players
+- Focus on what the sender is GIVING to the community, not what they're seeking
 - If no clear community intent detected, return: intent=null, reason=null
 
 Response format: intent=[ACTION], reason=[explanation]
 """
 
+
 # Reward Points
-POSITIVE_SENTIMENT_POINTS = 2
-POSITIVE_ACTION_POINTS = 2
-NEGATIVE_ACTION_POINTS = -2
+POSITIVE_SENTIMENT_POINTS = 2      # For sentiment >= 30
+POSITIVE_ACTION_POINTS = 10        # For positive community actions  
+NEGATIVE_ACTION_POINTS = -10       # For negative community actions
 
 
 # ---------- Core Functions ----------
+
+
 async def analyze_sentiment(text: str):
     """Get sentiment scores from HuggingFace API"""
 
@@ -93,8 +101,21 @@ async def analyze_sentiment(text: str):
 
 def calculate_sentiment_score(api_response):
     """
-    Incorporate neutral as confidence dampening
+    Calculate sentiment score using approved formula with confidence dampening.
+    
     Formula: (positive - negative) * (1 - neutral) * 100
+    
+    This approach:
+    - Uses confidence dampening through (1 - neutral) factor
+    - Reduces extreme scores when model is uncertain (high neutral)
+    - Provides -100 to +100 range with good granularity
+    - Example: "Hello!" → positive=0.8, negative=0.1, neutral=0.1 → (0.8-0.1)*0.9*100 = 63
+    
+    Args:
+        api_response: HuggingFace API response with sentiment probabilities
+        
+    Returns:
+        int: Sentiment score from -100 to +100
     """
     sentiment_data = (
         api_response[0] if isinstance(api_response, list) and api_response else []
