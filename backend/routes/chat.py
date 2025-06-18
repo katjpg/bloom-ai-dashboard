@@ -1,16 +1,20 @@
+import random
+import logging
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 from agents.moderation import ChatMessage, ModerationState
 from agents.sentiment.state import ChatAnalysis, CommunityIntent
 from services.chat import ChatService
 from services.sentiment import SentimentService
+from routes.data import supabase
 
 router = APIRouter(prefix="/api/v1", tags=["chat"])
 chat_service = ChatService()
 sentiment_service = SentimentService()
+logger = logging.getLogger(__name__)
 
 
 # Pydantic models for request/response
@@ -39,17 +43,50 @@ async def moderate_message(request: ChatMessage):
 @router.post("/sentiment", response_model=ChatAnalysis)
 async def analyze_sentiment(request: AnalyzeRequest):
     """Sentiment analysis endpoint"""
+    # Generate random values if not provided
+    player_id = request.player_id if request.player_id is not None else random.randint(1, 100)
+    player_name = request.player_name if request.player_name is not None else f"Player{random.randint(1, 999)}"
+    
+    logger.info(f"Processing sentiment: Player ID: {player_id}, Player Name: {player_name}")
+    
     try:
         # Convert request to ChatMessage format for sentiment analysis
         sentiment_message = ChatMessage(
             message=request.message,
             message_id=request.message_id,
-            player_id=request.player_id,
-            player_name=request.player_name
+            player_id=player_id,
+            player_name=player_name
         )
         
         # Analyze sentiment
         sentiment_result = await sentiment_service.analyze_message_sentiment(sentiment_message)
+        
+        # Store data in Supabase
+        try:
+            # Store player data
+            player_data = {
+                "player_id": player_id,
+                "player_name": player_name,
+                "last_seen": datetime.now(timezone.utc).isoformat()
+            }
+            supabase.table('players').upsert(player_data).execute()
+            
+            # Store message data
+            message_data = {
+                "message_id": request.message_id,
+                "player_id": player_id,
+                "message": request.message,
+                "sentiment_score": sentiment_result.chat_analysis.sentiment_score or 0,
+                "created_at": datetime.now(timezone.utc).isoformat()
+            }
+            supabase.table('messages').insert(message_data).execute()
+            
+            # Update player sentiment score
+            supabase.rpc('update_player_sentiment_score').execute()
+            logger.info("Data stored in Supabase successfully")
+            
+        except Exception as db_error:
+            logger.error(f"Supabase storage error: {db_error}")
         
         return sentiment_result.chat_analysis
         
@@ -58,8 +95,8 @@ async def analyze_sentiment(request: AnalyzeRequest):
             chat=ChatMessage(
                 message=request.message,
                 message_id=request.message_id,
-                player_id=request.player_id,
-                player_name=request.player_name
+                player_id=player_id,
+                player_name=player_name
             ),
             sentiment_score=0,
             community_intent=None,

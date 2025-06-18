@@ -1,6 +1,7 @@
 import logging
 from fastapi import FastAPI
 from routes.chat import router as chat_router
+from routes.data import router as data_router
 
 # Configure logging
 logging.basicConfig(
@@ -16,6 +17,7 @@ app = FastAPI(
 )
 
 app.include_router(chat_router)
+app.include_router(data_router)
 
 
 @app.on_event("startup")
