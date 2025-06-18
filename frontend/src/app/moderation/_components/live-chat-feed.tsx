@@ -40,7 +40,7 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
   const [selectedMessages, setSelectedMessages] = useState<string[]>([])
 
   // Use the live messages hook and global flagged messages context
-  const { messages: apiMessages, error, loading, fetchMessages } = useLiveMessages()
+  const { messages: apiMessages, error, loading, fetchMessages, refreshAfterAnalysis } = useLiveMessages()
   const { flaggedMessageIds } = useFlaggedMessagesContext()
 
   // Handle manual refresh
@@ -49,25 +49,21 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
     fetchMessages(true); // Force refresh
   }, [fetchMessages]);
   
-  // Initial fetch and polling
+  // Initial fetch on mount and optional fallback polling
   useEffect(() => {
-    console.log('Setting up initial fetch and polling');
-    
-    // Fetch immediately on mount
+    console.log('Performing initial fetch');
     fetchMessages(true);
 
-    // Set up polling
-    const interval = setInterval(() => {
-      console.log('Polling fetch triggered');
-      fetchMessages(false); // Regular polling, not forced
-    }, 10000); // Poll every 10 seconds
+    // Fallback refresh every 60 seconds (much less frequent than before)
+    const fallbackInterval = setInterval(() => {
+      console.log('Fallback refresh triggered');
+      refreshAfterAnalysis(); // Use background refresh (no loading spinner)
+    }, 60000); // Poll every 60 seconds as fallback
 
-    // Clean up interval on unmount
     return () => {
-      console.log('Cleaning up polling interval');
-      clearInterval(interval);
+      clearInterval(fallbackInterval);
     };
-  }, [fetchMessages]);
+  }, [fetchMessages, refreshAfterAnalysis]);
 
   // Convert API messages to ChatMessage format and filter out flagged messages
   // Only show messages when Bloom (experience_id: 1) is selected

@@ -19,7 +19,7 @@ import {
   getPriorityBadgeVariant,
   getContentBadgeVariant
 } from "@/lib/colors-mod"
-import { QueueItem } from "../_data/queue-data"
+import { QueueItem } from "@/hooks/useQueue"
 
 interface CardsQueueProps {
   item: QueueItem
@@ -168,7 +168,7 @@ export default function CardsQueue({
             Violation Types
           </div>
           <div className="flex flex-wrap gap-2">
-            {item.violationTypes.map((violation) => {
+            {item.violationTypes?.map((violation: ContentType) => {
               const config = getContentBadgeVariant(violation)
               return (
                 <Badge 

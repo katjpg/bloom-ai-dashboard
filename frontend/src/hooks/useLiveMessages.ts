@@ -7,9 +7,9 @@ export function useLiveMessages() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     
-    const lastFetchTimeRef = useRef<number>(0); // Track the last fetch time to implement a cooldown
-    const isFetchingRef = useRef<boolean>(false); // Track if there's a fetch in progress to prevent parallel requests
-    const latestMessageIdRef = useRef<string | number | null>(null);     // Store the latest message ID to implement incremental fetching
+    const lastFetchTimeRef = useRef<number>(0);
+    const isFetchingRef = useRef<boolean>(false);
+    const latestMessageIdRef = useRef<string | number | null>(null);
     
     // Memoized messages array reference to avoid dependency issues
     const messagesRef = useRef<Message[]>([]);
@@ -17,26 +17,20 @@ export function useLiveMessages() {
         messagesRef.current = messages;
     }, [messages]);
     
-    const fetchMessages = useCallback(async (force = true) => {
-        console.log("Fetch triggered, force:", force);
-        
+    const fetchMessages = useCallback(async (showLoading = true) => {
         // Skip if a fetch is already in progress
         if (isFetchingRef.current) {
             console.log("Fetch skipped: already fetching");
             return;
         }
         
-        const now = Date.now();
-        if (!force && now - lastFetchTimeRef.current < 5000) {
-            console.log("Fetch skipped: cooldown period");
-            return;
-        }
-        
         isFetchingRef.current = true;
         
         try {
-            setLoading(true);
-            console.log("Performing fetch");
+            if (showLoading) {
+                setLoading(true);
+            }
+            console.log("Fetching live messages");
             const data = await sentimentApi.getLiveMessages(20);
             console.log("Fetch successful, messages:", data.length);
             
@@ -57,10 +51,17 @@ export function useLiveMessages() {
         }
     }, []);
 
+    // Function to refresh after new message analysis
+    const refreshAfterAnalysis = useCallback(async () => {
+        console.log("Refreshing after message analysis");
+        await fetchMessages(false); // Don't show loading spinner for background refresh
+    }, [fetchMessages]);
+
     return {
         messages,
         error,
         loading,
-        fetchMessages       
+        fetchMessages,
+        refreshAfterAnalysis
     };
 }

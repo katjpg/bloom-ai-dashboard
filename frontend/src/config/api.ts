@@ -1,4 +1,4 @@
-// Simple API URL configuration
+// API URL configuration
 export const getApiUrl = () => {
   // Check if we have an environment variable set
   if (process.env.NEXT_PUBLIC_API_URL) {
@@ -10,8 +10,8 @@ export const getApiUrl = () => {
     return 'http://localhost:8000';
   }
   
-  // Default to production API for production builds
-  return 'https://la-hacks-api.vercel.app';
+  // Production builds must set NEXT_PUBLIC_API_URL environment variable
+  throw new Error('NEXT_PUBLIC_API_URL environment variable must be set for production builds');
 };
 
 // Log current API URL in development

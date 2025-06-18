@@ -17,19 +17,35 @@ export default function ModFilters({ onFiltersChange }: ModFiltersProps) {
   const [selectedPriorities, setSelectedPriorities] = useState<PriorityLevel[]>([])
   const [selectedViolations, setSelectedViolations] = useState<ContentType[]>([])
 
-  const handlePriorityChange = (priority: PriorityLevel, checked: boolean) => {
+  const handlePriorityChange = (priority: string, checked: boolean) => {
+    if (priority === "all") {
+      const newPriorities: PriorityLevel[] = []
+      setSelectedPriorities(newPriorities)
+      onFiltersChange({ priorities: newPriorities, violations: selectedViolations })
+      return
+    }
+    
+    const priorityLevel = priority as PriorityLevel
     const newPriorities = checked 
-      ? [...selectedPriorities, priority]
-      : selectedPriorities.filter(p => p !== priority)
+      ? [...selectedPriorities, priorityLevel]
+      : selectedPriorities.filter(p => p !== priorityLevel)
     
     setSelectedPriorities(newPriorities)
     onFiltersChange({ priorities: newPriorities, violations: selectedViolations })
   }
 
-  const handleViolationChange = (violation: ContentType, checked: boolean) => {
+  const handleViolationChange = (violation: string, checked: boolean) => {
+    if (violation === "all") {
+      const newViolations: ContentType[] = []
+      setSelectedViolations(newViolations)
+      onFiltersChange({ priorities: selectedPriorities, violations: newViolations })
+      return
+    }
+    
+    const contentType = violation as ContentType
     const newViolations = checked
-      ? [...selectedViolations, violation]
-      : selectedViolations.filter(v => v !== violation)
+      ? [...selectedViolations, contentType]
+      : selectedViolations.filter(v => v !== contentType)
     
     setSelectedViolations(newViolations)
     onFiltersChange({ priorities: selectedPriorities, violations: newViolations })
@@ -49,7 +65,7 @@ export default function ModFilters({ onFiltersChange }: ModFiltersProps) {
               <div key={option.value} className="flex items-center gap-3">
                 <Checkbox
                   id={`priority-${option.value}`}
-                  checked={selectedPriorities.includes(option.value)}
+                  checked={option.value === "all" ? selectedPriorities.length === 0 : selectedPriorities.includes(option.value as PriorityLevel)}
                   onCheckedChange={(checked) => handlePriorityChange(option.value, !!checked)}
                 />
                 <label
@@ -71,7 +87,7 @@ export default function ModFilters({ onFiltersChange }: ModFiltersProps) {
               <div key={option.value} className="flex items-center gap-3">
                 <Checkbox
                   id={`violation-${option.value}`}
-                  checked={selectedViolations.includes(option.value)}
+                  checked={option.value === "all" ? selectedViolations.length === 0 : selectedViolations.includes(option.value as ContentType)}
                   onCheckedChange={(checked) => handleViolationChange(option.value, !!checked)}
                 />
                 <label

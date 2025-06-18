@@ -4,6 +4,25 @@
 // Import moderation enums from colors-mod
 import { PriorityLevel, ContentType, ActionType, PIIType } from "@/lib/colors-mod"
 
+// ===== SHARED CONSTANTS =====
+
+// Core metrics that appear across multiple datasets
+export const SHARED_METRICS = {
+  totalMessages: 847,
+  positiveActions: 597,
+  activeUsers: 42,
+  averageSentiment: 34.7,
+  safetyScore: 94.2,
+  positivityRate: 83.5
+} as const
+
+// Common time periods for consistent data
+export const TIME_PERIODS = {
+  HOURS_24: Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0')),
+  DAYS_7: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  WEEKS_4: ['Week 1', 'Week 2', 'Week 3', 'Week 4']
+} as const
+
 // ===== MODERATION HISTORY TYPES AND UTILITIES =====
 
 export interface ModerationHistory {
@@ -177,6 +196,34 @@ export interface TrendData {
   change: number
 }
 
+// ===== BASE INTERFACES =====
+
+// Base interface for action-related data
+export interface BaseActionData {
+  positiveActions: number
+  negativeActions: number
+  totalActions: number
+  activeUsers: number
+}
+
+// Base interface for sentiment-related data
+export interface BaseSentimentData {
+  averageSentiment: number
+  messageCount: number
+  positiveCount: number
+  neutralCount: number
+  negativeCount: number
+}
+
+// Base interface for time-based data
+export interface TimeData {
+  hour?: string
+  day?: string
+  date?: string
+  week?: string
+  weekNumber?: number
+}
+
 export enum UserRole {
   PLAYER = "PLAYER",
   VIP = "VIP", 
@@ -273,9 +320,9 @@ export interface MockTrends {
 }
 
 export const mockMetrics: MockMetrics = {
-  totalMessages: 847,
-  activeUsers: 42,
-  safetyScore: 94.2,
+  totalMessages: SHARED_METRICS.totalMessages,
+  activeUsers: SHARED_METRICS.activeUsers,
+  safetyScore: SHARED_METRICS.safetyScore,
   avgResponseTime: 125
 }
 
@@ -387,17 +434,17 @@ export const mockLeaderboardStats = {
     positivityRate: 95.8
   },
   week: {
-    activeContributors: 42,
+    activeContributors: SHARED_METRICS.activeUsers,
     positiveActions: 381,
     positivityRate: 94.2
   },
   month: {
-    activeContributors: 42,
+    activeContributors: SHARED_METRICS.activeUsers,
     positiveActions: 1681,
     positivityRate: 92.6
   },
   alltime: {
-    activeContributors: 42,
+    activeContributors: SHARED_METRICS.activeUsers,
     positiveActions: 4680,
     positivityRate: 91.2
   }
@@ -420,10 +467,10 @@ export interface AnalyticsTrends {
 }
 
 export const mockAnalyticsMetrics: AnalyticsMetrics = {
-  totalMessages: 847,
+  totalMessages: SHARED_METRICS.totalMessages,
   pointsAwarded: 1694,
-  positiveActions: 597,
-  averageSentiment: 34.7
+  positiveActions: SHARED_METRICS.positiveActions,
+  averageSentiment: SHARED_METRICS.averageSentiment
 }
 
 export const mockAnalyticsTrends: AnalyticsTrends = {
@@ -582,11 +629,11 @@ export interface CommunityActionTrends {
 
 export const mockCommunityActionMetrics: CommunityActionMetrics = {
   totalActions: 715,
-  positiveActions: 597,
+  positiveActions: SHARED_METRICS.positiveActions,
   negativeActions: 118,
-  activeContributors: 42,
+  activeContributors: SHARED_METRICS.activeUsers,
   actionsPerUser: 17.0,
-  positivePercentage: 83.5
+  positivePercentage: SHARED_METRICS.positivityRate
 }
 
 export const mockCommunityActionTrends: CommunityActionTrends = {
@@ -598,30 +645,18 @@ export const mockCommunityActionTrends: CommunityActionTrends = {
 
 // ===== ADDITIONAL ANALYTICS DATA =====
 
-export interface HourlyActionData {
+export interface HourlyActionData extends BaseActionData {
   hour: string
-  positiveActions: number
-  negativeActions: number
-  totalActions: number
-  activeUsers: number
 }
 
-export interface DailyActionData {
+export interface DailyActionData extends BaseActionData {
   day: string
   date: string
-  positiveActions: number
-  negativeActions: number
-  totalActions: number
-  activeUsers: number
 }
 
-export interface WeeklyActionData {
+export interface WeeklyActionData extends BaseActionData {
   week: string
   weekNumber: number
-  positiveActions: number
-  negativeActions: number
-  totalActions: number
-  activeUsers: number
 }
 
 // Mock hourly action data (scaled down)
@@ -748,33 +783,18 @@ export const mockWeeklyActionData: WeeklyActionData[] = [
   }
 ]
 
-export interface HourlySentimentData {
+export interface HourlySentimentData extends BaseSentimentData {
   hour: string
-  averageSentiment: number
-  messageCount: number
-  positiveCount: number
-  neutralCount: number
-  negativeCount: number
 }
 
-export interface DailySentimentData {
+export interface DailySentimentData extends BaseSentimentData {
   day: string
   date: string
-  averageSentiment: number
-  messageCount: number
-  positiveCount: number
-  neutralCount: number
-  negativeCount: number
 }
 
-export interface WeeklySentimentData {
+export interface WeeklySentimentData extends BaseSentimentData {
   week: string
   weekNumber: number
-  averageSentiment: number
-  messageCount: number
-  positiveCount: number
-  neutralCount: number
-  negativeCount: number
 }
 
 // Daily sentiment data for 7-day trends (scaled down)

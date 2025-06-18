@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useFlaggedMessages } from './useFlaggedMessages';
 import { Message } from '@/types/sentiment';
-import { PriorityLevel } from '@/lib/colors-mod';
+import { PriorityLevel, ContentType } from '@/lib/colors-mod';
 
 export interface QueueItem {
   id: string;
@@ -20,6 +20,7 @@ export interface QueueItem {
   messageContent: string;
   messageId: string;
   reportCount: number;
+  violationTypes?: ContentType[];
 }
 
 export function useQueue() {

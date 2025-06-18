@@ -67,13 +67,13 @@ async def get_messages(
 @router.get("/live")
 async def get_live_messages(limit: int = Query(20)):
     """
-    Fetch live messages using optimized database function
+    Fetch live messages using database function
     
     Args:
         limit: Maximum number of live messages to return (default: 20)
     """
     try:
-        # Created a sql function to handle this easily and more efficiently
+        # Use RPC function exactly as it worked before
         messages_response = supabase.rpc('get_live_messages', {'p_limit': limit}).execute()
         
         return messages_response.data
