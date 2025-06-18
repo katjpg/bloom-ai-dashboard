@@ -3,36 +3,36 @@
 import { useState, useEffect } from "react"
 import { IconTrophy, IconMedal, IconAward } from "@tabler/icons-react"
 import { Card, CardContent } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { mockLeaderboardData, TimePeriod, LeaderboardPlayer } from "../_data"
-import { mockExperiences } from "../../(dashboard)/_data"
+import { Skeleton } from "@/components/ui/skeleton"
+import { TopPlayer } from "@/types/sentiment"
+import { Dispatch, SetStateAction } from "react"
 
 interface TopLeadersProps {
-  timePeriod: TimePeriod
+  players: TopPlayer[]
+  loading: boolean
+  onLimitChange: Dispatch<SetStateAction<number>>
+  currentLimit: number
 }
 
-export default function TopLeaders({ timePeriod }: TopLeadersProps) {
+export default function TopLeaders({ players, loading, onLimitChange, currentLimit }: TopLeadersProps) {
   const [animateIn, setAnimateIn] = useState(false)
-  const [selectedExperience, setSelectedExperience] = useState<string>("all")
 
   useEffect(() => {
     setAnimateIn(false)
     const timer = setTimeout(() => setAnimateIn(true), 100)
     return () => clearTimeout(timer)
-  }, [timePeriod, selectedExperience])
+  }, [players])
 
-  // Filter data by experience if selected
-  const rawData = mockLeaderboardData[timePeriod]
-  const filteredData = selectedExperience === "all" 
-    ? rawData 
-    : rawData.filter(player => player.experienceId === parseInt(selectedExperience))
-  
-  // Re-rank filtered data
-  const data = filteredData.map((player, index) => ({
+  // Add rank to players and convert API data to display format
+  const data = players.map((player, index) => ({
     ...player,
-    rank: index + 1
+    rank: index + 1,
+    username: player.player_name,
+    score: player.total_sentiment_score,
+    positiveActions: player.message_count, // Using message count as positive actions indicator
   }))
   
   const topThree = data.slice(0, 3)
@@ -77,21 +77,69 @@ export default function TopLeaders({ timePeriod }: TopLeadersProps) {
     return colors[position as keyof typeof colors]
   }
 
+  const LoadingSkeleton = ({ position }: { position: number }) => (
+    <div className="text-center flex-1 min-w-0 max-w-[160px] sm:max-w-[180px] md:max-w-[200px]">
+      <div className="mb-4">
+        <Skeleton className={`${position === 1 ? 'h-20 w-20 sm:h-24 sm:w-24' : 'h-16 w-16 sm:h-20 sm:w-20'} mx-auto mb-3 rounded-full`} />
+        <Skeleton className={`h-6 w-24 mx-auto mb-2`} />
+        <Skeleton className="h-4 w-16 mx-auto mb-2" />
+        <Skeleton className="h-6 w-20 mx-auto" />
+      </div>
+      <Skeleton className={getPodiumHeight(position)} />
+    </div>
+  )
+
+  const PodiumPlayer = ({ player, position, delay }: { player: any, position: number, delay: string }) => (
+    <div className={`text-center flex-1 min-w-0 ${position === 1 ? 'max-w-[180px] sm:max-w-[200px] md:max-w-[220px]' : 'max-w-[160px] sm:max-w-[180px] md:max-w-[200px]'}`}>
+      <div className={`mb-4 transform transition-all duration-500 ${animateIn ? 'scale-100 translate-y-0' : 'scale-90 translate-y-2'}`}
+           style={{ transitionDelay: delay }}>
+        <Avatar className={`${position === 1 ? 'h-20 w-20 sm:h-24 sm:w-24' : 'h-16 w-16 sm:h-20 sm:w-20'} mx-auto mb-3 ring-4 ${getPodiumColors(position).avatar} ring-offset-2 ring-offset-background`}>
+          <AvatarFallback className={`${position === 1 ? 'text-lg sm:text-xl' : 'text-sm sm:text-lg'} font-bold`}>
+            {player?.username.slice(0, 2).toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
+        <h3 className={`${position === 1 ? 'font-bold text-lg sm:text-xl' : 'font-semibold text-sm sm:text-lg'} truncate px-1`} title={player?.username}>
+          {player?.username}
+        </h3>
+        <p className="text-xs sm:text-sm text-muted-foreground mb-2">{player?.positiveActions} messages</p>
+        <div className="flex items-center justify-center gap-2">
+          <Badge 
+            variant={position === 1 ? "default" : "secondary"} 
+            className={`text-xs sm:text-sm font-bold pointer-events-none ${
+              position === 1 ? 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400' : ''
+            }`}
+          >
+            {player?.score.toLocaleString()} pts
+          </Badge>
+        </div>
+      </div>
+      <Card className={`${getPodiumHeight(position)} ${getPodiumColors(position).border} ${getPodiumColors(position).bg} transform transition-all duration-500 ${animateIn ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
+            style={{ transitionDelay: `${parseInt(delay) + 100}ms` }}>
+        <CardContent className="h-full flex items-center justify-center">
+          <div className="text-center">
+            {getPositionIcon(position)}
+            <p className={`${position === 1 ? 'text-4xl' : 'text-3xl'} font-bold mt-2 ${getPodiumColors(position).text}`}>
+              {position}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+
   return (
     <div className="space-y-8">
-      {/* Experience Filter */}
+      {/* Limit Selector */}
       <div className="flex justify-center">
-        <Select value={selectedExperience} onValueChange={setSelectedExperience}>
+        <Select value={currentLimit.toString()} onValueChange={(value) => onLimitChange(parseInt(value))}>
           <SelectTrigger className="w-[240px]">
-            <SelectValue placeholder="Filter by experience" />
+            <SelectValue placeholder="Number of players" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Experiences</SelectItem>
-            {mockExperiences.map((experience) => (
-              <SelectItem key={experience.id} value={experience.id.toString()}>
-                {experience.title}
-              </SelectItem>
-            ))}
+            <SelectItem value="5">Top 5 Players</SelectItem>
+            <SelectItem value="10">Top 10 Players</SelectItem>
+            <SelectItem value="20">Top 20 Players</SelectItem>
+            <SelectItem value="50">Top 50 Players</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -101,127 +149,66 @@ export default function TopLeaders({ timePeriod }: TopLeadersProps) {
         <div className="text-center">
           <h2 className="font-clash text-2xl font-medium mb-2">
             Top Contributors
-            {selectedExperience !== "all" && (
-              <span className="text-base font-normal text-muted-foreground ml-2">
-                in {mockExperiences.find(e => e.id.toString() === selectedExperience)?.title}
-              </span>
-            )}
+            <span className="text-base font-normal text-muted-foreground ml-2">
+              Bloom
+            </span>
           </h2>
         </div>
 
         <div className="flex justify-center items-end gap-2 sm:gap-4 md:gap-8 mb-8 px-2">
           {/* Second Place */}
-          {topThree[1] && (
-            <div className="text-center flex-1 min-w-0 max-w-[160px] sm:max-w-[180px] md:max-w-[200px]">
-              <div className={`mb-4 transform transition-all duration-500 ${animateIn ? 'scale-100 translate-y-0' : 'scale-90 translate-y-2'}`}
-                   style={{ transitionDelay: '100ms' }}>
-                <Avatar className={`h-16 w-16 sm:h-20 sm:w-20 mx-auto mb-3 ring-4 ${getPodiumColors(2).avatar} ring-offset-2 ring-offset-background`}>
-                  <AvatarImage src={topThree[1]?.avatar_url} alt={topThree[1]?.username} />
-                  <AvatarFallback className="text-sm sm:text-lg font-bold">
-                    {topThree[1]?.username.slice(0, 2).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <h3 className="font-semibold text-sm sm:text-lg truncate px-1" title={topThree[1]?.username}>
-                  {topThree[1]?.username}
-                </h3>
-                <p className="text-xs sm:text-sm text-muted-foreground mb-2">{topThree[1]?.positiveActions} actions</p>
-                <div className="flex items-center justify-center gap-2">
-                  <Badge variant="secondary" className="text-xs sm:text-sm font-bold pointer-events-none">
-                    {topThree[1]?.score.toLocaleString()} pts
-                  </Badge>
-                </div>
-              </div>
-              <Card className={`${getPodiumHeight(2)} ${getPodiumColors(2).border} ${getPodiumColors(2).bg} transform transition-all duration-500 ${animateIn ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
-                    style={{ transitionDelay: '200ms' }}>
-                <CardContent className="h-full flex items-center justify-center">
-                  <div className="text-center">
-                    {getPositionIcon(2)}
-                    <p className={`text-3xl font-bold mt-2 ${getPodiumColors(2).text}`}>2</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
+          {loading ? (
+            <LoadingSkeleton position={2} />
+          ) : topThree[1] ? (
+            <PodiumPlayer player={topThree[1]} position={2} delay="100ms" />
+          ) : null}
 
           {/* First Place */}
-          {topThree[0] && (
-            <div className="text-center flex-1 min-w-0 max-w-[180px] sm:max-w-[200px] md:max-w-[220px]">
-              <div className={`mb-4 transform transition-all duration-500 ${animateIn ? 'scale-100 translate-y-0' : 'scale-90 translate-y-2'}`}
-                   style={{ transitionDelay: '300ms' }}>
-                <div className="relative">
-                  <Avatar className={`h-20 w-20 sm:h-24 sm:w-24 mx-auto mb-3 ring-4 ${getPodiumColors(1).avatar} ring-offset-2 ring-offset-background`}>
-                    <AvatarImage src={topThree[0]?.avatar_url} alt={topThree[0]?.username} />
-                    <AvatarFallback className="text-lg sm:text-xl font-bold">
-                      {topThree[0]?.username.slice(0, 2).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                </div>
-                <h3 className="font-bold text-lg sm:text-xl truncate px-1" title={topThree[0]?.username}>
-                  {topThree[0]?.username}
-                </h3>
-                <p className="text-xs sm:text-sm text-muted-foreground mb-2">{topThree[0]?.positiveActions} actions</p>
-                <div className="flex items-center justify-center gap-2">
-                  <Badge variant="default" className="text-xs sm:text-sm font-bold bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 pointer-events-none">
-                    {topThree[0]?.score.toLocaleString()} pts
-                  </Badge>
-                </div>
-              </div>
-              <Card className={`${getPodiumHeight(1)} ${getPodiumColors(1).border} ${getPodiumColors(1).bg} transform transition-all duration-500 ${animateIn ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
-                    style={{ transitionDelay: '400ms' }}>
-                <CardContent className="h-full flex items-center justify-center">
-                  <div className="text-center">
-                    {getPositionIcon(1)}
-                    <p className={`text-4xl font-bold mt-2 ${getPodiumColors(1).text}`}>1</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
+          {loading ? (
+            <LoadingSkeleton position={1} />
+          ) : topThree[0] ? (
+            <PodiumPlayer player={topThree[0]} position={1} delay="300ms" />
+          ) : null}
 
           {/* Third Place */}
-          {topThree[2] && (
-            <div className="text-center flex-1 min-w-0 max-w-[160px] sm:max-w-[180px] md:max-w-[200px]">
-              <div className={`mb-4 transform transition-all duration-500 ${animateIn ? 'scale-100 translate-y-0' : 'scale-90 translate-y-2'}`}
-                   style={{ transitionDelay: '500ms' }}>
-                <Avatar className={`h-16 w-16 sm:h-20 sm:w-20 mx-auto mb-3 ring-4 ${getPodiumColors(3).avatar} ring-offset-2 ring-offset-background`}>
-                  <AvatarImage src={topThree[2]?.avatar_url} alt={topThree[2]?.username} />
-                  <AvatarFallback className="text-sm sm:text-lg font-bold">
-                    {topThree[2]?.username.slice(0, 2).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <h3 className="font-semibold text-sm sm:text-lg truncate px-1" title={topThree[2]?.username}>
-                  {topThree[2]?.username}
-                </h3>
-                <p className="text-xs sm:text-sm text-muted-foreground mb-2">{topThree[2]?.positiveActions} actions</p>
-                <div className="flex items-center justify-center gap-2">
-                  <Badge variant="secondary" className="text-xs sm:text-sm font-bold pointer-events-none">
-                    {topThree[2]?.score.toLocaleString()} pts
-                  </Badge>
-                </div>
-              </div>
-              <Card className={`${getPodiumHeight(3)} ${getPodiumColors(3).border} ${getPodiumColors(3).bg} transform transition-all duration-500 ${animateIn ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
-                    style={{ transitionDelay: '600ms' }}>
-                <CardContent className="h-full flex items-center justify-center">
-                  <div className="text-center">
-                    {getPositionIcon(3)}
-                    <p className={`text-3xl font-bold mt-2 ${getPodiumColors(3).text}`}>3</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
+          {loading ? (
+            <LoadingSkeleton position={3} />
+          ) : topThree[2] ? (
+            <PodiumPlayer player={topThree[2]} position={3} delay="500ms" />
+          ) : null}
         </div>
       </div>
 
       {/* Remaining Players List */}
-      {data.length > 0 ? (
+      {loading ? (
+        <div className="space-y-4">
+          <h3 className="font-clash text-xl font-medium text-center">Community Leaders</h3>
+          <div className="grid gap-3">
+            {Array.from({ length: Math.max(0, currentLimit - 3) }).map((_, index) => (
+              <Card key={index} className="shadow-xs">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-4">
+                    <Skeleton className="h-8 w-8" />
+                    <Skeleton className="h-12 w-12 rounded-full" />
+                    <div className="flex-1">
+                      <Skeleton className="h-6 w-32 mb-1" />
+                      <Skeleton className="h-4 w-24" />
+                    </div>
+                    <Skeleton className="h-6 w-20" />
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      ) : data.length > 0 ? (
         <div className="space-y-4">
           <h3 className="font-clash text-xl font-medium text-center">Community Leaders</h3>
           
           <div className="grid gap-3">
             {remaining.map((player, index) => (
               <Card 
-                key={player.id}
+                key={player.player_id}
                 className={`@container/card shadow-xs transform transition-all duration-200 focus:outline-none ${animateIn ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'}`}
                 style={{ transitionDelay: `${700 + index * 100}ms` }}
               >
@@ -232,7 +219,6 @@ export default function TopLeaders({ timePeriod }: TopLeadersProps) {
                     </div>
                     
                     <Avatar className="h-12 w-12">
-                      <AvatarImage src={player.avatar_url} alt={player.username} />
                       <AvatarFallback className="font-bold">
                         {player.username.slice(0, 2).toUpperCase()}
                       </AvatarFallback>
@@ -241,14 +227,9 @@ export default function TopLeaders({ timePeriod }: TopLeadersProps) {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <h4 className="font-semibold truncate">{player.username}</h4>
-                        {selectedExperience === "all" && (
-                          <Badge variant="outline" className="text-xs px-1.5 py-0.5">
-                            {player.experienceName}
-                          </Badge>
-                        )}
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        {player.positiveActions.toLocaleString()} positive actions
+                        {player.positiveActions.toLocaleString()} messages
                       </p>
                     </div>
                     
@@ -268,12 +249,9 @@ export default function TopLeaders({ timePeriod }: TopLeadersProps) {
       ) : (
         <div className="text-center py-12">
           <div className="text-muted-foreground">
-            <p className="text-lg font-medium mb-2">No contributors found</p>
+            <p className="text-lg font-medium mb-2">No players found</p>
             <p className="text-sm">
-              {selectedExperience === "all" 
-                ? "No leaderboard data available for this time period."
-                : `No contributors found in ${mockExperiences.find(e => e.id.toString() === selectedExperience)?.title} for this time period.`
-              }
+              No leaderboard data available from the API.
             </p>
           </div>
         </div>
