@@ -62,7 +62,6 @@ Important distinctions:
 - Questions, requests, or seeking assistance are neutral (return null)
 
 Instructions:
-- Only classify as positive if the message actively benefits other players
 - Focus on what the sender is GIVING to the community, not what they're seeking
 - If no clear community intent detected, return: intent=null, reason=null
 
