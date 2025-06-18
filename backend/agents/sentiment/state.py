@@ -8,23 +8,18 @@ from models.chat import ChatMessage
 # ---------- Enum Definitions ----------
 class CommunityAction(str, Enum):
     # Positive Actions
-    ENCOURAGEMENT = "ENCOURAGEMENT"
-    HELPFUL_ADVICE = "HELPFUL_ADVICE"
-    WELCOME_NEWCOMER = "WELCOME_NEWCOMER"
-    TEAM_COORDINATION = "TEAM_COORDINATION"
-    APPRECIATION = "APPRECIATION"
-    CELEBRATION = "CELEBRATION"
-    KNOWLEDGE_SHARING = "KNOWLEDGE_SHARING"
+    ENCOURAGEMENT = "ENCOURAGEMENT"          # Supporting teammates, cheering others on
+    HELPING = "HELPING"                      # Teaching, sharing resources, mentoring
+    CELEBRATING = "CELEBRATING"              # Recognizing achievements, complimenting creations
+    TEAM_BUILDING = "TEAM_BUILDING"          # Building friendships, inclusive behavior
+    
     # Negative Actions
-    TROLLING = "TROLLING"
-    GRIEFING = "GRIEFING"
-    SPAMMING = "SPAMMING"
-    EXCLUSION = "EXCLUSION"
-    BRAGGING = "BRAGGING"
-    ARGUMENT_STARTING = "ARGUMENT_STARTING"
-    BULLYING = "BULLYING"
-    SHOW_OFF = "SHOW_OFF"
-    PUT_DOWN = "PUT_DOWN"
+    GRIEFING = "GRIEFING"                    # Intentionally ruining gameplay/creations
+    TOXICITY = "TOXICITY"                    # Trolling, rage behavior, aggressive communication
+    EXCLUSION = "EXCLUSION"                  # Deliberately excluding or gatekeeping
+    INAPPROPRIATE = "INAPPROPRIATE"          # Scamming, harassment, rule violations
+    SPAM = "SPAM"                           # Repetitive/disruptive messaging
+
 
 
 # ---------- Pydantic Models ----------

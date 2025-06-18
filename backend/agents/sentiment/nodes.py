@@ -41,16 +41,27 @@ POSITIVE_LABEL = "LABEL_2"
 
 # Agent Prompts
 COMMUNITY_INTENT_PROMPT = """
-Analyze gaming messages for community intent in Roblox context (ages 11-17).
+Analyze gaming messages for community intent for Roblox experiences
 
-Return POSITIVE actions: ENCOURAGEMENT, HELPFUL_ADVICE, WELCOME_NEWCOMER, 
-TEAM_COORDINATION, APPRECIATION, CELEBRATION, KNOWLEDGE_SHARING
+POSITIVE actions to detect:
+- ENCOURAGEMENT: Supporting teammates, motivating others, positive reinforcement
+- HELPING: Teaching gameplay, sharing resources, offering assistance or advice
+- CELEBRATING: Recognizing achievements, complimenting creations, celebrating wins
+- TEAM_BUILDING: Building friendships, inclusive behavior, welcoming newcomers
 
-Return NEGATIVE actions: TROLLING, GRIEFING, SPAMMING, EXCLUSION, BRAGGING, 
-ARGUMENT_STARTING, BULLYING, SHOW_OFF, PUT_DOWN
+NEGATIVE actions to detect:
+- GRIEFING: Intentionally ruining gameplay, destroying creations, sabotaging others
+- TOXICITY: Trolling, rage behavior, insults, aggressive communication, put-downs
+- EXCLUSION: Deliberately excluding others, gatekeeping, unwelcoming behavior
+- INAPPROPRIATE: Scamming attempts, harassment, rule violations, concerning requests
+- SPAM: Repetitive messages, chat flooding, disruptive off-topic content
 
-If no clear intent, return intent=null, reason=null.
-If intent found, provide 1-2 sentence reason.
+Instructions:
+- Focus on the PRIMARY intent behind the message
+- Consider gaming context and teen social dynamics
+- If no clear community intent detected, return: intent=null, reason=null
+
+Response format: intent=[ACTION], reason=[explanation]
 """
 
 # Reward Points
