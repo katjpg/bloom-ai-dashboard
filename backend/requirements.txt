@@ -1,5 +1,9 @@
-pydantic-ai-slim
-requests
-python-dotenv
-fastapi[standard]
+fastapi
 uvicorn
+python-dotenv
+google-generativeai
+supabase
+requests
+pydantic
+python-multipart
+pydantic-ai-slim[google]
