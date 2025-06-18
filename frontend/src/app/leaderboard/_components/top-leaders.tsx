@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Skeleton } from "@/components/ui/skeleton"
 import { TopPlayer } from "@/types/sentiment"
 import { Dispatch, SetStateAction } from "react"
-import { robloxApi } from "@/lib/api/roblox"
+import { useAvatarHeadshot } from "@/hooks/useAvatarHeadshot"
 
 interface TopLeadersProps {
   players: TopPlayer[]
@@ -18,35 +18,9 @@ interface TopLeadersProps {
   currentLimit: number
 }
 
-// Custom Avatar component that fetches Roblox avatar
+// Custom Avatar component that fetches Roblox avatar with mapping
 const RobloxAvatar = ({ playerId, username, className }: { playerId: number, username: string, className: string }) => {
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    let mounted = true
-    
-    const fetchAvatar = async () => {
-      try {
-        const url = await robloxApi.getAvatarHeadshotUrl(playerId)
-        if (mounted) {
-          setAvatarUrl(url)
-          setIsLoading(false)
-        }
-      } catch (error) {
-        console.error('Failed to fetch avatar:', error)
-        if (mounted) {
-          setIsLoading(false)
-        }
-      }
-    }
-
-    fetchAvatar()
-    
-    return () => {
-      mounted = false
-    }
-  }, [playerId])
+  const { url: avatarUrl, loading: isLoading } = useAvatarHeadshot(playerId)
 
   return (
     <Avatar className={className}>

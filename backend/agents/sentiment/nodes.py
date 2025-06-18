@@ -237,12 +237,9 @@ class CalculateRewards(BaseNode[SentimentAnalysisState]):
         if intent and intent.intent:
             positive_actions = {
                 CommunityAction.ENCOURAGEMENT,
-                CommunityAction.HELPFUL_ADVICE,
-                CommunityAction.WELCOME_NEWCOMER,
-                CommunityAction.TEAM_COORDINATION,
-                CommunityAction.APPRECIATION,
-                CommunityAction.CELEBRATION,
-                CommunityAction.KNOWLEDGE_SHARING,
+                CommunityAction.HELPING,
+                CommunityAction.CELEBRATING,
+                CommunityAction.TEAM_BUILDING,
             }
 
             if intent.intent in positive_actions:

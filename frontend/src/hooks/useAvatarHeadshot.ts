@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react';
 import { robloxApi } from '@/lib/api/roblox';
+import { getEffectiveAvatarUserId } from '@/lib/avatar-mapping';
 
 /**
  * Custom hook to fetch a Roblox user's avatar headshot URL.
- * @param userId The Roblox user ID (number or string).
+ * @param userId The original user ID (number or string).
+ * @param useAvatarMapping Whether to use avatar mapping (defaults to true).
  * @returns An object containing the avatar URL, loading state, and error state.
  */
-export function useAvatarHeadshot(userId: number | string | null | undefined) {
+export function useAvatarHeadshot(
+    userId: number | string | null | undefined, 
+    useAvatarMapping: boolean = true
+) {
     const [url, setUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -26,8 +31,11 @@ export function useAvatarHeadshot(userId: number | string | null | undefined) {
             setUrl(null); // Clear previous URL while fetching
 
             try {
+                // Get the effective user ID (mapped or original based on settings)
+                const effectiveUserId = useAvatarMapping ? getEffectiveAvatarUserId(userId) : userId;
+                
                 // Call the updated getAvatarHeadshotUrl method from the new API client
-                const imageUrl = await robloxApi.getAvatarHeadshotUrl(userId);
+                const imageUrl = await robloxApi.getAvatarHeadshotUrl(effectiveUserId);
                 setUrl(imageUrl); // Set the fetched URL (will be null if not found or error)
             } catch (err: any) {
                 // Only log actual errors, not 404s for fake user IDs
@@ -43,7 +51,7 @@ export function useAvatarHeadshot(userId: number | string | null | undefined) {
 
         fetchAvatar();
 
-    }, [userId]);
+    }, [userId, useAvatarMapping]);
 
     return {
         url,
