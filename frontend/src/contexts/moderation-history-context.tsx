@@ -1,7 +1,7 @@
 "use client"
 
 import React, { createContext, useContext, useState, useCallback } from 'react'
-import { ModerationHistory, mockModerationHistory } from '@/app/moderation/_data'
+import { ModerationHistory } from '@/app/moderation/_data'
 
 interface ModerationHistoryContextType {
   history: ModerationHistory[]
@@ -12,7 +12,7 @@ interface ModerationHistoryContextType {
 const ModerationHistoryContext = createContext<ModerationHistoryContextType | undefined>(undefined)
 
 export function ModerationHistoryProvider({ children }: { children: React.ReactNode }) {
-  const [history, setHistory] = useState<ModerationHistory[]>(mockModerationHistory)
+  const [history, setHistory] = useState<ModerationHistory[]>([])
 
   const addHistoryEntries = useCallback((entries: ModerationHistory[]) => {
     setHistory(prev => [...entries, ...prev])

@@ -12,8 +12,10 @@ import LiveChatFeed, { ModeType } from "./_components/live-chat-feed"
 import ModInfo from "./_components/mod-info"
 import ModActions from "./_components/mod-actions"
 import PlayerInfo from "./_components/player-info"
-import { mockExperiences, ChatMessage, mockChatMessages, generateHistoryEntry } from "./_data"
+import { mockExperiences, ChatMessage, generateHistoryEntry } from "./_data"
 import { useModerationHistory } from "@/contexts/moderation-history-context"
+import { useLiveMessages } from "@/hooks/useLiveMessages"
+import { useEffect } from "react"
 
 export default function ModerationPage() {
   const [selectedExperienceId, setSelectedExperienceId] = useState<number>(1)
@@ -22,6 +24,12 @@ export default function ModerationPage() {
   const [selectedMessages, setSelectedMessages] = useState<string[]>([])
   const [clearTrigger, setClearTrigger] = useState(0)
   const { addHistoryEntries } = useModerationHistory()
+  const { messages: liveMessages, fetchMessages } = useLiveMessages()
+
+  // Fetch messages on mount
+  useEffect(() => {
+    fetchMessages(true)
+  }, [fetchMessages])
 
   const handlePlayerSelect = (message: ChatMessage) => {
     // Only select player in view mode
@@ -43,10 +51,23 @@ export default function ModerationPage() {
     console.log(`Mod action ${action} on ${selectedMessages.length} messages`, options)
     
     try {
-      // Get selected messages with full metadata
-      const selectedMessagesWithData = mockChatMessages.filter(msg => 
-        selectedMessages.includes(msg.id)
-      )
+      // Convert live API messages to ChatMessage format for history generation
+      const selectedMessagesWithData: ChatMessage[] = liveMessages
+        .filter(msg => selectedMessages.includes(msg.message_id))
+        .map(msg => ({
+          id: msg.message_id,
+          player_id: msg.player_id,
+          player_name: msg.player_name,
+          message: msg.message,
+          avatar_url: '',
+          timestamp: msg.created_at,
+          role: 'PLAYER' as any,
+          status: 'ONLINE' as any,
+          experience_id: selectedExperienceId,
+          priority_level: msg.moderation_action ? 'HIGH' as any : undefined,
+          content_types: msg.moderation_reason ? ['H'] as any : undefined,
+          safety_score: msg.sentiment_score
+        }))
       
       if (selectedMessagesWithData.length === 0) {
         throw new Error('No valid messages selected')
