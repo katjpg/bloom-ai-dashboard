@@ -12,7 +12,7 @@ import { usePlayerStats } from "@/hooks/usePlayerStats"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { sentimentApi } from "@/lib/api/sentiment"
 import { Message } from "@/types/sentiment"
 
@@ -48,6 +48,12 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
   // Mock member since date - in real app this would come from player data
   const memberSince = "March 2023"
   
+  // Reset data when player changes
+  useEffect(() => {
+    setPlayerMessages([])
+    setCurrentView('overview')
+  }, [selectedPlayer.player_id])
+
   // Function to fetch detailed messages
   const fetchPlayerMessages = async () => {
     if (playerMessages.length > 0) return // Already fetched
