@@ -20,6 +20,7 @@ import { IconSearch, IconFilter, IconX, IconRefresh } from "@tabler/icons-react"
 import CardsChat from "./cards-chat"
 import { useLiveMessages } from "@/hooks/useLiveMessages"
 import { useFlaggedMessagesContext } from "@/contexts/flagged-messages-context"
+import { useAutoModeration } from "@/contexts/auto-moderation-context"
 import { Message } from "@/types/sentiment"
 
 interface LiveChatFeedProps {
@@ -40,8 +41,12 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
   const [selectedMessages, setSelectedMessages] = useState<string[]>([])
 
   // Use the live messages hook and global flagged messages context
-  const { messages: apiMessages, error, loading, fetchMessages, refreshAfterAnalysis } = useLiveMessages()
+  const { processMessage, processExistingMessages } = useAutoModeration()
+  const { messages: apiMessages, error, loading, fetchMessages, refreshAfterAnalysis } = useLiveMessages({
+    onNewMessage: processMessage
+  })
   const { flaggedMessageIds } = useFlaggedMessagesContext()
+  const { isAutoModEnabled, toggleAutoMod, deletedMessageIds } = useAutoModeration()
 
   // Handle manual refresh
   const handleRefresh = useCallback(() => {
@@ -65,6 +70,14 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
     };
   }, [fetchMessages, refreshAfterAnalysis]);
 
+  // Process existing messages when auto-mod is enabled or messages change
+  useEffect(() => {
+    if (isAutoModEnabled && apiMessages.length > 0) {
+      console.log('Auto-mod enabled, processing existing messages for moderation results');
+      processExistingMessages(apiMessages);
+    }
+  }, [isAutoModEnabled, apiMessages, processExistingMessages]);
+
   // Convert API messages to ChatMessage format and filter out flagged messages
   // Only show messages when Bloom (experience_id: 1) is selected
   const chatMessages = useMemo(() => {
@@ -73,8 +86,20 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
       return [];
     }
     
+    console.log('Processing messages:', {
+      totalMessages: apiMessages.length,
+      flaggedMessageIds: Array.from(flaggedMessageIds),
+      deletedMessageIds: Array.from(deletedMessageIds),
+      isAutoModEnabled
+    });
+    
     return apiMessages
-      .filter(msg => !flaggedMessageIds.has(msg.message_id)) // Filter out flagged messages using global context
+      .filter(msg => {
+        const isNotFlagged = !flaggedMessageIds.has(msg.message_id);
+        const isNotDeleted = !deletedMessageIds.has(msg.message_id);
+        console.log(`Message ${msg.message_id}: flagged=${!isNotFlagged}, deleted=${!isNotDeleted}, action=${msg.moderation_action}`);
+        return isNotFlagged && isNotDeleted;
+      })
       .map((msg): ChatMessage => ({
         id: msg.message_id,
         player_id: msg.player_id,
@@ -89,7 +114,7 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
         content_types: msg.moderation_reason ? [ContentType.H] : undefined, // Use H for hate speech as generic violation
         safety_score: msg.sentiment_score
       }));
-  }, [apiMessages, selectedExperienceId, flaggedMessageIds]);
+  }, [apiMessages, selectedExperienceId, flaggedMessageIds, deletedMessageIds]);
 
   const filteredMessages = useMemo(() => {
     return chatMessages.filter((message) => {
@@ -165,6 +190,13 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
   const handleModeChange = (newMode: ModeType) => {
     setMode(newMode)
     onModeChange?.(newMode)
+    
+    // Handle auto-mod toggle
+    if (newMode === "auto-mod" && !isAutoModEnabled) {
+      toggleAutoMod()
+    } else if (newMode !== "auto-mod" && isAutoModEnabled) {
+      toggleAutoMod()
+    }
     
     // Clear selections when leaving mod mode
     if (newMode !== 'mod') {
@@ -283,15 +315,23 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
             {/* Mode Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="gap-2">
+                <Button variant="outline" className={`gap-2 ${isAutoModEnabled ? 'border-green-500 bg-green-50 text-green-700' : ''}`}>
                   Mode: {getModeLabel(mode)}
+                  {isAutoModEnabled && (
+                    <span className="ml-1 bg-green-500 text-white rounded-full px-1.5 py-0.5 text-xs">
+                      ON
+                    </span>
+                  )}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-32">
                 <DropdownMenuRadioGroup value={mode} onValueChange={(value) => handleModeChange(value as ModeType)}>
                   <DropdownMenuRadioItem value="view">View</DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="mod">Mod</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="auto-mod">Auto-Mod</DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="auto-mod">
+                    Auto-Mod
+                    {isAutoModEnabled && <span className="ml-2 text-green-600">●</span>}
+                  </DropdownMenuRadioItem>
                 </DropdownMenuRadioGroup>
               </DropdownMenuContent>
             </DropdownMenu>

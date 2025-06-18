@@ -10,6 +10,7 @@ import { SiteHeader } from "@/components/layout/site-header"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ModerationHistoryProvider } from "@/contexts/moderation-history-context"
 import { FlaggedMessagesProvider } from "@/contexts/flagged-messages-context"
+import { AutoModerationProvider } from "@/contexts/auto-moderation-context"
 
 import "@/styles/globals.css"
 import "@/styles/theme.css"
@@ -38,20 +39,22 @@ export default async function RootLayout({
         >
           <ModerationHistoryProvider>
             <FlaggedMessagesProvider>
-              <SidebarProvider
-                defaultOpen={defaultOpen}
-                style={
-                  {
-                    "--sidebar-width": "calc(var(--spacing) * 60)",
-                  } as React.CSSProperties
-                }
-              >
-                <AppSidebar variant="inset" />
-                <SidebarInset>
-                  <SiteHeader />
-                  <div className="flex flex-1 flex-col">{children}</div>
-                </SidebarInset>
-              </SidebarProvider>
+              <AutoModerationProvider>
+                <SidebarProvider
+                  defaultOpen={defaultOpen}
+                  style={
+                    {
+                      "--sidebar-width": "calc(var(--spacing) * 60)",
+                    } as React.CSSProperties
+                  }
+                >
+                  <AppSidebar variant="inset" />
+                  <SidebarInset>
+                    <SiteHeader />
+                    <div className="flex flex-1 flex-col">{children}</div>
+                  </SidebarInset>
+                </SidebarProvider>
+              </AutoModerationProvider>
             </FlaggedMessagesProvider>
           </ModerationHistoryProvider>
         </ThemeProvider>

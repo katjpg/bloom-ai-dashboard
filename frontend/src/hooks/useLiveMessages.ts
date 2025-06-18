@@ -2,7 +2,11 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { sentimentApi } from '@/lib/api/sentiment';
 import { Message } from '@/types/sentiment';
 
-export function useLiveMessages() {
+interface UseLiveMessagesOptions {
+    onNewMessage?: (message: Message) => void;
+}
+
+export function useLiveMessages(options?: UseLiveMessagesOptions) {
     const [messages, setMessages] = useState<Message[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -33,6 +37,20 @@ export function useLiveMessages() {
             console.log("Fetching live messages");
             const data = await sentimentApi.getLiveMessages(20);
             console.log("Fetch successful, messages:", data.length);
+            
+            // Check for new messages and trigger auto-moderation
+            if (data.length > 0) {
+                const previousMessageIds = new Set(messagesRef.current.map(msg => msg.message_id));
+                const newMessages = data.filter(msg => !previousMessageIds.has(msg.message_id));
+                
+                console.log(`Found ${newMessages.length} new messages out of ${data.length} total`);
+                
+                // Process new messages for auto-moderation
+                newMessages.forEach(msg => {
+                    console.log(`Processing new message: ${msg.message_id}`);
+                    options?.onNewMessage?.(msg);
+                });
+            }
             
             setMessages(data);
 

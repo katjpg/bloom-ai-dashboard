@@ -67,7 +67,7 @@ async def get_messages(
 @router.get("/live")
 async def get_live_messages(limit: int = Query(20)):
     """
-    Fetch live messages using database function
+    Fetch live messages using database function and merge with in-memory moderation results
     
     Args:
         limit: Maximum number of live messages to return (default: 20)
@@ -76,7 +76,22 @@ async def get_live_messages(limit: int = Query(20)):
         # Use RPC function exactly as it worked before
         messages_response = supabase.rpc('get_live_messages', {'p_limit': limit}).execute()
         
-        return messages_response.data
+        # Import moderation_results from chat module
+        from routes.chat import moderation_results
+        
+        # Merge messages with in-memory moderation results
+        enriched_messages = []
+        for message in messages_response.data:
+            message_id = message.get('message_id')
+            
+            # Add moderation results if they exist in memory
+            if message_id in moderation_results:
+                message.update(moderation_results[message_id])
+                logger.info(f"Added moderation data to message {message_id}: {moderation_results[message_id]}")
+            
+            enriched_messages.append(message)
+        
+        return enriched_messages
     except Exception as e:
         logger.error(f"Error fetching live messages: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to fetch live messages: {str(e)}")

@@ -168,6 +168,12 @@ class DetectPII(BaseNode[ModerationState]):
 @dataclass
 class CheckIntent(BaseNode[ModerationState]):
     async def run(self, ctx: GraphRunContext) -> Union[ModerateContent, End]:
+        # Simple email detection as fallback for PII intent
+        message_lower = ctx.state.message.message.lower()
+        simple_email_detected = "@" in message_lower and "." in message_lower and any(
+            keyword in message_lower for keyword in ["email", "e-mail", "contact", "reach"]
+        )
+        
         try:
             result = await PIIAgent.run(ctx.state.message.message)
             intent = result.output if hasattr(result, "output") else result
@@ -186,10 +192,21 @@ class CheckIntent(BaseNode[ModerationState]):
 
         except Exception as e:
             print(f"Intent analysis error: {e}")
+            # Use simple email detection as fallback
+            intent_fallback = simple_email_detected
+            
             if ctx.state.pii_result:
-                ctx.state.pii_result.pii_intent = False
+                ctx.state.pii_result.pii_intent = intent_fallback
             else:
-                ctx.state.pii_result = PIIResult(pii_presence=False, pii_intent=False)
+                ctx.state.pii_result = PIIResult(pii_presence=False, pii_intent=intent_fallback)
+            
+            # If fallback detected email intent, still recommend deletion
+            if intent_fallback:
+                ctx.state.recommended_action = ModAction(
+                    action=ActionType.DELETE_MESSAGE,
+                    reason="Email sharing detected (fallback detection)",
+                )
+                return End("PII intent detected via fallback - message blocked")
 
         return ModerateContent()
 

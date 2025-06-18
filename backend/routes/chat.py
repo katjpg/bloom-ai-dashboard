@@ -47,8 +47,9 @@ class ModerationResponse(BaseModel):
     moderation_state: ModerationState
 
 
-# In-memory storage for flagged messages
+# In-memory storage for flagged messages and moderation results
 flagged_messages = {}
+moderation_results = {}  # Store moderation results by message_id
 
 
 @router.post("/moderate", response_model=ModerationResponse)
@@ -70,7 +71,7 @@ def moderate_message(request: ChatMessage):
     import asyncio
     moderation_state = asyncio.run(chat_service.moderate_message(chat_message))
     
-    # Update database with moderation results
+    # Store moderation results in both database and memory
     if moderation_state.recommended_action:
         # Build reason
         reason_parts = []
@@ -84,12 +85,19 @@ def moderate_message(request: ChatMessage):
         
         comprehensive_reason = "; ".join(reason_parts)
         
-        # Update message
+        # Update database
         update_data = {
             "moderation_action": moderation_state.recommended_action.action.value,
             "moderation_reason": comprehensive_reason
         }
         supabase.table('messages').update(update_data).eq('message_id', request.message_id).execute()
+        
+        # ALSO store in memory for live feed
+        moderation_results[request.message_id] = {
+            "moderation_action": moderation_state.recommended_action.action.value,
+            "moderation_reason": comprehensive_reason
+        }
+        logger.info(f"Stored moderation result in database and memory for {request.message_id}: {moderation_state.recommended_action.action.value}")
     
     return ModerationResponse(moderation_state=moderation_state)
 
@@ -99,23 +107,59 @@ def analyze_sentiment_and_create_message(
     request: AnalyzeRequest,
     _: None = Depends(verify_api_key)
 ):
-    """Analyze endpoint that creates new messages (for frontend compatibility)"""
+    """Analyze endpoint that creates new messages and optionally runs moderation"""
     # Generate random values if not provided
     player_id = request.player_id if request.player_id is not None else random.randint(1, 100)
     player_name = request.player_name if request.player_name is not None else f"Player{random.randint(1, 999)}"
     message_id = request.message_id if request.message_id is not None else f"msg_{random.randint(100000, 999999)}"
     
-    # Convert request to ChatMessage format for sentiment analysis
-    sentiment_message = ChatMessage(
+    # Convert request to ChatMessage format
+    chat_message = ChatMessage(
         message=request.message,
         message_id=message_id,
         player_id=player_id,
         player_name=player_name
     )
     
-    # Analyze sentiment
+    # Run sentiment analysis
     import asyncio
-    sentiment_result = asyncio.run(sentiment_service.analyze_message_sentiment(sentiment_message))
+    sentiment_result = asyncio.run(sentiment_service.analyze_message_sentiment(chat_message))
+    
+    # Also run moderation in parallel (for auto-mod testing)
+    try:
+        moderation_result = asyncio.run(chat_service.moderate_message(chat_message))
+        logger.info(f"Moderation result for {message_id}: {moderation_result.recommended_action}")
+        
+        # Store moderation results in both database and memory if action recommended
+        if moderation_result.recommended_action:
+            reason_parts = []
+            if moderation_result.pii_result and moderation_result.pii_result.pii_presence:
+                pii_type = moderation_result.pii_result.pii_type.value if moderation_result.pii_result.pii_type else "Unknown"
+                reason_parts.append(f"Detected {pii_type}")
+            if moderation_result.content_result and moderation_result.content_result.main_category.value != "OK":
+                reason_parts.append(f"Harmful content: {moderation_result.content_result.main_category.value}")
+            if not reason_parts:
+                reason_parts.append(moderation_result.recommended_action.reason)
+            
+            comprehensive_reason = "; ".join(reason_parts)
+            
+            # Update database
+            update_data = {
+                "moderation_action": moderation_result.recommended_action.action.value,
+                "moderation_reason": comprehensive_reason
+            }
+            supabase.table('messages').update(update_data).eq('message_id', message_id).execute()
+            
+            # ALSO store in memory for live feed
+            moderation_results[message_id] = {
+                "moderation_action": moderation_result.recommended_action.action.value,
+                "moderation_reason": comprehensive_reason
+            }
+            logger.info(f"Stored moderation result in database and memory for {message_id}: {moderation_result.recommended_action.action.value}")
+    
+    except Exception as e:
+        logger.error(f"Moderation failed for {message_id}: {e}")
+        # Continue with sentiment analysis even if moderation fails
     
     # Store player and message data
     player_data = {

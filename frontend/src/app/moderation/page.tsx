@@ -106,7 +106,7 @@ export default function ModerationPage() {
   }
 
   return (
-    <div className="@container/page flex flex-1 flex-col gap-8 p-6">
+      <div className="@container/page flex flex-1 flex-col gap-8 p-6">
       {/* Header Section */}
       <div className="flex items-end justify-between">
         <div className="flex flex-col gap-2">
@@ -183,6 +183,6 @@ export default function ModerationPage() {
           </div>
         </div>
       )}
-    </div>
+      </div>
   )
 }

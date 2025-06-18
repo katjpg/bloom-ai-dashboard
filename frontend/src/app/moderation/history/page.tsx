@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import {
   Select,
   SelectContent,
@@ -11,10 +11,18 @@ import {
 import ModHistory from "../_components/mod-history"
 import { mockExperiences } from "../_data"
 import { useModerationHistory } from "@/contexts/moderation-history-context"
+import { useAutoModeration } from "@/contexts/auto-moderation-context"
 
 export default function HistoryPage() {
   const [selectedExperienceId, setSelectedExperienceId] = useState<number>(0)
-  const { history } = useModerationHistory()
+  const { history: manualHistory } = useModerationHistory()
+  const { moderationHistory: autoHistory } = useAutoModeration()
+
+  // Merge manual and auto-moderation history, sorted by timestamp
+  const combinedHistory = useMemo(() => {
+    const combined = [...manualHistory, ...autoHistory]
+    return combined.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+  }, [manualHistory, autoHistory])
 
   return (
     <div className="@container/page flex flex-1 flex-col gap-8 p-6">
@@ -49,7 +57,7 @@ export default function HistoryPage() {
 
       {/* History Table */}
       <ModHistory 
-        history={history} 
+        history={combinedHistory} 
         selectedExperienceId={selectedExperienceId === 0 ? undefined : selectedExperienceId} 
       />
     </div>
