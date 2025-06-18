@@ -12,21 +12,23 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { 
-  IconCircleCheck
+  IconCircleCheck,
+  IconRefresh
 } from "@tabler/icons-react"
 import { 
   PriorityLevel
 } from "@/lib/colors-mod"
 import { mockExperiences } from "../_data"
-import { mockQueueItems } from "../_data/queue-data"
+import { useQueue } from "@/hooks/useQueue"
 import CardsQueue from "../_components/cards-queue"
 
 export default function QueuePage() {
   const [selectedExperienceId, setSelectedExperienceId] = useState<number>(0) // 0 for "All"
   const [selectedPriority, setSelectedPriority] = useState<string>("all")
+  const { queueItems, loading, error, fetchQueueItems } = useQueue()
 
   // Filter queue items
-  const filteredItems = mockQueueItems.filter(item => {
+  const filteredItems = queueItems.filter(item => {
     const experienceMatch = selectedExperienceId === 0 || item.experienceId === selectedExperienceId
     const priorityMatch = selectedPriority === "all" || item.priority === selectedPriority
     return experienceMatch && priorityMatch
@@ -89,25 +91,79 @@ export default function QueuePage() {
             </SelectContent>
           </Select>
           
+          <Button 
+            variant="outline" 
+            onClick={fetchQueueItems} 
+            disabled={loading}
+            size="sm"
+            className="gap-1"
+          >
+            <IconRefresh className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            {loading ? 'Loading...' : 'Refresh'}
+          </Button>
         </div>
       </div>
 
 
       {/* Queue Items */}
       <div className="space-y-4">
-        {filteredItems.length === 0 ? (
+        {error && (
+          <Card>
+            <CardContent className="flex items-center justify-center py-12">
+              <div className="text-center space-y-2">
+                <h3 className="font-clash text-lg font-medium text-destructive">Error Loading Queue</h3>
+                <p className="text-sm text-muted-foreground">{error}</p>
+                <Button onClick={fetchQueueItems} variant="outline">
+                  Try Again
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+        
+        {!error && loading && queueItems.length === 0 && (
+          <Card>
+            <CardContent className="flex items-center justify-center py-12">
+              <div className="text-center space-y-2">
+                <IconRefresh className="h-12 w-12 mx-auto text-muted-foreground animate-spin" />
+                <h3 className="font-clash text-lg font-medium">Loading Queue</h3>
+                <p className="text-sm text-muted-foreground">
+                  Fetching flagged messages...
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+        
+        {!error && !loading && filteredItems.length === 0 && queueItems.length === 0 && (
           <Card>
             <CardContent className="flex items-center justify-center py-12">
               <div className="text-center space-y-2">
                 <IconCircleCheck className="h-12 w-12 mx-auto text-green-500" />
                 <h3 className="font-clash text-lg font-medium">Queue is Empty</h3>
                 <p className="text-sm text-muted-foreground">
+                  No flagged messages found. Flag some messages to see them here.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+        
+        {!error && !loading && filteredItems.length === 0 && queueItems.length > 0 && (
+          <Card>
+            <CardContent className="flex items-center justify-center py-12">
+              <div className="text-center space-y-2">
+                <IconCircleCheck className="h-12 w-12 mx-auto text-muted-foreground" />
+                <h3 className="font-clash text-lg font-medium">No Matches</h3>
+                <p className="text-sm text-muted-foreground">
                   No items match your current filters
                 </p>
               </div>
             </CardContent>
           </Card>
-        ) : (
+        )}
+        
+        {!error && filteredItems.length > 0 && (
           filteredItems.map((item) => (
             <CardsQueue 
               key={item.id}

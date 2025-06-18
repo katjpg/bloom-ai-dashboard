@@ -30,8 +30,11 @@ export function useAvatarHeadshot(userId: number | string | null | undefined) {
                 const imageUrl = await robloxApi.getAvatarHeadshotUrl(userId);
                 setUrl(imageUrl); // Set the fetched URL (will be null if not found or error)
             } catch (err: any) {
-                console.error(`Error in useAvatarHeadshot for user ${userId}:`, err);
-                setError(err.message || "Failed to fetch avatar");
+                // Only log actual errors, not 404s for fake user IDs
+                if (err.response?.status !== 404) {
+                    console.error(`Error in useAvatarHeadshot for user ${userId}:`, err);
+                    setError(err.message || "Failed to fetch avatar");
+                }
                 setUrl(null); // Ensure URL is null on error
             } finally {
                 setLoading(false);

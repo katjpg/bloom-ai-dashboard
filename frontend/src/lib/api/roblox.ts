@@ -186,10 +186,11 @@ class RobloxAPIClient {
                 return null;
             }
         } catch (error: any) {
-            // Log specific errors based on response status if available
+            // Handle 404s silently for fake user IDs, log other errors
             if (error.response) {
                 if (error.response.status === 404) {
-                    console.log(`Avatar not found for user ID ${userIdString} (404 from proxy: ${error.response.data?.error || 'Not Found'}).`);
+                    // Silently handle 404s - expected for fake user IDs
+                    return null;
                 } else {
                     console.error(`Error fetching avatar from proxy for user ID ${userIdString} - Status ${error.response.status}:`,
                         error.response.data?.error || error.message);

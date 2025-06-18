@@ -19,6 +19,7 @@ import { PRIORITY_FILTER_OPTIONS, VIOLATION_FILTER_OPTIONS, ChatMessage, UserRol
 import { IconSearch, IconFilter, IconX, IconRefresh } from "@tabler/icons-react"
 import CardsChat from "./cards-chat"
 import { useLiveMessages } from "@/hooks/useLiveMessages"
+import { useFlaggedMessagesContext } from "@/contexts/flagged-messages-context"
 import { Message } from "@/types/sentiment"
 
 interface LiveChatFeedProps {
@@ -38,8 +39,9 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
   const [mode, setMode] = useState<ModeType>("view")
   const [selectedMessages, setSelectedMessages] = useState<string[]>([])
 
-  // Use the live messages hook
+  // Use the live messages hook and global flagged messages context
   const { messages: apiMessages, error, loading, fetchMessages } = useLiveMessages()
+  const { flaggedMessageIds } = useFlaggedMessagesContext()
 
   // Handle manual refresh
   const handleRefresh = useCallback(() => {
@@ -67,23 +69,31 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
     };
   }, [fetchMessages]);
 
-  // Convert API messages to ChatMessage format
+  // Convert API messages to ChatMessage format and filter out flagged messages
+  // Only show messages when Bloom (experience_id: 1) is selected
   const chatMessages = useMemo(() => {
-    return apiMessages.map((msg): ChatMessage => ({
-      id: msg.message_id,
-      player_id: msg.player_id,
-      player_name: msg.player_name,
-      message: msg.message,
-      avatar_url: '', // Will be fetched by CardsChat component
-      timestamp: msg.created_at,
-      role: UserRole.PLAYER, // Default role
-      status: UserStatus.ONLINE, // Default status
-      experience_id: selectedExperienceId, // Use current experience
-      priority_level: msg.moderation_action ? PriorityLevel.HIGH : undefined,
-      content_types: msg.moderation_reason ? [ContentType.H] : undefined, // Use H for hate speech as generic violation
-      safety_score: msg.sentiment_score
-    }));
-  }, [apiMessages, selectedExperienceId]);
+    // If not Bloom, return empty array
+    if (selectedExperienceId !== 1) {
+      return [];
+    }
+    
+    return apiMessages
+      .filter(msg => !flaggedMessageIds.has(msg.message_id)) // Filter out flagged messages using global context
+      .map((msg): ChatMessage => ({
+        id: msg.message_id,
+        player_id: msg.player_id,
+        player_name: msg.player_name,
+        message: msg.message,
+        avatar_url: '', // Will be fetched by CardsChat component
+        timestamp: msg.created_at,
+        role: UserRole.PLAYER, // Default role
+        status: UserStatus.ONLINE, // Default status
+        experience_id: 1, // All messages belong to Bloom
+        priority_level: msg.moderation_action ? PriorityLevel.HIGH : undefined,
+        content_types: msg.moderation_reason ? [ContentType.H] : undefined, // Use H for hate speech as generic violation
+        safety_score: msg.sentiment_score
+      }));
+  }, [apiMessages, selectedExperienceId, flaggedMessageIds]);
 
   const filteredMessages = useMemo(() => {
     return chatMessages.filter((message) => {
@@ -148,6 +158,12 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
         : prev.filter(id => id !== messageId)
     )
   }
+
+  // Handle message removal by updating selected messages (flagged messages are auto-filtered by context)
+  const handleMessageRemove = useCallback((messageId: string) => {
+    // Remove from selected messages if it was selected
+    setSelectedMessages(prev => prev.filter(id => id !== messageId))
+  }, [])
 
   // Update mode and notify parent
   const handleModeChange = (newMode: ModeType) => {
@@ -303,7 +319,12 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
             </div>
           ) : filteredMessages.length === 0 ? (
             <div className="text-center text-muted-foreground py-8">
-              {hasActiveFilters ? "No messages match the current filters" : "No messages found"}
+              {selectedExperienceId !== 1 
+                ? "No live chat data available for this experience"
+                : hasActiveFilters 
+                  ? "No messages match the current filters" 
+                  : "No messages found"
+              }
             </div>
           ) : (
             filteredMessages.map((message) => (
@@ -314,6 +335,7 @@ export default function LiveChatFeed({ selectedExperienceId, onPlayerSelect, onM
                 mode={mode}
                 isSelected={selectedMessages.includes(message.id)}
                 onMessageSelect={handleMessageSelect}
+                onRemove={handleMessageRemove}
               />
             ))
           )}

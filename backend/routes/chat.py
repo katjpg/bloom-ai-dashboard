@@ -39,6 +39,11 @@ class AnalyzeRequest(BaseModel):
     player_name: Optional[str] = None
 
 
+class FlagRequest(BaseModel):
+    message_id: str
+    reason: Optional[str] = "User flagged"
+
+
 # Response models
 class ModerationResponse(BaseModel):
     moderation_state: ModerationState
@@ -257,6 +262,60 @@ async def get_user_score(user_id: int):
         return sentiment_service.get_user_score(user_id)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+
+
+# In-memory storage for flagged messages
+flagged_messages = {}  # Dictionary to store flagged messages by message_id
+
+@router.post("/flag")
+async def flag_message(request: FlagRequest):
+    """Flag a message for moderation review (in-memory storage)"""
+    try:
+        # Get the original message from database
+        response = supabase.table('messages').select('*').eq('message_id', request.message_id).execute()
+        
+        if not response.data:
+            logger.warning(f"Message {request.message_id} not found")
+            raise HTTPException(status_code=404, detail="Message not found")
+        
+        message_data = response.data[0]
+        
+        # Store flagged message in memory
+        flagged_messages[request.message_id] = {
+            **message_data,  # Include all original message data
+            "flagged": True,
+            "flagged_at": datetime.now(timezone.utc).isoformat(),
+            "flag_reason": request.reason
+        }
+        
+        logger.info(f"Message {request.message_id} flagged successfully (in-memory)")
+        return {"success": True, "message": "Message flagged successfully"}
+            
+    except HTTPException:
+        # Re-raise HTTPExceptions
+        raise
+    except Exception as e:
+        logger.error(f"Failed to flag message: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to flag message: {str(e)}")
+
+
+@router.get("/flagged")
+async def get_flagged_messages(limit: int = 50):
+    """Get all flagged messages for moderation queue (from in-memory storage)"""
+    try:
+        # Return flagged messages from memory, sorted by flagged_at (newest first)
+        flagged_list = list(flagged_messages.values())
+        flagged_list.sort(key=lambda x: x.get('flagged_at', ''), reverse=True)
+        
+        # Apply limit
+        limited_results = flagged_list[:limit]
+        
+        logger.info(f"Returning {len(limited_results)} flagged messages from memory")
+        return limited_results
+        
+    except Exception as e:
+        logger.error(f"Error fetching flagged messages: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch flagged messages")
 
 
 @router.get("/leaderboard")

@@ -5,7 +5,12 @@ export const getApiUrl = () => {
     return process.env.NEXT_PUBLIC_API_URL;
   }
   
-  // Default to production API if no environment variable is set
+  // Default to local development server
+  if (process.env.NODE_ENV === 'development') {
+    return 'http://localhost:8000';
+  }
+  
+  // Default to production API for production builds
   return 'https://la-hacks-api.vercel.app';
 };
 
