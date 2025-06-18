@@ -17,7 +17,12 @@ interface CardsChatProps {
 }
 
 export default function CardsChat({ message, onPlayerSelect, mode, isSelected, onMessageSelect }: CardsChatProps) {
-  const timeAgo = new Date(message.timestamp).toLocaleTimeString()
+  const timeAgo = new Date(message.timestamp).toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true
+  })
   
   // Fetch avatar URL for the player
   const { url: avatarUrl, loading: avatarLoading } = useAvatarHeadshot(message.player_id?.toString())

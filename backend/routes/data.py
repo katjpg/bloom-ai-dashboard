@@ -149,3 +149,30 @@ async def get_roblox_avatar(userId: Optional[str] = Query(None)):
         # Handle any other unexpected errors
         logger.error(f"Roblox avatar proxy: An unexpected error occurred: {e}")
         raise HTTPException(status_code=500, detail="An internal error occurred")
+
+
+@router.get("/top-players")
+async def get_top_players(limit: int = Query(10)):
+    """
+    Get top players by sentiment score using database RPC function
+    
+    Args:
+        limit: Maximum number of top players to return (default: 10)
+    """
+    try:
+        response = supabase.rpc('get_top_players_by_sentiment', {'p_limit': limit}).execute()
+        
+        # Format the response to ensure we have the required fields
+        formatted_data = []
+        for player in response.data:
+            formatted_data.append({
+                "player_id": player["player_id"],
+                "player_name": player["player_name"],
+                "total_sentiment_score": player["total_sentiment_score"],
+                "message_count": player["message_count"]
+            })
+        
+        return formatted_data
+    except Exception as e:
+        logger.error(f"Error fetching top players: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to fetch top players: {str(e)}")
