@@ -384,47 +384,12 @@ export interface LeaderboardPlayer {
 
 export type TimePeriod = "today" | "week" | "month" | "alltime"
 
+// Leaderboard data will come from API - minimal placeholder for UI testing
 export const mockLeaderboardData: Record<TimePeriod, LeaderboardPlayer[]> = {
-  today: [
-    { id: 1, username: "remiel430", score: 48, positiveActions: 12, trend: "up", recentChange: 6, rank: 1, experienceId: 1, experienceName: "Bloom" },
-    { id: 2, username: "4aimstar", score: 42, positiveActions: 11, trend: "up", recentChange: 4, rank: 2, experienceId: 2, experienceName: "Creative Studios" },
-    { id: 3, username: "Nooburai", score: 38, positiveActions: 9, trend: "up", recentChange: 3, rank: 3, experienceId: 1, experienceName: "Bloom" },
-    { id: 4, username: "coolkid789", score: 34, positiveActions: 8, trend: "up", recentChange: 5, rank: 4, experienceId: 1, experienceName: "Bloom" },
-    { id: 5, username: "buildit_999", score: 30, positiveActions: 7, trend: "stable", recentChange: 0, rank: 5, experienceId: 2, experienceName: "Creative Studios" },
-    { id: 6, username: "pixelmaster24", score: 28, positiveActions: 6, trend: "up", recentChange: 2, rank: 6, experienceId: 2, experienceName: "Creative Studios" },
-    { id: 7, username: "smartkid123", score: 24, positiveActions: 5, trend: "down", recentChange: -1, rank: 7, experienceId: 3, experienceName: "Adventure Academy" },
-    { id: 8, username: "creator456", score: 22, positiveActions: 4, trend: "up", recentChange: 1, rank: 8, experienceId: 1, experienceName: "Bloom" },
-  ],
-  week: [
-    { id: 1, username: "remiel430", score: 286, positiveActions: 72, trend: "up", recentChange: 28, rank: 1, experienceId: 1, experienceName: "Bloom" },
-    { id: 2, username: "4aimstar", score: 248, positiveActions: 63, trend: "up", recentChange: 22, rank: 2, experienceId: 2, experienceName: "Creative Studios" },
-    { id: 3, username: "Nooburai", score: 212, positiveActions: 54, trend: "up", recentChange: 18, rank: 3, experienceId: 1, experienceName: "Bloom" },
-    { id: 4, username: "coolkid789", score: 194, positiveActions: 48, trend: "up", recentChange: 15, rank: 4, experienceId: 1, experienceName: "Bloom" },
-    { id: 5, username: "pixelmaster24", score: 176, positiveActions: 42, trend: "up", recentChange: 12, rank: 5, experienceId: 2, experienceName: "Creative Studios" },
-    { id: 6, username: "buildit_999", score: 158, positiveActions: 38, trend: "stable", recentChange: 2, rank: 6, experienceId: 2, experienceName: "Creative Studios" },
-    { id: 7, username: "smartkid123", score: 142, positiveActions: 34, trend: "down", recentChange: -6, rank: 7, experienceId: 3, experienceName: "Adventure Academy" },
-    { id: 8, username: "creator456", score: 128, positiveActions: 30, trend: "up", recentChange: 8, rank: 8, experienceId: 1, experienceName: "Bloom" },
-  ],
-  month: [
-    { id: 1, username: "remiel430", score: 424, positiveActions: 287, trend: "up", recentChange: 98, rank: 1, experienceId: 1, experienceName: "Bloom" },
-    { id: 2, username: "4aimstar", score: 376, positiveActions: 243, trend: "up", recentChange: 76, rank: 2, experienceId: 2, experienceName: "Creative Studios" },
-    { id: 3, username: "Nooburai", score: 334, positiveActions: 208, trend: "up", recentChange: 67, rank: 3, experienceId: 1, experienceName: "Bloom" },
-    { id: 4, username: "coolkid789", score: 298, positiveActions: 186, trend: "up", recentChange: 54, rank: 4, experienceId: 1, experienceName: "Bloom" },
-    { id: 5, username: "pixelmaster24", score: 268, positiveActions: 172, trend: "up", recentChange: 43, rank: 5, experienceId: 2, experienceName: "Creative Studios" },
-    { id: 6, username: "buildit_999", score: 244, positiveActions: 158, trend: "stable", recentChange: 8, rank: 6, experienceId: 2, experienceName: "Creative Studios" },
-    { id: 7, username: "smartkid123", score: 216, positiveActions: 145, trend: "down", recentChange: -18, rank: 7, experienceId: 3, experienceName: "Adventure Academy" },
-    { id: 8, username: "creator456", score: 194, positiveActions: 132, trend: "up", recentChange: 32, rank: 8, experienceId: 1, experienceName: "Bloom" },
-  ],
-  alltime: [
-    { id: 1, username: "remiel430", score: 1248, positiveActions: 824, trend: "up", recentChange: 156, rank: 1, experienceId: 1, experienceName: "Bloom" },
-    { id: 2, username: "4aimstar", score: 1096, positiveActions: 734, trend: "up", recentChange: 134, rank: 2, experienceId: 2, experienceName: "Creative Studios" },
-    { id: 3, username: "Nooburai", score: 964, positiveActions: 642, trend: "up", recentChange: 98, rank: 3, experienceId: 1, experienceName: "Bloom" },
-    { id: 4, username: "coolkid789", score: 834, positiveActions: 558, trend: "up", recentChange: 87, rank: 4, experienceId: 1, experienceName: "Bloom" },
-    { id: 5, username: "pixelmaster24", score: 736, positiveActions: 496, trend: "up", recentChange: 76, rank: 5, experienceId: 2, experienceName: "Creative Studios" },
-    { id: 6, username: "buildit_999", score: 662, positiveActions: 445, trend: "stable", recentChange: 12, rank: 6, experienceId: 2, experienceName: "Creative Studios" },
-    { id: 7, username: "smartkid123", score: 594, positiveActions: 408, trend: "up", recentChange: 45, rank: 7, experienceId: 3, experienceName: "Adventure Academy" },
-    { id: 8, username: "creator456", score: 526, positiveActions: 364, trend: "up", recentChange: 67, rank: 8, experienceId: 1, experienceName: "Bloom" },
-  ]
+  today: [],
+  week: [],
+  month: [],
+  alltime: []
 }
 
 export const mockLeaderboardStats = {
@@ -532,82 +497,11 @@ export interface ActiveUser {
   experience_id: number
 }
 
-// Realistic Roblox usernames for active users
-export const mockActiveUsers: ActiveUser[] = [
-  { id: "user_001", player_id: 123456, player_name: "remiel430", avatar_url: "/api/placeholder/40/40", status: UserStatus.ONLINE, join_time: "2 minutes ago", experience_id: 1 },
-  { id: "user_002", player_id: 234567, player_name: "4aimstar", avatar_url: "/api/placeholder/40/40", status: UserStatus.ONLINE, join_time: "5 minutes ago", experience_id: 1 },
-  { id: "user_003", player_id: 345678, player_name: "Nooburai", avatar_url: "/api/placeholder/40/40", status: UserStatus.ONLINE, join_time: "8 minutes ago", experience_id: 1 },
-  { id: "user_004", player_id: 456789, player_name: "xxCoolGamer2011xx", avatar_url: "/api/placeholder/40/40", status: UserStatus.ONLINE, join_time: "12 minutes ago", experience_id: 2 },
-  { id: "user_005", player_id: 567890, player_name: "BuilderPro999", avatar_url: "/api/placeholder/40/40", status: UserStatus.ONLINE, join_time: "15 minutes ago", experience_id: 2 },
-  { id: "user_006", player_id: 678901, player_name: "PixelArtist2014", avatar_url: "/api/placeholder/40/40", status: UserStatus.ONLINE, join_time: "18 minutes ago", experience_id: 2 },
-  { id: "user_007", player_id: 789012, player_name: "MathHelper123", avatar_url: "/api/placeholder/40/40", status: UserStatus.OFFLINE, join_time: "25 minutes ago", experience_id: 3 },
-  { id: "user_008", player_id: 890123, player_name: "CreativeKid456", avatar_url: "/api/placeholder/40/40", status: UserStatus.ONLINE, join_time: "30 minutes ago", experience_id: 1 },
-  { id: "user_009", player_id: 901234, player_name: "GameMaster789", avatar_url: "/api/placeholder/40/40", status: UserStatus.ONLINE, join_time: "35 minutes ago", experience_id: 1 },
-  { id: "user_010", player_id: 912345, player_name: "ProGamer2013", avatar_url: "/api/placeholder/40/40", status: UserStatus.ONLINE, join_time: "42 minutes ago", experience_id: 2 }
-]
+// Active users will come from API - no mock data needed
+export const mockActiveUsers: ActiveUser[] = []
 
-// Sample chat messages with realistic Roblox usernames and gamer language
-export const mockChatMessages: ChatMessage[] = [
-  {
-    id: "msg_001",
-    player_id: 123456,
-    player_name: "remiel430",
-    message: "yo just got that sick victory royale! anyone wanna squad up for another round?",
-    avatar_url: "/api/placeholder/40/40",
-    timestamp: "2024-06-15T20:17:00Z",
-    role: UserRole.PLAYER,
-    status: UserStatus.ONLINE,
-    experience_id: 1
-  },
-  {
-    id: "msg_002", 
-    player_id: 345678,
-    player_name: "Nooburai",
-    message: "bruh how do i get better aim in this game?? keep getting rekt lol",
-    avatar_url: "/api/placeholder/40/40",
-    timestamp: "2024-06-15T20:18:30Z",
-    role: UserRole.PLAYER,
-    status: UserStatus.ONLINE,
-    experience_id: 1
-  },
-  {
-    id: "msg_003",
-    player_id: 100001,
-    player_name: "BloomModerator",
-    message: "hey gamers! welcome to bloom, keep it fun and help each other level up :)",
-    avatar_url: "/api/placeholder/40/40", 
-    timestamp: "2024-06-15T20:19:15Z",
-    role: UserRole.MODERATOR,
-    status: UserStatus.ONLINE,
-    experience_id: 1
-  },
-  {
-    id: "msg_004",
-    player_id: 234567,
-    player_name: "4aimstar",
-    message: "got u bro! practice in the training arena first, then adjust your sensitivity settings",
-    avatar_url: "/api/placeholder/40/40",
-    timestamp: "2024-06-15T20:20:00Z",
-    role: UserRole.PLAYER,
-    status: UserStatus.ONLINE,
-    experience_id: 1,
-    community_actions: [CommunityAction.HELPFUL_ADVICE],
-    safety_score: 98.5
-  },
-  {
-    id: "msg_005",
-    player_id: 456789,
-    player_name: "coolkid789",
-    message: "yooo just hopped into creative mode, bout to build the sickest castle! 🏰",
-    avatar_url: "/api/placeholder/40/40",
-    timestamp: "2024-06-15T20:21:30Z",
-    role: UserRole.PLAYER,
-    status: UserStatus.ONLINE,
-    experience_id: 2,
-    community_actions: [CommunityAction.APPRECIATION],
-    safety_score: 95.2
-  }
-]
+// Chat messages will come from API - no mock data needed
+export const mockChatMessages: ChatMessage[] = []
 
 // ===== COMMUNITY ACTION METRICS =====
 
@@ -1026,95 +920,5 @@ export const isPositiveAction = (action: CommunityAction): boolean => {
 
 // ===== MODERATION HISTORY DATA =====
 
-// Mock historical data for initial display - using realistic Roblox usernames and gaming content
-export const mockModerationHistory: ModerationHistory[] = [
-  {
-    id: "hist_001",
-    timestamp: "2024-06-16T02:45:00Z",
-    action: ActionType.DELETE_MESSAGE,
-    moderator: "System",
-    moderatorRole: UserRole.MODERATOR,
-    playerId: 234567,
-    playerName: "4aimstar",
-    experienceId: 1,
-    experienceName: "Bloom",
-    messageIds: ["msg_005"],
-    messageContent: "add me on discord, my phone is 555-123-4567",
-    affectedMessagesCount: 1,
-    originalPriority: PriorityLevel.CRITICAL,
-    originalPII: [PIIType.TELEPHONENUM],
-    reason: "Removed for: PII:TELEPHONENUM",
-    status: 'active',
-    isAutomated: true
-  },
-  {
-    id: "hist_002",
-    timestamp: "2024-06-16T02:30:00Z",
-    action: ActionType.WARNING,
-    moderator: "BloomModerator",
-    moderatorRole: UserRole.MODERATOR,
-    playerId: 456789,
-    playerName: "toxicgamer21",
-    experienceId: 3,
-    experienceName: "Adventure Academy",
-    messageIds: ["msg_011"],
-    messageContent: "this game is trash and u all suck at pvp",
-    affectedMessagesCount: 1,
-    originalPriority: PriorityLevel.MODERATE,
-    originalContentTypes: [ContentType.HR],
-    reason: "Warning for: Harassment",
-    status: 'active',
-    isAutomated: false
-  },
-  {
-    id: "hist_003",
-    timestamp: "2024-06-16T02:15:00Z",
-    action: ActionType.APPROVE,
-    moderator: "CreativeAdmin",
-    moderatorRole: UserRole.ADMIN,
-    playerId: 123456,
-    playerName: "remiel430",
-    experienceId: 2,
-    experienceName: "Creative Studios",
-    messageIds: ["msg_008"],
-    messageContent: "@buildit_999 connect the redstone to the piston first! i can show u",
-    affectedMessagesCount: 1,
-    reason: "Message approved for display",
-    status: 'active',
-    isAutomated: false
-  },
-  {
-    id: "hist_004",
-    timestamp: "2024-06-16T01:45:00Z",
-    action: ActionType.APPROVE,
-    moderator: "BloomModerator",
-    moderatorRole: UserRole.MODERATOR,
-    playerId: 345678,
-    playerName: "Nooburai",
-    experienceId: 1,
-    experienceName: "Bloom",
-    messageIds: ["msg_002"],
-    messageContent: "bruh how do i get better aim in this game?? keep getting rekt lol",
-    affectedMessagesCount: 1,
-    reason: "Message approved for display",
-    status: 'active',
-    isAutomated: false
-  },
-  {
-    id: "hist_005",
-    timestamp: "2024-06-16T01:20:00Z",
-    action: ActionType.APPROVE,
-    moderator: "CreativeMod",
-    moderatorRole: UserRole.MODERATOR,
-    playerId: 567890,
-    playerName: "pixelmaster24",
-    experienceId: 2,
-    experienceName: "Creative Studios",
-    messageIds: ["msg_006"],
-    messageContent: "yooo check out my sick spaceship build! used all the new cosmic blocks",
-    affectedMessagesCount: 1,
-    reason: "Message approved for display",
-    status: 'active',
-    isAutomated: false
-  }
-]
+// Moderation history will come from API - no mock data needed
+export const mockModerationHistory: ModerationHistory[] = []
