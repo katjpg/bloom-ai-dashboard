@@ -51,8 +51,8 @@ export function getAvatarUserId(playerId: string | number | null | undefined): n
 }
 
 /**
- * Environment variable to enable/disable avatar mapping
- * Set NEXT_PUBLIC_USE_AVATAR_MAPPING=true to enable
+ * Environment variable to enable/disable avatar mapping fallback
+ * Set NEXT_PUBLIC_USE_AVATAR_MAPPING=false to disable fallback mapping
  */
 export function isAvatarMappingEnabled(): boolean {
   if (typeof window === 'undefined') return false;
@@ -60,23 +60,6 @@ export function isAvatarMappingEnabled(): boolean {
   // Check environment variable or default to enabled for better visual experience
   const envSetting = process.env.NEXT_PUBLIC_USE_AVATAR_MAPPING;
   return envSetting !== 'false'; // Default to enabled unless explicitly disabled
-}
-
-/**
- * Gets the appropriate user ID for avatar fetching
- * Returns mapped avatar ID if mapping is enabled, otherwise returns original player ID
- * 
- * @param playerId - The original player ID
- * @returns User ID to use for avatar fetching
- */
-export function getEffectiveAvatarUserId(playerId: string | number | null | undefined): string | number | null {
-  if (!playerId) return null;
-  
-  if (isAvatarMappingEnabled()) {
-    return getAvatarUserId(playerId);
-  }
-  
-  return playerId;
 }
 
 /**
