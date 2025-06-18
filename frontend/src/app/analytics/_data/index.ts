@@ -58,29 +58,22 @@ export type TimePeriod = "1d" | "7d" | "1m"
 export const mockPositiveCommunityActions: CommunityActionData[] = [
   {
     action: CommunityAction.ENCOURAGEMENT,
-    count: 185,
-    percentage: 31.0,
+    count: 215,
+    percentage: 42.8,
     trend: "up",
     change: 12.4
   },
   {
     action: CommunityAction.HELPING,
-    count: 128,
-    percentage: 21.4,
+    count: 158,
+    percentage: 31.5,
     trend: "up",
     change: 8.7
   },
   {
-    action: CommunityAction.CELEBRATING,
-    count: 107,
-    percentage: 17.9,
-    trend: "up",
-    change: 15.2
-  },
-  {
     action: CommunityAction.TEAM_BUILDING,
-    count: 89,
-    percentage: 14.9,
+    count: 129,
+    percentage: 25.7,
     trend: "up",
     change: 22.1
   }

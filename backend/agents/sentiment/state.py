@@ -10,7 +10,6 @@ class CommunityAction(str, Enum):
     # Positive Actions
     ENCOURAGEMENT = "ENCOURAGEMENT"          # Supporting teammates, cheering others on
     HELPING = "HELPING"                      # Teaching, sharing resources, mentoring
-    CELEBRATING = "CELEBRATING"              # Recognizing achievements, complimenting creations
     TEAM_BUILDING = "TEAM_BUILDING"          # Building friendships, inclusive behavior
     
     # Negative Actions

@@ -41,13 +41,12 @@ POSITIVE_LABEL = "LABEL_2"
 
 # Agent Prompts
 COMMUNITY_INTENT_PROMPT = """
-Analyze gaming messages for community intent in Roblox experiences.
+Analyze gaming messages for SUBSTANTIAL community intent in Roblox experiences.
 
-POSITIVE actions to detect (actions that HELP/BENEFIT others):
-- ENCOURAGEMENT: Giving support, motivating others, providing positive reinforcement
-- HELPING: Offering assistance, teaching, providing advice or resources TO others
-- CELEBRATING: Recognizing others' achievements, complimenting others' creations
-- TEAM_BUILDING: Welcoming newcomers, including others, building friendships
+POSITIVE actions to detect (must be MEANINGFUL and INTENTIONAL):
+- ENCOURAGEMENT: Giving genuine support during challenges, meaningful motivation during setbacks
+- HELPING: Actively offering specific assistance, teaching skills, providing resources
+- TEAM_BUILDING: Actively welcoming newcomers, deliberately including others, building connections
 
 NEGATIVE actions to detect:
 - GRIEFING: Intentionally ruining gameplay, destroying creations, sabotaging others
@@ -56,17 +55,27 @@ NEGATIVE actions to detect:
 - INAPPROPRIATE: Scamming attempts, harassment, rule violations, concerning requests
 - SPAM: Repetitive messages, chat flooding, disruptive off-topic content
 
-Important distinctions:
-- ASKING for help is NOT "HELPING" - only OFFERING help counts as positive
-- SEEKING encouragement is NOT "ENCOURAGEMENT" - only GIVING encouragement counts
-- Questions, requests, or seeking assistance are neutral (return null)
+DO NOT classify as positive:
+- Casual acknowledgments ("nice", "cool", "lol")
+- Brief reactions or comments without clear intent to help
+- Generic pleasantries or small talk
+- Single-word responses or minimal effort interactions
+- Casual observations about gameplay
+
+Requirements for POSITIVE classification:
+- Message must show clear INTENT to benefit another player
+- Must be more than casual conversation or acknowledgment
+- Should demonstrate meaningful effort to support/help others
+- Must be substantial enough to meaningfully impact community
 
 Instructions:
-- Focus on what the sender is GIVING to the community, not what they're seeking
-- If no clear community intent detected, return: intent=null, reason=null
+- Be STRICT - only classify genuinely meaningful community actions
+- Casual chatter, brief reactions, and minimal interactions are neutral (return null)
+- Focus on actions that show clear intention to positively impact other players
 
 Response format: intent=[ACTION], reason=[explanation]
 """
+
 
 
 # Reward Points
@@ -238,7 +247,6 @@ class CalculateRewards(BaseNode[SentimentAnalysisState]):
             positive_actions = {
                 CommunityAction.ENCOURAGEMENT,
                 CommunityAction.HELPING,
-                CommunityAction.CELEBRATING,
                 CommunityAction.TEAM_BUILDING,
             }
 

@@ -240,7 +240,6 @@ export enum CommunityAction {
   // Positive Actions
   ENCOURAGEMENT = "ENCOURAGEMENT",      // Supporting teammates, cheering others on
   HELPING = "HELPING",                  // Teaching, sharing resources, mentoring
-  CELEBRATING = "CELEBRATING",          // Recognizing achievements, complimenting creations
   TEAM_BUILDING = "TEAM_BUILDING",      // Building friendships, inclusive behavior
   
   // Negative Actions
@@ -861,7 +860,6 @@ export const getActionTypeColor = (action: CommunityAction): string => {
   const positiveActions = [
     CommunityAction.ENCOURAGEMENT,
     CommunityAction.HELPING,
-    CommunityAction.CELEBRATING,
     CommunityAction.TEAM_BUILDING
   ]
   
@@ -876,7 +874,6 @@ export const getActionLabel = (action: CommunityAction): string => {
   const labels: Record<CommunityAction, string> = {
     [CommunityAction.ENCOURAGEMENT]: "Encouragement",
     [CommunityAction.HELPING]: "Helping",
-    [CommunityAction.CELEBRATING]: "Celebrating",
     [CommunityAction.TEAM_BUILDING]: "Team Building",
     [CommunityAction.GRIEFING]: "Griefing",
     [CommunityAction.TOXICITY]: "Toxicity",
@@ -892,7 +889,6 @@ export const isPositiveAction = (action: CommunityAction): boolean => {
   const positiveActions = [
     CommunityAction.ENCOURAGEMENT,
     CommunityAction.HELPING,
-    CommunityAction.CELEBRATING,
     CommunityAction.TEAM_BUILDING
   ]
   
