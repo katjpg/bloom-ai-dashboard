@@ -98,7 +98,7 @@ export default function CardsChat({ message, onPlayerSelect, mode, isSelected, o
               />
             </div>
           )}
-          <Avatar className="h-12 w-12 flex-shrink-0">
+          <Avatar className="h-12 w-12 flex-shrink-0 ring-2 ring-[#009982] ring-offset-2 ring-offset-background">
             {avatarUrl && <AvatarImage src={avatarUrl} alt={message.player_name} />}
             <AvatarFallback className="text-xs font-medium">
               {avatarLoading ? '...' : message.player_name.slice(0, 2).toUpperCase()}

@@ -26,11 +26,11 @@ type DetailView = 'overview' | 'messages' | 'flagged' | 'violations'
 
 // Helper function for sentiment color
 const getSentimentColor = (score: number) => {
-  if (score >= 75) return 'bg-green-500/10 text-green-700 border-green-200'
-  if (score >= 25) return 'bg-green-300/10 text-green-600 border-green-200'
-  if (score > -25) return 'bg-gray-300/10 text-gray-600 border-gray-200'
-  if (score > -75) return 'bg-red-300/10 text-red-600 border-red-200'
-  return 'bg-red-500/10 text-red-700 border-red-200'
+  if (score >= 75) return 'bg-green-500/10 text-green-700 border-green-200 dark:text-green-400 dark:border-green-800'
+  if (score >= 25) return 'bg-green-300/10 text-green-600 border-green-200 dark:text-green-500 dark:border-green-800'
+  if (score > -25) return 'bg-gray-300/10 text-gray-600 border-gray-200 dark:text-gray-400 dark:border-gray-800'
+  if (score > -75) return 'bg-red-300/10 text-red-600 border-red-200 dark:text-red-500 dark:border-red-800'
+  return 'bg-red-500/10 text-red-700 border-red-200 dark:text-red-400 dark:border-red-800'
 }
 
 export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: PlayerInfoProps) {
@@ -109,16 +109,17 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
 
   // Render detail view header
   const renderDetailHeader = (title: string, icon: React.ReactNode) => (
-    <div className="flex items-center gap-3 mb-4">
+    <div className="mb-4">
       <Button
         variant="ghost"
         size="sm"
         onClick={() => setCurrentView('overview')}
-        className="h-8 w-8 p-0 hover:bg-muted/50"
+        className="h-7 px-2 py-0 hover:bg-muted/50 flex items-center gap-1 mb-3"
       >
-        <IconArrowLeft className="h-4 w-4" />
+        <IconArrowLeft className="h-3.5 w-3.5" />
+        <span className="text-sm">Back</span>
       </Button>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 justify-center">
         {icon}
         <h3 className="font-clash font-semibold text-lg">{title}</h3>
       </div>
@@ -130,7 +131,7 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
     <div key={message.message_id} className="border border-border/40 rounded-lg p-3 space-y-3">
       {/* Header with avatar, username, and sentiment */}
       <div className="flex items-start gap-3">
-        <Avatar className="h-8 w-8 flex-shrink-0">
+        <Avatar className="h-8 w-8 flex-shrink-0 ring-2 ring-[#009982] ring-offset-2 ring-offset-background">
           <AvatarImage src={avatarUrl || undefined} alt={selectedPlayer.player_name} />
           <AvatarFallback className="text-xs font-medium">
             {selectedPlayer.player_name.slice(0, 2).toUpperCase()}
@@ -183,15 +184,17 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
   return (
     <Card className="@container/card shadow-xs overflow-hidden">
       <CardContent className="space-y-4 relative p-4">
-        {/* Close Button */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onClose}
-          className="absolute top-3 right-3 h-7 w-7 p-0 hover:bg-muted/50 z-10"
-        >
-          <IconX className="h-3.5 w-3.5" />
-        </Button>
+        {/* Close Button - Only show on overview */}
+        {currentView === 'overview' && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            className="absolute top-3 right-3 h-7 w-7 p-0 hover:bg-muted/50 z-10"
+          >
+            <IconX className="h-3.5 w-3.5" />
+          </Button>
+        )}
 
         {/* Conditional Content Based on Current View */}
         {currentView === 'overview' ? (
@@ -199,7 +202,7 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
             {/* Player Profile Section */}
             <div className="pt-2 text-center space-y-3">
               <div className="relative inline-block">
-                <Avatar className="h-14 w-14 @sm:h-16 @sm:w-16 mx-auto">
+                <Avatar className="h-14 w-14 @sm:h-16 @sm:w-16 mx-auto ring-2 ring-[#009982] ring-offset-2 ring-offset-background">
                   {avatarUrl && <AvatarImage src={avatarUrl} alt={selectedPlayer.player_name} />}
                   <AvatarFallback className="text-sm font-medium">
                     {avatarLoading ? '...' : selectedPlayer.player_name.slice(0, 2).toUpperCase()}
@@ -328,7 +331,7 @@ export default function PlayerInfo({ selectedPlayer, onClose, onPlayerAction }: 
                   No {currentView} found for this player
                 </div>
               ) : (
-                <ScrollArea className="h-[400px] pr-4">
+                <ScrollArea className="h-[400px]">
                   <div className="space-y-3">
                     {filteredMessages.map((message) => 
                       renderMessageItem(message, currentView === 'violations')

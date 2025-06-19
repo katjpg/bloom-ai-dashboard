@@ -20,7 +20,7 @@ function PlayerItem({ player }: { player: any }) {
   
   return (
     <div className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/20 hover:bg-muted/40 transition-colors border border-border/30">
-      <Avatar className="h-8 w-8 flex-shrink-0">
+      <Avatar className="h-8 w-8 flex-shrink-0 ring-2 ring-[#009982] ring-offset-2 ring-offset-background">
         {avatarUrl && <AvatarImage src={avatarUrl} alt={player.player_name} />}
         <AvatarFallback className="text-xs font-medium">
           {avatarLoading ? '...' : player.player_name.slice(0, 2).toUpperCase()}

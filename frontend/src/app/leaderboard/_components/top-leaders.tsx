@@ -19,11 +19,11 @@ interface TopLeadersProps {
 }
 
 // Custom Avatar component that fetches Roblox avatar with mapping
-const RobloxAvatar = ({ playerId, username, className }: { playerId: number, username: string, className: string }) => {
+const RobloxAvatar = ({ playerId, username, className, includeRing = false }: { playerId: number, username: string, className: string, includeRing?: boolean }) => {
   const { url: avatarUrl, loading: isLoading } = useAvatarHeadshot(playerId)
 
   return (
-    <Avatar className={className}>
+    <Avatar className={`${className} ${includeRing ? 'ring-2 ring-[#009982] ring-offset-2 ring-offset-background' : ''}`}>
       {!isLoading && avatarUrl && <AvatarImage src={avatarUrl} alt={`${username}'s avatar`} />}
       <AvatarFallback className={`${className.includes('h-20') || className.includes('h-24') ? 'text-lg sm:text-xl' : 'text-sm sm:text-lg'} font-bold`}>
         {username.slice(0, 2).toUpperCase()}
@@ -237,6 +237,7 @@ export default function TopLeaders({ players, loading, onLimitChange, currentLim
                       playerId={player.player_id}
                       username={player.username}
                       className="h-12 w-12"
+                      includeRing={true}
                     />
                     
                     <div className="flex-1 min-w-0">
