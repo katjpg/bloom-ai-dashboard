@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { IconTrophy, IconMessage, IconTrendingUp, IconChartBar, IconRefresh } from "@tabler/icons-react"
+import { IconRefresh } from "@tabler/icons-react"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useTopPlayers } from "@/hooks/useTopPlayers"
 import TopLeaders from "./_components/top-leaders"
@@ -55,41 +55,37 @@ export default function LeaderboardPage() {
 
       {/* Stats Cards - Real API Data */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
+        <Card className="@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card">
           <CardHeader className="pb-2">
             <CardDescription>Total Players</CardDescription>
-            <CardTitle className="flex items-center">
-              <IconTrophy className="h-4 w-4 mr-2 text-yellow-500" />
+            <CardTitle>
               {loading ? <Skeleton className="h-7 w-20" /> : topPlayers.length}
             </CardTitle>
           </CardHeader>
         </Card>
         
-        <Card>
+        <Card className="@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card">
           <CardHeader className="pb-2">
             <CardDescription>Total Messages</CardDescription>
-            <CardTitle className="flex items-center">
-              <IconMessage className="h-4 w-4 mr-2 text-blue-500" />
+            <CardTitle>
               {loading ? <Skeleton className="h-7 w-20" /> : totalMessages.toLocaleString()}
             </CardTitle>
           </CardHeader>
         </Card>
         
-        <Card>
+        <Card className="@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card">
           <CardHeader className="pb-2">
             <CardDescription>Highest Score</CardDescription>
-            <CardTitle className="flex items-center">
-              <IconTrendingUp className="h-4 w-4 mr-2 text-green-500" />
+            <CardTitle>
               {loading ? <Skeleton className="h-7 w-20" /> : highestScore.toLocaleString()}
             </CardTitle>
           </CardHeader>
         </Card>
         
-        <Card>
+        <Card className="@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card">
           <CardHeader className="pb-2">
             <CardDescription>Average Score</CardDescription>
-            <CardTitle className="flex items-center">
-              <IconChartBar className="h-4 w-4 mr-2 text-purple-500" />
+            <CardTitle>
               {loading ? <Skeleton className="h-7 w-20" /> : avgScore.toLocaleString()}
             </CardTitle>
           </CardHeader>

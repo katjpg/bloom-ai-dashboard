@@ -1,4 +1,4 @@
-import { IconTrendingUp, IconTrendingDown, IconMessage, IconAward, IconHeart, IconChartBarPopular } from "@tabler/icons-react"
+import { IconTrendingUp, IconTrendingDown } from "@tabler/icons-react"
 import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { mockAnalyticsMetrics, mockAnalyticsTrends, TrendDirection } from "../_data"
@@ -16,12 +16,9 @@ export default function CardsSentiment({ selectedExperienceId }: CardsSentimentP
   return (
     <div className="grid grid-cols-1 gap-4 @xl/page:grid-cols-2 @5xl/page:grid-cols-4">
       {/* Total Messages */}
-      <Card className="@container/card bg-gradient-to-t from-blue-500/5 to-card shadow-xs dark:bg-card">
+      <Card className="@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card">
         <CardHeader>
-          <CardDescription className="flex items-center gap-2">
-            <IconMessage className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-            Total Messages
-          </CardDescription>
+          <CardDescription>Total Messages</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             {metrics.totalMessages.toLocaleString()}
           </CardTitle>
@@ -39,12 +36,9 @@ export default function CardsSentiment({ selectedExperienceId }: CardsSentimentP
       </Card>
 
       {/* Points Awarded */}
-      <Card className="@container/card bg-gradient-to-t from-emerald-500/5 to-card shadow-xs dark:bg-card">
+      <Card className="@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card">
         <CardHeader>
-          <CardDescription className="flex items-center gap-2">
-            <IconAward className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-            Points Awarded
-          </CardDescription>
+          <CardDescription>Points Awarded</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             {metrics.pointsAwarded.toLocaleString()}
           </CardTitle>
@@ -62,12 +56,9 @@ export default function CardsSentiment({ selectedExperienceId }: CardsSentimentP
       </Card>
 
       {/* Positive Actions */}
-      <Card className="@container/card bg-gradient-to-t from-rose-500/5 to-card shadow-xs dark:bg-card">
+      <Card className="@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card">
         <CardHeader>
-          <CardDescription className="flex items-center gap-2">
-            <IconHeart className="h-4 w-4 text-rose-600 dark:text-rose-400" />
-            Positive Actions
-          </CardDescription>
+          <CardDescription>Positive Actions</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             {metrics.positiveActions.toLocaleString()}
           </CardTitle>
@@ -85,12 +76,9 @@ export default function CardsSentiment({ selectedExperienceId }: CardsSentimentP
       </Card>
 
       {/* Average Sentiment */}
-      <Card className="@container/card bg-gradient-to-t from-amber-500/5 to-card shadow-xs dark:bg-card">
+      <Card className="@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card">
         <CardHeader>
-          <CardDescription className="flex items-center gap-2">
-            <IconChartBarPopular className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-            Average Sentiment
-          </CardDescription>
+          <CardDescription>Average Sentiment</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             {metrics.averageSentiment > 0 ? "+" : ""}{metrics.averageSentiment}
           </CardTitle>

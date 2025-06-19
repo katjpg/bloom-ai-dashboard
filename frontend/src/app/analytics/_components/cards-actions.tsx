@@ -1,4 +1,4 @@
-import { IconTrendingUp, IconTrendingDown, IconUsers, IconActivity, IconUserCheck, IconChartBar } from "@tabler/icons-react"
+import { IconTrendingUp, IconTrendingDown } from "@tabler/icons-react"
 import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { mockCommunityActionMetrics, mockCommunityActionTrends, TrendDirection } from "../_data"
@@ -16,12 +16,9 @@ export default function CardsActions({ selectedExperienceId }: CardsActionsProps
   return (
     <div className="grid grid-cols-1 gap-4 @xl/page:grid-cols-2 @5xl/page:grid-cols-4">
       {/* Percent Positive Actions */}
-      <Card className="@container/card bg-gradient-to-t from-emerald-500/5 to-card shadow-xs dark:bg-card">
+      <Card className="@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card">
         <CardHeader>
-          <CardDescription className="flex items-center gap-2">
-            <IconActivity className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-            Percent Positive Actions
-          </CardDescription>
+          <CardDescription>Positivity Rate</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             {metrics.positivePercentage.toFixed(1)}%
           </CardTitle>
@@ -39,12 +36,9 @@ export default function CardsActions({ selectedExperienceId }: CardsActionsProps
       </Card>
 
       {/* Total Actions */}
-      <Card className="@container/card bg-gradient-to-t from-blue-500/5 to-card shadow-xs dark:bg-card">
+      <Card className="@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card">
         <CardHeader>
-          <CardDescription className="flex items-center gap-2">
-            <IconChartBar className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-            Total Actions
-          </CardDescription>
+          <CardDescription>Total Actions</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             {metrics.totalActions.toLocaleString()}
           </CardTitle>
@@ -62,12 +56,9 @@ export default function CardsActions({ selectedExperienceId }: CardsActionsProps
       </Card>
 
       {/* Active Contributors */}
-      <Card className="@container/card bg-gradient-to-t from-violet-500/5 to-card shadow-xs dark:bg-card">
+      <Card className="@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card">
         <CardHeader>
-          <CardDescription className="flex items-center gap-2">
-            <IconUsers className="h-4 w-4 text-violet-600 dark:text-violet-400" />
-            Active Contributors
-          </CardDescription>
+          <CardDescription>Active Contributors</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             {metrics.activeContributors.toLocaleString()}
           </CardTitle>
@@ -85,12 +76,9 @@ export default function CardsActions({ selectedExperienceId }: CardsActionsProps
       </Card>
 
       {/* Actions Per User */}
-      <Card className="@container/card bg-gradient-to-t from-amber-500/5 to-card shadow-xs dark:bg-card">
+      <Card className="@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card">
         <CardHeader>
-          <CardDescription className="flex items-center gap-2">
-            <IconUserCheck className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-            Actions Per User
-          </CardDescription>
+          <CardDescription>Actions Per User</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             {metrics.actionsPerUser.toFixed(1)}
           </CardTitle>
