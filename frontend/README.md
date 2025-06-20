@@ -1,8 +1,6 @@
 # Bloom Dashboard - Frontend
+> A comprehensive content moderation platform designed for gaming communities. Features real-time chat monitoring, automated content filtering, and community safety tools with PII detection and behavioral scoring.
 
-> Bloom is a comprehensive content moderation platform designed for gaming communities. Features real-time chat monitoring, automated content filtering, and community safety tools with PII detection and behavioral scoring.
-
-> UPDATED: JUNE 17, 2:44 AM (rip)
 
 ## Quick Start
 
@@ -11,7 +9,9 @@ pnpm install
 pnpm dev    # http://localhost:3000
 ```
 
-**Backend Required**: Ensure FastAPI backend is running on `http://localhost:8000`
+**Backend Required**: FastAPI backend configured via `NEXT_PUBLIC_API_URL` environment variable
+- Development: `http://localhost:8000` (default)
+- Production: `https://bloom-ai-dashboard-backend.vercel.app` (current)
 
 ## Development
 
@@ -33,9 +33,12 @@ pnpm start    # Production server
 - **Language**: TypeScript 5.0
 - **Styling**: Tailwind CSS v4
 - **UI Components**: Radix UI (shadcn/ui)
+- **HTTP Client**: Axios 1.10.0
 - **State**: React Server Components + selective client hydration
 - **Theme**: next-themes (dark/light mode)
 - **Icons**: Lucide React + Tabler Icons
+- **Charts**: Recharts 2.15.3
+- **Tables**: TanStack Table 8.21.3
 
 ## Project Structure
 
@@ -61,10 +64,17 @@ src/
 │   ├── ui/                # shadcn/ui base components
 │   ├── layout/            # App layout components
 │   └── theme-provider.tsx # Theme context
-├── contexts/              # React contexts
-├── hooks/                 # Custom hooks
-├── lib/                   # Utils and config
-└── styles/                # Global styles
+├── config/                # API configuration
+├── contexts/              # React contexts (auto-moderation, flagged messages)
+├── data/                  # Mock data (central source of truth)
+├── hooks/                 # Custom hooks (live messages, player data, etc.)
+├── lib/
+│   ├── api/              # API client classes (sentiment, moderation, roblox)
+│   ├── avatar-mapping.ts # Roblox avatar utilities
+│   ├── colors-mod.ts     # Moderation colors and enums
+│   └── utils.ts          # General utilities
+├── styles/               # Global styles
+└── types/                # TypeScript type definitions
 ```
 
 ## Features
@@ -76,14 +86,15 @@ src/
 - Container query-based responsive layouts
 
 ### Moderation System (`/moderation`)
-- **Live Chat Feed**: Real-time message streaming with metadata
+- **Live Chat Feed**: Real-time message streaming with sentiment analysis
+- **Message Flagging**: Manual flagging system for content review
 - **Priority Filtering**: MODERATE/HIGH/CRITICAL severity levels
 - **Content Classification**: Violence, Harassment, Hate Speech detection
 - **PII Detection**: 15+ categories including financial/personal data
-- **Player Profiles**: Activity stats, violation history, quick actions
+- **Player Profiles**: Roblox avatar integration, activity stats, violation history
 - **Mode Switching**: View/Mod/Auto-Mod operational modes
-- **History Page** (`/moderation/history`): Past moderation actions
-- **Queue Page** (`/moderation/queue`): Pending moderation items
+- **History Page** (`/moderation/history`): Past moderation actions with detailed context
+- **Queue Page** (`/moderation/queue`): Flagged messages awaiting review
 
 ### Analytics (`/analytics`) 
 - Sentiment analysis trends and distribution
@@ -102,48 +113,161 @@ src/
 
 ## API Integration
 
-### Backend Endpoints
-- **Base URL**: `http://localhost:8000`
-- `POST /api/v1/moderate` - Process messages through moderation pipeline
-- `GET /api/v1/users/{user_id}/score` - Retrieve user behavioral scores
-- `GET /api/v1/leaderboard?limit=10` - Top scoring community members
-- `GET /api/v1/stats` - System-wide statistics
-- `GET /api/v1/health` - Backend health check
+### Configuration
+- **Base URL**: Configurable via `NEXT_PUBLIC_API_URL` environment variable
+- **Development**: `http://localhost:8000` (default fallback)
+- **Production**: `https://bloom-ai-dashboard-backend.vercel.app`
+- **API Client**: Axios-based client classes with request/response interceptors
+
+### Current Backend Endpoints
+**Message Processing:**
+- `POST /api/analyze` - Sentiment analysis with community intent detection (requires X-API-Key header)
+- `POST /api/moderate` - Message moderation only (no sentiment analysis)
+- `POST /api/sentiment` - Sentiment analysis only
+- `POST /api/flag` - Flag messages for manual review
+- `GET /api/flagged?limit=50` - Retrieve flagged messages for moderation queue
+
+**Data Retrieval:**
+- `GET /api/players` - Fetch all players
+- `GET /api/messages?player_id&limit` - Get messages with optional filtering
+- `GET /api/live?limit=20` - Get recent live messages
+- `GET /api/top-players?limit=10` - Top players by sentiment score
+
+**Analytics & System:**
+- `GET /api/stats` - System-wide statistics (total users, points, averages)
+- `GET /api/leaderboard?limit=10` - Top scoring community members
+- `GET /api/health` - Backend health check
+- `GET /api/users/{player_id}/score` - Individual player scores
+
+**External APIs:**
+- `GET /api/roblox-avatar?userId={id}` - Proxy for Roblox avatar thumbnails
+- **Roblox API**: Player avatar and headshot integration via `NEXT_PUBLIC_ROBLOX_API_KEY`
 
 ### Data Flow
-1. **Message Processing**: Frontend → `/api/v1/moderate` → FSM (Moderation → Sentiment Analysis)
-2. **Scoring System**: +2 points (positive sentiment/community actions), -2 points (negative)
-3. **PII Protection**: Immediate message blocking on PII detection
+1. **Full Analysis**: Frontend → `POST /api/analyze` (with X-API-Key) → Creates message in database + sentiment + moderation
+2. **Moderation Only**: Frontend → `POST /api/moderate` → Returns moderation result (pass/fail)
+3. **Sentiment Only**: Frontend → `POST /api/sentiment` → Returns sentiment analysis without database storage
+4. **Message Flagging**: Frontend → `POST /api/flag` → Adds to moderation queue
+5. **Live Updates**: Periodic polling of `/api/live` for real-time message feed with moderation data
+6. **Scoring System**: +2 points (positive sentiment/community actions), -2 points (negative)
+7. **PII Protection**: Immediate blocking when PII categories detected
+8. **Database Integration**: Hybrid storage (Supabase + in-memory caching) for comprehensive data access
 
 ### Key Types
 ```typescript
-interface ChatMessage {
+// Core message structure
+interface Message {
+  id: number
   message_id: string
-  content: string
-  user_id: number
-  timestamp: string
-  deleted: boolean
+  player_id: number
+  player_name: string
+  message: string
+  sentiment_score: number
+  created_at: string
+  moderation_action?: string
+  moderation_reason?: string
+  flagged?: boolean
+  flag_reason?: string
 }
 
-interface ModerationResponse {
-  moderation_state: ModerationState
-  sentiment_analysis?: SentimentAnalysisState
-  user_score_updated: boolean
-  new_score?: number
+// Sentiment analysis request/response
+interface SentimentAnalysisRequest {
+  message: string
+  player_id?: number
+  player_name?: string
+  message_id?: string
+}
+
+interface SentimentAnalysisResponse {
+  player_id: number
+  player_name: string
+  message_id: string
+  message: string
+  sentiment_score: number
+  sentiment_details?: {
+    confidence?: number
+    emotion?: string
+    toxicity_score?: number
+  }
+  community_intent?: {
+    intent_type?: string
+    reason?: string
+  }
+  rewards?: {
+    points_awarded: number
+    reason: string
+  }
+}
+
+// Analytics types
+interface TopPlayer {
+  player_id: number
+  player_name: string
+  total_sentiment_score: number
+  message_count: number
+}
+
+interface OverallStats {
+  total_messages: number
+  average_sentiment: number
+  unique_players: number
 }
 ```
 
 ## Development
 
+### Environment Variables
+Create a `.env` file with:
+```bash
+# API Configuration
+NEXT_PUBLIC_API_URL=http://localhost:8000  # Backend URL
+NEXT_PUBLIC_ROBLOX_API_KEY=your_roblox_key  # For avatar integration
+
+# Backend API Key (for protected endpoints)
+ROBLOX_API_KEY=your_api_key_here  # Required for /api/analyze endpoint
+
+# Additional API keys 
+NEXT_PUBLIC_GOOGLE_API_KEY=your_google_key
+GEMINI_API_KEY=your_gemini_key
+HF_TOKEN=your_huggingface_token
+```
+
 ### Code Organization
-- Route components: `page.tsx` 
-- Route-specific: `_components/` folders
-- Shared: `src/components/`
-- Types: Co-located with modules
+- **Route components**: `page.tsx` files
+- **Route-specific**: `_components/` and `_data/` folders
+- **Shared components**: `src/components/`
+- **API clients**: `src/lib/api/` (sentiment.ts, moderation.ts, roblox.ts)
+- **Types**: `src/types/` (sentiment.ts with comprehensive interfaces)
+- **Mock data**: `src/data/mock-data.ts` (centralized mock data source)
+- **Configuration**: `src/config/api.ts` (environment-based API URL)
+
+### Development Notes
+- **Mock Data**: Currently using extensive mock data for UI development
+- **API Integration**: Partial integration with real backend endpoints
+- **Real-time Updates**: Implemented via polling (WebSocket support pending)
+- **Error Handling**: Comprehensive error handling in API clients with logging
+- **Type Safety**: Full TypeScript coverage with strict typing
 
 ## Key Dependencies
-- **Framework**: next@15.3.3, react@19.0.0
-- **UI**: @radix-ui/*, tailwindcss@4.0, next-themes@0.4.6
-- **Icons**: lucide-react@0.515.0, @tabler/icons-react@3.34.0
+- **Framework**: next@15.3.3, react@19.0.0, typescript@5
+- **HTTP Client**: axios@1.10.0
+- **UI Components**: @radix-ui/* (avatar, dropdown, dialog, etc.), tailwindcss@4.0, next-themes@0.4.6
+- **Data Tables**: @tanstack/react-table@8.21.3
 - **Charts**: recharts@2.15.3
+- **Icons**: lucide-react@0.515.0, @tabler/icons-react@3.34.0
+- **Utilities**: clsx@2.1.1, tailwind-merge@3.3.1, class-variance-authority@0.7.1
+
+## Deployment
+
+### Production Configuration
+- **Frontend**: Deployed on Vercel
+- **Backend**: `https://bloom-ai-dashboard-backend.vercel.app`
+- **Environment**: Set `NEXT_PUBLIC_API_URL` for production backend URL
+- **Build**: Standard Next.js build process (`pnpm build`)
+
+### API Client Architecture
+- **Modular Design**: Separate client classes for different API domains
+- **Error Handling**: Interceptors for request/response logging and error management
+- **Environment Awareness**: Automatic API URL resolution based on environment
+- **Type Safety**: Full TypeScript integration with request/response typing
 
