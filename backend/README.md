@@ -22,13 +22,20 @@ pip install -r requirements.txt
 Create a `.env` file in the backend directory:
 
 ```env
+# Required
 GEMINI_API_KEY=your_google_gemini_api_key_here
 HF_TOKEN=your_huggingface_token_here
+SUPABASE_URL=your_supabase_project_url
+SUPABASE_KEY=your_supabase_anon_key
+
+# Optional
+ROBLOX_API_KEY=your_api_key_for_protected_endpoints
 ```
 
-**Required API Keys:**
+**Required Services:**
 - **Gemini API Key**: Get from [Google AI Studio](https://aistudio.google.com/app/apikey)
 - **HuggingFace Token**: Get from [HuggingFace Settings](https://huggingface.co/settings/tokens)
+- **Supabase**: Create project at [Supabase](https://supabase.com) for database persistence
 
 ### Running the Application
 
@@ -46,8 +53,9 @@ server   Documentation at http://127.0.0.1:8000/docs
 
 **Access Points:**
 - **API Documentation**: http://127.0.0.1:8000/docs
-- **Health Check**: http://127.0.0.1:8000/api/v1/health
-- **System Stats**: http://127.0.0.1:8000/api/v1/stats
+- **Health Check**: http://127.0.0.1:8000/api/health
+- **System Stats**: http://127.0.0.1:8000/api/stats
+- **Live Dashboard**: http://127.0.0.1:8000/api/live
 
 ## Finite State Machine Architecture
 
@@ -58,15 +66,16 @@ stateDiagram-v2
     [*] --> StartModeration
     StartModeration --> DetectPII
     DetectPII --> CheckIntent: No PII
-    DetectPII --> BlockMessage: PII Found
+    DetectPII --> End_PII_Blocked: PII Found
     CheckIntent --> ModerateContent: No Intent
-    CheckIntent --> BlockMessage: Sharing Intent
+    CheckIntent --> End_Intent_Blocked: Sharing Intent
     ModerateContent --> DetermineAction: Harmful Content
-    ModerateContent --> ApproveMessage: Content Safe
-    DetermineAction --> ApplyModeration
-    ApplyModeration --> [*]
-    BlockMessage --> [*]
-    ApproveMessage --> [*]
+    ModerateContent --> End_Approved: Content Safe
+    DetermineAction --> End_Action_Applied
+    End_PII_Blocked --> [*]
+    End_Intent_Blocked --> [*]
+    End_Approved --> [*]
+    End_Action_Applied --> [*]
 ```
 
 **State Machine Features:**
@@ -81,13 +90,11 @@ stateDiagram-v2
 stateDiagram-v2
     [*] --> StartSentimentAnalysis
     StartSentimentAnalysis --> CheckContentLength
-    CheckContentLength --> SkipSentiment: Length < 20
-    CheckContentLength --> AnalyzeSentiment: Length >= 20
-    SkipSentiment --> AnalyzeCommunityIntent
+    CheckContentLength --> AnalyzeSentiment: Any Length
     AnalyzeSentiment --> AnalyzeCommunityIntent
     AnalyzeCommunityIntent --> CalculateRewards
-    CalculateRewards --> [*]
-
+    CalculateRewards --> End_Points_Awarded
+    End_Points_Awarded --> [*]
 ```
 
 **State Machine Features:**
@@ -121,45 +128,88 @@ The system implements a hierarchical orchestrator-worker architecture:
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `POST` | `/api/v1/moderate` | Execute complete moderation pipeline |
-| `GET` | `/api/v1/users/{user_id}/score` | Retrieve user sentiment score |
-| `GET` | `/api/v1/leaderboard` | Query top scoring users |
-| `GET` | `/api/v1/stats` | System performance metrics |
-| `GET` | `/api/v1/health` | Service health status |
+| `POST` | `/api/moderate` | Execute moderation pipeline only |
+| `POST` | `/api/analyze` | Create message and run sentiment + moderation (requires API key) |
+| `POST` | `/api/sentiment` | Execute sentiment analysis only |
+| `GET` | `/api/users/{user_id}/score` | Retrieve user sentiment score |
+| `GET` | `/api/leaderboard` | Query top scoring users |
+| `GET` | `/api/stats` | System performance metrics |
+| `GET` | `/api/health` | Service health status |
 
-### Example Request
+### Message Management
 
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/flag` | Flag a message for review |
+| `GET` | `/api/flagged` | Retrieve flagged messages queue |
+| `GET` | `/api/messages` | Fetch messages with optional filters |
+| `GET` | `/api/live` | Get 20 most recent messages with moderation data |
+
+### Player Data
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/players` | Fetch all players |
+| `GET` | `/api/top-players` | Get top players by sentiment score |
+| `GET` | `/api/roblox-avatar` | Proxy endpoint for Roblox avatar thumbnails |
+
+### Example Requests
+
+#### Moderation Only
 ```bash
-curl -X POST http://localhost:8000/api/v1/moderate \
+curl -X POST http://localhost:8000/api/moderate \
   -H "Content-Type: application/json" \
   -d '{
+    "message": "Great job everyone! Keep up the excellent work!",
     "message_id": "msg_001",
-    "content": "Great job everyone! Keep up the excellent work!",
-    "user_id": 123,
-    "timestamp": "2025-05-23T20:00:00Z",
-    "deleted": false
+    "player_id": 123,
+    "player_name": "CoolPlayer123"
   }'
 ```
 
-### Response Format
+#### Full Analysis (with API Key)
+```bash
+curl -X POST http://localhost:8000/api/analyze \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: your_api_key_here" \
+  -d '{
+    "message": "Great job everyone! Keep up the excellent work!",
+    "message_id": "msg_001",
+    "player_id": 123,
+    "player_name": "CoolPlayer123"
+  }'
+```
 
+### Response Formats
+
+#### Moderation Response
 ```json
 {
   "moderation_state": {
-    "message": {...},
+    "message": {
+      "message": "Great job everyone! Keep up the excellent work!",
+      "message_id": "msg_001",
+      "player_id": 123,
+      "player_name": "CoolPlayer123"
+    },
     "pii_result": null,
     "content_result": {"main_category": "OK"},
     "recommended_action": null
-  },
-  "sentiment_analysis": {
-    "sentiment_score": 87,
-    "community_intent": {
-      "intent": "ENCOURAGEMENT",
-      "reason": "Positive encouragement to team members"
-    }
-  },
-  "user_score_updated": true,
-  "new_score": 4
+  }
+}
+```
+
+#### Full Analysis Response
+```json
+{
+  "message_id": "msg_001",
+  "player_id": 123,
+  "player_name": "CoolPlayer123",
+  "sentiment_score": 87,
+  "community_intent": "ENCOURAGEMENT",
+  "points_awarded": 4,
+  "moderation_action": null,
+  "timestamp": "2025-01-23T20:00:00Z"
 }
 ```
 
@@ -183,9 +233,12 @@ backend/
 │   ├── sentiment.py
 │   └── chat.py
 ├── routes/
-│   └── chat.py
+│   ├── chat.py
+│   └── data.py
 ├── models/
 │   └── chat.py
+├── utils/
+│   └── dependencies.py
 ├── app.py
 ├── requirements.txt
 └── .env
@@ -224,17 +277,39 @@ POSITIVE_ACTION_POINTS = 2
 # Required
 GEMINI_API_KEY=your_key_here
 HF_TOKEN=your_token_here
+SUPABASE_URL=your_supabase_url
+SUPABASE_KEY=your_supabase_key
 
 # Optional
+ROBLOX_API_KEY=your_api_key  # For protected endpoints
 LOG_LEVEL=INFO
 API_TIMEOUT=30
 ```
+
+## Database Integration
+
+### Supabase Tables
+
+- **players**: Player information (id, name, last_seen)
+- **messages**: Message data with sentiment scores and moderation actions
+
+### RPC Functions
+
+- `get_live_messages(p_limit)`: Returns recent messages with moderation data
+- `get_top_players_by_sentiment(p_limit)`: Returns leaderboard data
+
+### Storage Pattern
+
+- **Database**: Persistent storage for messages, players, and historical data
+- **In-Memory**: Real-time caching for user scores and recent moderation results
+- **Hybrid Access**: API endpoints check both sources for comprehensive data
 
 ## Monitoring
 
 - **State Metrics**: Real-time workflow execution statistics
 - **Agent Performance**: Individual node execution timing
-- **User Scoring**: Community engagement analytics
+- **User Scoring**: Community engagement analytics with database persistence
 - **System Health**: Service availability monitoring
+- **Live Dashboard**: Real-time message feed with moderation status
 
 
