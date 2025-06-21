@@ -1,6 +1,7 @@
 import Particles from "@/components/particles";
 import Container from "@/components/layout/container";
 import Image from "next/image";
+import { DemoSection } from "@/components/demo";
 
 export const Hero = () => (
   <main 
@@ -53,6 +54,9 @@ export const Hero = () => (
           </div>
         </div>
       </Container>
+
+      {/* Demo Section */}
+      <DemoSection />
     </div>
   </main>
 );
