@@ -29,7 +29,8 @@ export const Hero = () => (
         </span>
       </h1>
       <p className="text-center text-gray-400 font-normal text-balance md:text-xl max-w-3xl hero-text-blur-in motion-delay-1500">
-        AI-powered moderation and sentiment analysis for Roblox experiences.
+        AI-powered moderation and sentiment analysis for game experiences.
+        <br />
         Detect toxicity, protect player data, and reward positive behavior—all in real-time.
       </p>
     </div>
