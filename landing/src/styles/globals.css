@@ -8,7 +8,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #1a1a1a;
+    --background: #020617;
     --foreground: #ededed;
   }
 }
@@ -51,6 +51,11 @@ h3 {
 
 .hero-text-blur-in {
   animation: blur-up 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  background: linear-gradient(to right bottom, rgb(255, 255, 255) 30%, rgba(255, 255, 255, 0.38));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 }
 
 /* Motion delay utilities */
@@ -72,6 +77,6 @@ h3 {
 
 /* Dark mode support */
 .dark {
-  background: #1a1a1a;
+  background: #020617;
   color: #ededed;
 }
