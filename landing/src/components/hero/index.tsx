@@ -1,7 +1,7 @@
 export const Hero = () => (
   <main className="relative flex flex-col items-center justify-center min-h-screen px-4 dark bg-background">
     <div className="flex flex-col items-center gap-10 w-full max-w-7xl">
-      <h1 className="text-center uppercase font-bold text-balance">
+      <h1 className="text-center uppercase font-semibold text-balance">
         <span className="hero-text-blur-in inline-block motion-delay-500">
           KEEP YOUR GAMING
         </span>
