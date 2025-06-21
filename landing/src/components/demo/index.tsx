@@ -29,7 +29,7 @@ export function DemoSection() {
       {/* Demo Grid */}
       <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-start">
         {/* Chat Interface */}
-        <Container delay={0.1}>
+        <Container delay={0.7}>
           <div className="space-y-4 flex flex-col items-center">
             <h3 className="text-xl font-semibold text-white text-center" style={{ fontFamily: 'var(--font-clash-grotesk)' }}>
               Live Gaming Chat
@@ -39,7 +39,7 @@ export function DemoSection() {
         </Container>
 
         {/* Bloom Analysis */}
-        <Container delay={0.2}>
+        <Container delay={0.8}>
           <div className="space-y-4 flex flex-col items-center">
             <h3 className="text-xl font-semibold text-white text-center" style={{ fontFamily: 'var(--font-clash-grotesk)' }}>
               Real-time AI Moderation
