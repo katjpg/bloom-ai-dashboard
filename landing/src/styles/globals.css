@@ -1,0 +1,77 @@
+@import "tailwindcss";
+@import "./fonts.css";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1a1a1a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-uncut-sans), "Uncut Sans", system-ui, -apple-system, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-clash-grotesk), "ClashGrotesk", system-ui, -apple-system, sans-serif;
+}
+
+h1 {
+  @apply text-4xl md:text-6xl;
+}
+
+h2 {
+  @apply text-3xl md:text-4xl;
+}
+
+h3 {
+  @apply text-2xl;
+}
+
+/* Animation utilities */
+@keyframes blur-up {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+.hero-text-blur-in {
+  animation: blur-up 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Motion delay utilities */
+.motion-delay-500 {
+  animation-delay: 500ms;
+}
+
+.motion-delay-700 {
+  animation-delay: 700ms;
+}
+
+.motion-delay-\[900ms\] {
+  animation-delay: 900ms;
+}
+
+.motion-delay-1500 {
+  animation-delay: 1500ms;
+}
+
+/* Dark mode support */
+.dark {
+  background: #1a1a1a;
+  color: #ededed;
+}
