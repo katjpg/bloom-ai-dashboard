@@ -18,9 +18,9 @@ const Navbar = () => {
                                 alt="Bloom Logo" 
                                 width={32} 
                                 height={32}
-                                className="w-8 h-8"
+                                className="w-6 h-6"
                             />
-                            <span className="text-xl font-semibold" style={{ fontFamily: 'var(--font-clash-grotesk)' }}>Bloom</span>
+                            <span className="text-2xl font-semibold" style={{ fontFamily: 'var(--font-clash-grotesk)' }}>Bloom</span>
                         </div>
 
                         {/* Center - Navigation items */}
