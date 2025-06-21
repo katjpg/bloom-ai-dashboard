@@ -1,20 +1,22 @@
 import Particles from "@/components/particles";
+import Container from "@/components/layout/container";
+import Image from "next/image";
 
 export const Hero = () => (
   <main 
-    className="relative flex flex-col items-center justify-center min-h-screen px-4 dark bg-background overflow-hidden"
+    className="relative flex flex-col items-center px-4 pt-48 md:pt-64 pb-24 md:pb-32 dark bg-background"
     style={{
       background: `radial-gradient(ellipse at top, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
                    var(--background)`
     }}
   >
     <Particles 
-      className="absolute inset-0" 
+      className="fixed inset-0" 
       quantity={100}
       staticity={30}
       ease={50}
     />
-    <div className="relative z-10 flex flex-col items-center gap-10 w-full max-w-7xl">
+    <div className="relative z-10 flex flex-col items-center gap-10 w-full max-w-7xl min-h-[calc(100vh-200px)]">
       <h1 className="text-center uppercase font-semibold text-balance">
         <span className="hero-text-blur-in inline-block motion-delay-500">
           KEEP YOUR GAMING
@@ -33,6 +35,24 @@ export const Hero = () => (
         <br />
         Detect toxicity, protect player data, and reward positive behavior—all in real-time.
       </p>
+      
+      {/* Dashboard Image */}
+      <Container delay={2.0} className="w-full mb-16 md:mb-24">
+        <div className="relative mx-auto max-w-6xl rounded-xl lg:rounded-[32px] border p-2 backdrop-blur-lg border-neutral-700 bg-neutral-800/50 md:p-4 mt-16 md:mt-20">
+          <div className="absolute top-1/4 left-1/2 -z-10 gradient w-3/4 -translate-x-1/2 h-1/4 -translate-y-1/2 inset-0 blur-[10rem]"></div>
+          
+          <div className="rounded-lg lg:rounded-[24px] border p-2 border-neutral-700 bg-black">
+            <Image
+              src="/images/bloom-dashboard-hd.png"
+              alt="Bloom Dashboard"
+              width={1920}
+              height={1080}
+              className="rounded-lg lg:rounded-[20px] w-full h-auto"
+              priority
+            />
+          </div>
+        </div>
+      </Container>
     </div>
   </main>
 );
