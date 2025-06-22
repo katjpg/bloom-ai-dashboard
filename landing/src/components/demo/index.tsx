@@ -13,7 +13,7 @@ export function DemoSection() {
       {/* Section Title */}
       <Container>
         <h2 
-          className="text-center uppercase font-bold text-balance text-3xl md:text-5xl mb-16 md:mb-20"
+          className="text-center uppercase font-bold text-balance text-3xl md:text-5xl mb-4"
           style={{ 
             fontFamily: 'var(--font-clash-grotesk)',
             background: 'linear-gradient(to right bottom, rgb(255, 255, 255) 30%, rgba(255, 255, 255, 0.55))',
@@ -24,6 +24,12 @@ export function DemoSection() {
         >
           See Bloom in Action
         </h2>
+        <p 
+          className="text-center text-gray-400 text-lg md:text-xl mb-16 md:mb-20 max-w-2xl mx-auto"
+          style={{ fontFamily: 'var(--font-uncut-sans)' }}
+        >
+          Experience how Bloom transforms gaming communities in real-time.
+        </p>
       </Container>
 
       {/* Demo Grid */}
