@@ -36,7 +36,7 @@ export function CTASection() {
             fontFamily: 'var(--font-uncut-sans)',
           }}
         >
-          GET STARTED
+          GET STARTED NOW
         </Link>
       </div>
     </section>

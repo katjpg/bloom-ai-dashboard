@@ -49,14 +49,14 @@ export const Hero = () => (
         href="https://bloom-ai-dashboard.vercel.app/"
         target="_blank"
         rel="noopener noreferrer"
-        className="bg-emerald-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-emerald-600 transition-colors text-sm md:text-base hero-text-blur-in motion-delay-[2300ms]"
+        className="bg-emerald-500 text-white px-3 md:px-4 py-2 rounded-lg font-medium hover:bg-emerald-600 transition-colors text-sm md:text-base hero-text-blur-in motion-delay-[2300ms]"
         style={{ 
           background: '#0a786b',
           color: 'white',
           WebkitTextFillColor: 'white'
         } as React.CSSProperties}
       >
-        Get Started
+        GET STARTED
       </Link>
       
       {/* Dashboard Image */}
