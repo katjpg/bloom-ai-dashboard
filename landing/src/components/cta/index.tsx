@@ -22,7 +22,7 @@ export function CTASection() {
           className="text-gray-400 text-lg md:text-xl max-w-3xl mb-12"
           style={{ fontFamily: 'var(--font-uncut-sans)' }}
         >
-          Make the first step and build thriving, safe community that players love.
+          Take the first step towards building a thriving, safe community that players love.
         </p>
         
         {/* CTA Button */}
