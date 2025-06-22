@@ -75,6 +75,10 @@ h3 {
   animation-delay: 1500ms;
 }
 
+.motion-delay-\[1700ms\] {
+  animation-delay: 1700ms;
+}
+
 /* Animations */
 @keyframes message-appear {
   from {
@@ -104,6 +108,35 @@ h3 {
 
 .animate-analysis-slide-in {
   animation: analysis-slide-in 0.4s ease-out forwards;
+}
+
+/* Section Badge Animations */
+@keyframes text-gradient {
+  0%, 100% {
+    background-size: 200% 200%;
+    background-position: left center;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: right center;
+  }
+}
+
+@keyframes background-shine {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.animate-text-gradient {
+  animation: text-gradient 3s ease infinite;
+}
+
+.animate-background-shine {
+  animation: background-shine 3s ease infinite;
 }
 
 /* Dark mode support */

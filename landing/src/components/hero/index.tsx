@@ -3,6 +3,7 @@ import Container from "@/components/layout/container";
 import Image from "next/image";
 import { DemoSection } from "@/components/demo";
 import { MainFeaturesSection } from "@/components/main-features";
+import { SectionBadge } from "@/components/section-badge";
 
 export const Hero = () => (
   <main 
@@ -19,6 +20,7 @@ export const Hero = () => (
       ease={50}
     />
     <div className="relative z-10 flex flex-col items-center gap-10 w-full max-w-7xl min-h-[calc(100vh-200px)]">
+      <SectionBadge />
       <h1 className="text-center uppercase font-semibold text-balance">
         <span className="hero-text-blur-in inline-block motion-delay-500">
           KEEP YOUR GAMING
