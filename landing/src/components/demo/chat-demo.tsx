@@ -58,9 +58,9 @@ export function ChatDemo({ onMessageComplete }: ChatDemoProps) {
   const [isTyping, setIsTyping] = useState(false);
   const [typingText, setTypingText] = useState("");
   const [currentTypingMessage, setCurrentTypingMessage] = useState<Message | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const currentIndexRef = useRef(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const typeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const mountedRef = useRef(true);
 
   useEffect(() => {
@@ -69,14 +69,17 @@ export function ChatDemo({ onMessageComplete }: ChatDemoProps) {
     const typeMessage = (message: Message, messageIndex: number, callback: () => void) => {
       if (!mountedRef.current) return;
       
+      // Clear any existing typing interval
+      if (typeIntervalRef.current) clearInterval(typeIntervalRef.current);
+      
       setIsTyping(true);
       setTypingText("");
       setCurrentTypingMessage(message);
       let charIndex = 0;
       
-      const typeInterval = setInterval(() => {
+      typeIntervalRef.current = setInterval(() => {
         if (!mountedRef.current) {
-          clearInterval(typeInterval);
+          if (typeIntervalRef.current) clearInterval(typeIntervalRef.current);
           return;
         }
         
@@ -84,7 +87,7 @@ export function ChatDemo({ onMessageComplete }: ChatDemoProps) {
           setTypingText(message.content.slice(0, charIndex));
           charIndex++;
         } else {
-          clearInterval(typeInterval);
+          if (typeIntervalRef.current) clearInterval(typeIntervalRef.current);
           setIsTyping(false);
           setCurrentTypingMessage(null);
           
@@ -118,49 +121,18 @@ export function ChatDemo({ onMessageComplete }: ChatDemoProps) {
       });
     };
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!mountedRef.current) return;
-        
-        if (entry.isIntersecting) {
-          // Clear any existing intervals first
-          if (intervalRef.current) clearInterval(intervalRef.current);
-          
-          // Reset state
-          currentIndexRef.current = 0;
-          setVisibleMessages([]);
-          setIsTyping(false);
-          setCurrentTypingMessage(null);
-          setTypingText("");
-          
-          // Start fresh
-          setTimeout(() => {
-            if (mountedRef.current) addMessage();
-          }, 100);
-        } else {
-          if (intervalRef.current) clearInterval(intervalRef.current);
-          setVisibleMessages([]);
-          setIsTyping(false);
-          setCurrentTypingMessage(null);
-          setTypingText("");
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
+    // Start animation immediately on mount
+    addMessage();
 
     return () => {
       mountedRef.current = false;
-      observer.disconnect();
       if (intervalRef.current) clearInterval(intervalRef.current);
+      if (typeIntervalRef.current) clearInterval(typeIntervalRef.current);
     };
   }, [onMessageComplete]);
 
   return (
-    <div ref={containerRef} className="relative w-full max-w-md">
+    <div className="relative w-full max-w-md">
       <div className="relative rounded-xl lg:rounded-[24px] border border-neutral-700 bg-neutral-800/50 backdrop-blur-lg p-2 md:p-4">
         <div className="absolute top-1/4 left-1/2 -z-10 w-3/4 h-1/4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 -translate-x-1/2 -translate-y-1/2 blur-[3rem]"></div>
         
