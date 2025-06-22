@@ -13,7 +13,15 @@ interface ProtectionNotification {
 }
 
 export function ProtectCard() {
-  const [notifications, setNotifications] = useState<ProtectionNotification[]>([]);
+  const [notifications, setNotifications] = useState<ProtectionNotification[]>([
+    {
+      id: Date.now(),
+      action: "Message blocked",
+      detail: "Toxic language detected • User warned",
+      type: "block" as const,
+      icon: <IconLock className="w-4 h-4 text-red-400" />
+    }
+  ]);
 
   const actionTemplates = [
     {

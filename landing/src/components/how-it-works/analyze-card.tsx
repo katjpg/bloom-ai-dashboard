@@ -14,7 +14,16 @@ interface AnalysisNotification {
 }
 
 export function AnalyzeCard() {
-  const [notifications, setNotifications] = useState<AnalysisNotification[]>([]);
+  const [notifications, setNotifications] = useState<AnalysisNotification[]>([
+    {
+      id: Date.now(),
+      message: "Great teamwork everyone! GG", 
+      sentiment: 85, 
+      status: "positive" as const,
+      action: "Approved +2 points",
+      details: "Positive sportsmanship detected"
+    }
+  ]);
 
   const sampleMessages = [
     { 
