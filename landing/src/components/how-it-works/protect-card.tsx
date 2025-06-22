@@ -75,7 +75,7 @@ export function ProtectCard() {
   return (
     <div className="w-full h-[300px] flex flex-col overflow-hidden">
       <div className="flex-1 flex items-center justify-center">
-        <div className="h-[180px] w-full relative mt-8">
+        <div className="h-[180px] w-full relative mt-8 min-w-[300px]">
         <AnimatePresence mode="popLayout">
           {notifications.map((notification, index) => (
             <motion.div
