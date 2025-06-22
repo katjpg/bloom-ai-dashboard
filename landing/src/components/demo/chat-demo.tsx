@@ -61,15 +61,25 @@ export function ChatDemo({ onMessageComplete }: ChatDemoProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const currentIndexRef = useRef(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const mountedRef = useRef(true);
 
   useEffect(() => {
+    mountedRef.current = true;
+    
     const typeMessage = (message: Message, messageIndex: number, callback: () => void) => {
+      if (!mountedRef.current) return;
+      
       setIsTyping(true);
       setTypingText("");
       setCurrentTypingMessage(message);
       let charIndex = 0;
       
       const typeInterval = setInterval(() => {
+        if (!mountedRef.current) {
+          clearInterval(typeInterval);
+          return;
+        }
+        
         if (charIndex <= message.content.length) {
           setTypingText(message.content.slice(0, charIndex));
           charIndex++;
@@ -83,21 +93,26 @@ export function ChatDemo({ onMessageComplete }: ChatDemoProps) {
           setVisibleMessages(prev => [...prev, newMessage].slice(-4));
           
           // Notify parent that message is complete
-          if (onMessageComplete) {
+          if (onMessageComplete && mountedRef.current) {
             onMessageComplete(messageIndex);
           }
           
-          setTimeout(callback, 500);
+          setTimeout(() => {
+            if (mountedRef.current) callback();
+          }, 500);
         }
       }, 50);
     };
 
     const addMessage = () => {
+      if (!mountedRef.current) return;
+      
       const messageIndex = currentIndexRef.current;
       const message = gamingMessages[messageIndex];
       currentIndexRef.current = (currentIndexRef.current + 1) % gamingMessages.length;
 
       typeMessage(message, messageIndex, () => {
+        if (!mountedRef.current) return;
         if (intervalRef.current) clearInterval(intervalRef.current);
         intervalRef.current = setInterval(addMessage, message.duration);
       });
@@ -105,14 +120,29 @@ export function ChatDemo({ onMessageComplete }: ChatDemoProps) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
+        if (!mountedRef.current) return;
+        
         if (entry.isIntersecting) {
+          // Clear any existing intervals first
+          if (intervalRef.current) clearInterval(intervalRef.current);
+          
+          // Reset state
           currentIndexRef.current = 0;
           setVisibleMessages([]);
-          addMessage();
+          setIsTyping(false);
+          setCurrentTypingMessage(null);
+          setTypingText("");
+          
+          // Start fresh
+          setTimeout(() => {
+            if (mountedRef.current) addMessage();
+          }, 100);
         } else {
           if (intervalRef.current) clearInterval(intervalRef.current);
           setVisibleMessages([]);
           setIsTyping(false);
+          setCurrentTypingMessage(null);
+          setTypingText("");
         }
       },
       { threshold: 0.5 }
@@ -123,10 +153,11 @@ export function ChatDemo({ onMessageComplete }: ChatDemoProps) {
     }
 
     return () => {
+      mountedRef.current = false;
       observer.disconnect();
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, []);
+  }, [onMessageComplete]);
 
   return (
     <div ref={containerRef} className="relative w-full max-w-md">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IconShield, IconHeart, IconAlertTriangle, IconCheck, IconX } from "@tabler/icons-react";
 
@@ -27,7 +27,7 @@ const analysisResults: AnalysisResult[] = [
   {
     messageId: 2,
     status: "toxic",
-    sentiment: 15,
+    sentiment: -85,
     action: "Message flagged",
     details: "Toxic language detected • User warned"
   },
@@ -41,14 +41,14 @@ const analysisResults: AnalysisResult[] = [
   {
     messageId: 4,
     status: "safe",
-    sentiment: 70,
+    sentiment: 20,
     action: "Approved",
     details: "Constructive feedback"
   },
   {
     messageId: 5,
     status: "toxic",
-    sentiment: 25,
+    sentiment: -75,
     action: "Message blocked",
     details: "Harassment detected • Temporary mute"
   },
@@ -57,17 +57,40 @@ const analysisResults: AnalysisResult[] = [
 export function BloomAnalysis({ triggerAnalysis }: BloomAnalysisProps) {
   const [currentAnalysis, setCurrentAnalysis] = useState<AnalysisResult | null>(null);
   const [analysisHistory, setAnalysisHistory] = useState<AnalysisResult[]>([]);
+  const mountedRef = useRef(true);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Reset state when component mounts/remounts
+  useEffect(() => {
+    mountedRef.current = true;
+    
+    // Reset state on mount to ensure clean slate
+    setCurrentAnalysis(null);
+    setAnalysisHistory([]);
+    
+    return () => {
+      mountedRef.current = false;
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   // Trigger analysis when new message completes
   useEffect(() => {
+    if (!mountedRef.current) return;
+    
     if (triggerAnalysis !== undefined && triggerAnalysis >= 0) {
+      // Clear any existing timeout
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      
       const analysis = analysisResults[triggerAnalysis % analysisResults.length];
       setCurrentAnalysis(analysis);
       
       // Move to history after showing
-      setTimeout(() => {
-        setAnalysisHistory(prev => [analysis, ...prev].slice(0, 3));
-        setCurrentAnalysis(null);
+      timeoutRef.current = setTimeout(() => {
+        if (mountedRef.current) {
+          setAnalysisHistory(prev => [analysis, ...prev].slice(0, 3));
+          setCurrentAnalysis(null);
+        }
       }, 2500);
     }
   }, [triggerAnalysis]);
@@ -137,23 +160,23 @@ export function BloomAnalysis({ triggerAnalysis }: BloomAnalysisProps) {
                     <div className="flex-1 bg-neutral-700 rounded-full h-1.5">
                       <motion.div
                         initial={{ width: 0 }}
-                        animate={{ width: `${currentAnalysis.sentiment}%` }}
+                        animate={{ width: `${Math.abs(currentAnalysis.sentiment)}%` }}
                         className={`h-full rounded-full ${
-                          currentAnalysis.sentiment > 70 ? 'bg-green-400' :
-                          currentAnalysis.sentiment > 40 ? 'bg-yellow-400' : 'bg-red-400'
+                          currentAnalysis.sentiment > 50 ? 'bg-green-400' :
+                          currentAnalysis.sentiment >= -20 && currentAnalysis.sentiment <= 20 ? 'bg-yellow-400' : 'bg-red-400'
                         }`}
                       />
                     </div>
-                    <span className="text-xs text-gray-400">{currentAnalysis.sentiment}%</span>
+                    <span className="text-xs text-gray-400">{currentAnalysis.sentiment > 0 ? '+' : ''}{currentAnalysis.sentiment}</span>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
 
             {/* Analysis History */}
-            <div className="flex-1">
+            <div className="mb-4">
               <h4 className="text-xs text-gray-500 mb-2 uppercase tracking-wide">Recent Analysis</h4>
-              <div className="space-y-2">
+              <div className="space-y-2 max-h-20 overflow-y-auto">
                 {analysisHistory.map((analysis, index) => (
                   <motion.div
                     key={analysis.messageId}
@@ -165,7 +188,7 @@ export function BloomAnalysis({ triggerAnalysis }: BloomAnalysisProps) {
                     <span className={`flex-1 ${getStatusColor(analysis.status)}`}>
                       {analysis.action}
                     </span>
-                    <span className="text-gray-500">{analysis.sentiment}%</span>
+                    <span className="text-gray-500">{analysis.sentiment > 0 ? '+' : ''}{analysis.sentiment}</span>
                   </motion.div>
                 ))}
               </div>
