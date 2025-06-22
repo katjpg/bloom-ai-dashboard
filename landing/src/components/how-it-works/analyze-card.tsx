@@ -2,7 +2,7 @@
 
 import { IconShield, IconHeart, IconAlertTriangle } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo, useCallback } from "react";
 
 interface AnalysisNotification {
   id: number;
@@ -13,7 +13,7 @@ interface AnalysisNotification {
   details: string;
 }
 
-export function AnalyzeCard() {
+export const AnalyzeCard = memo(function AnalyzeCard() {
   const [notifications, setNotifications] = useState<AnalysisNotification[]>([
     {
       id: Date.now(),
@@ -118,26 +118,23 @@ export function AnalyzeCard() {
           {notifications.map((notification, index) => (
             <motion.div
               key={notification.id}
-              layout
-              initial={{ opacity: 0, y: -60, scale: 0.95 }}
+              initial={{ opacity: 0, transform: "translateY(-60px) scale(0.95)" }}
               animate={{ 
-                opacity: index === 0 ? 1 : index === 1 ? 0.8 : 0.6, 
-                y: index * 20, 
-                scale: 1 - (index * 0.05),
-                zIndex: notifications.length - index
+                opacity: index === 0 ? 1 : index === 1 ? 0.8 : 0.6,
+                transform: `translateY(${index * 20}px) scale(${1 - (index * 0.05)}) translateZ(${(notifications.length - index) * 10}px)`
               }}
-              exit={{ opacity: 0, scale: 0.9, zIndex: -1 }}
+              exit={{ opacity: 0, transform: "translateY(-20px) scale(0.9)" }}
               transition={{ 
-                type: "spring", 
-                stiffness: 500, 
-                damping: 30,
-                mass: 0.8,
-                exit: { duration: 0.8 }
+                type: "tween", 
+                duration: 0.3,
+                ease: "easeOut"
               }}
-              className="absolute top-0 left-0 right-0 p-3 bg-neutral-900/95 backdrop-blur-sm rounded-lg border border-neutral-600"
+              className="absolute top-0 left-0 right-0 p-3 bg-neutral-900/95 rounded-lg border border-neutral-600"
               style={{
-                boxShadow: `0 ${index * 2}px ${8 + index * 4}px rgba(0,0,0,0.2)`,
-                zIndex: notifications.length - index
+                zIndex: notifications.length - index,
+                willChange: "transform, opacity",
+                backfaceVisibility: "hidden",
+                filter: `drop-shadow(0 ${index * 2}px ${8 + index * 4}px rgba(0,0,0,0.2))`
               }}
             >
               <div className="flex items-center gap-2 mb-2">
@@ -169,4 +166,4 @@ export function AnalyzeCard() {
       </div>
     </div>
   );
-}
+});

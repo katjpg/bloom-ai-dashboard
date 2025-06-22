@@ -1,7 +1,7 @@
 import { AnimatedSpan, Terminal, TypingAnimation } from "./terminal"
-import { useEffect, useState } from "react"
+import { useEffect, useState, memo } from "react"
 
-export default function TerminalDemo() {
+export default memo(function TerminalDemo() {
   const [key, setKey] = useState(0)
 
   useEffect(() => {
@@ -41,4 +41,4 @@ export default function TerminalDemo() {
       </Terminal>
     </div>
   )
-}
+})
