@@ -38,7 +38,7 @@ const uncutSans = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL('https://bloom-ai-gaming.vercel.app'),
   title: "Bloom AI",
-  description: "AI-powered moderation and sentiment analysis for gaming communities. Detect toxicity, protect player data, and reward positive behavior—all in real-time.",
+  description: "Real-time AI moderation for safer, positive gaming communities.",
   icons: {
     icon: "/icons/bloom-logo.svg",
     shortcut: "/icons/bloom-logo.svg",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Bloom AI",
-    description: "AI-powered moderation and sentiment analysis for gaming communities. Detect toxicity, protect player data, and reward positive behavior—all in real-time.",
+    description: "Real-time AI moderation for safer, positive gaming communities.",
     url: "https://bloom-ai-gaming.vercel.app",
     siteName: "Bloom AI",
     images: [
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Bloom AI",
-    description: "AI-powered moderation and sentiment analysis for gaming communities. Detect toxicity, protect player data, and reward positive behavior—all in real-time.",
+    description: "Real-time AI moderation for safer, positive gaming communities.",
     images: ["/thumbnail.png"],
   },
 };
