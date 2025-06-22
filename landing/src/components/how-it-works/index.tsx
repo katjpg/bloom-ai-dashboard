@@ -16,7 +16,7 @@ export function HowItWorksSection() {
     {
       number: 2,
       title: "ANALYZE", 
-      description: "AI-powered real-time sentiment analysis with context-aware toxicity detection for comprehensive message screening.",
+      description: "Real-time AI analysis detects sentiment and toxicity in messages.",
     },
     {
       number: 3,
