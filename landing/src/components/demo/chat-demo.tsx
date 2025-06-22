@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 
 interface Message {
@@ -21,39 +21,39 @@ const gamingMessages: Message[] = [
     content: "gg everyone, great match!",
     avatarColor: "bg-blue-500/30",
     textColor: "text-blue-400",
-    duration: 3000,
+    duration: 4000,
   },
   {
     username: "xXDragonXx",
     content: "you guys are trash, uninstall the game",
     avatarColor: "bg-red-500/30", 
     textColor: "text-red-400",
-    duration: 2500,
+    duration: 4500,
   },
   {
     username: "GamerGirl2024",
     content: "hey everyone! anyone want to team up?",
     avatarColor: "bg-purple-500/30",
     textColor: "text-purple-400", 
-    duration: 3500,
+    duration: 4200,
   },
   {
     username: "ProGamer_Elite",
     content: "nice strategy on that last round",
     avatarColor: "bg-green-500/30",
     textColor: "text-green-400",
-    duration: 2800,
+    duration: 3800,
   },
   {
     username: "ToxicKid99", 
     content: "this lobby is full of idiots",
     avatarColor: "bg-orange-500/30",
     textColor: "text-orange-400",
-    duration: 2200,
+    duration: 4300,
   },
 ];
 
-export function ChatDemo({ onMessageComplete }: ChatDemoProps) {
+export const ChatDemo = memo(function ChatDemo({ onMessageComplete }: ChatDemoProps) {
   const [visibleMessages, setVisibleMessages] = useState<(Message & { id: number })[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [typingText, setTypingText] = useState("");
@@ -92,8 +92,12 @@ export function ChatDemo({ onMessageComplete }: ChatDemoProps) {
           setCurrentTypingMessage(null);
           
           // Add complete message
-          const newMessage = { ...message, id: Date.now() };
-          setVisibleMessages(prev => [...prev, newMessage].slice(-4));
+          const newMessage = { ...message, id: Date.now() + messageIndex };
+          setVisibleMessages(prev => {
+            const updated = [...prev, newMessage];
+            // Keep more messages visible and only remove very old ones
+            return updated.slice(-8);
+          });
           
           // Notify parent that message is complete
           if (onMessageComplete && mountedRef.current) {
@@ -102,9 +106,9 @@ export function ChatDemo({ onMessageComplete }: ChatDemoProps) {
           
           setTimeout(() => {
             if (mountedRef.current) callback();
-          }, 500);
+          }, 1200);
         }
-      }, 50);
+      }, 80);
     };
 
     const addMessage = () => {
@@ -131,6 +135,16 @@ export function ChatDemo({ onMessageComplete }: ChatDemoProps) {
     };
   }, [onMessageComplete]);
 
+  // Memoize expensive computations
+  const memoizedMessages = useMemo(() => 
+    visibleMessages.map((message) => ({
+      ...message,
+      key: message.id
+    })), [visibleMessages]
+  );
+
+  const memoizedTypingMessage = useMemo(() => currentTypingMessage, [currentTypingMessage]);
+
   return (
     <div className="relative w-full max-w-md">
       <div className="relative rounded-xl lg:rounded-[24px] border border-neutral-700 bg-neutral-800/50 backdrop-blur-lg p-2 md:p-4">
@@ -147,13 +161,15 @@ export function ChatDemo({ onMessageComplete }: ChatDemoProps) {
           </div>
 
           {/* Messages */}
-          <div className="p-4 h-64 flex flex-col justify-end gap-3 overflow-hidden">
-            {visibleMessages.map((message) => (
+          <div className="p-4 h-64 flex flex-col justify-end gap-3 overflow-hidden" style={{ contain: "layout" }}>
+            {memoizedMessages.map((message) => (
               <motion.div
-                key={message.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
+                key={message.key}
+                initial={{ opacity: 0, transform: "translateY(10px)" }}
+                animate={{ opacity: 1, transform: "translateY(0)" }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
                 className="flex items-start gap-3"
+                style={{ willChange: "transform, opacity" }}
               >
                 <div className={`w-8 h-8 rounded-full flex-shrink-0 ${message.avatarColor}`}></div>
                 <div className="min-w-0 flex-1">
@@ -169,29 +185,25 @@ export function ChatDemo({ onMessageComplete }: ChatDemoProps) {
             ))}
             
             {/* Typing indicator */}
-            {isTyping && (
+            {isTyping && memoizedTypingMessage && (
               <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, transform: "translateY(10px)" }}
+                animate={{ opacity: 1, transform: "translateY(0)" }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
                 className="flex items-start gap-3"
+                style={{ willChange: "transform, opacity" }}
               >
-                <div className={`w-8 h-8 rounded-full flex-shrink-0 ${currentTypingMessage?.avatarColor}`}></div>
+                <div className={`w-8 h-8 rounded-full flex-shrink-0 ${memoizedTypingMessage.avatarColor}`}></div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className={`font-medium text-sm ${currentTypingMessage?.textColor}`}>
-                      {currentTypingMessage?.username}
+                    <span className={`font-medium text-sm ${memoizedTypingMessage.textColor}`}>
+                      {memoizedTypingMessage.username}
                     </span>
                     <span className="text-gray-500 text-xs">just now</span>
                   </div>
                   <p className="text-gray-300 text-sm">
                     {typingText}
-                    <motion.span
-                      animate={{ opacity: [1, 0] }}
-                      transition={{ duration: 0.5, repeat: Infinity }}
-                      className="ml-0.5"
-                    >
-                      |
-                    </motion.span>
+                    <span className="ml-0.5 animate-pulse">|</span>
                   </p>
                 </div>
               </motion.div>
@@ -201,4 +213,4 @@ export function ChatDemo({ onMessageComplete }: ChatDemoProps) {
       </div>
     </div>
   );
-}
+});

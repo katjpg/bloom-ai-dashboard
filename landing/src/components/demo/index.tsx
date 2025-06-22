@@ -1,12 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, memo } from "react";
 import Container from "@/components/layout/container";
 import { ChatDemo } from "./chat-demo";
 import { BloomAnalysis } from "./bloom-analysis";
 
-export function DemoSection() {
+export const DemoSection = memo(function DemoSection() {
   const [currentMessageIndex, setCurrentMessageIndex] = useState(-1);
+
+  const handleMessageComplete = useCallback((messageIndex: number) => {
+    // Ensure the analysis component gets triggered with proper index
+    setCurrentMessageIndex(messageIndex);
+  }, []);
 
   return (
     <section className="w-full max-w-6xl mx-auto px-4 py-16 md:py-24">
@@ -40,7 +45,7 @@ export function DemoSection() {
             <h3 className="text-xl font-semibold text-white text-center" style={{ fontFamily: 'var(--font-clash-grotesk)' }}>
               Live Gaming Chat
             </h3>
-            <ChatDemo onMessageComplete={setCurrentMessageIndex} />
+            <ChatDemo onMessageComplete={handleMessageComplete} />
           </div>
         </Container>
 
@@ -56,4 +61,4 @@ export function DemoSection() {
       </div>
     </section>
   );
-}
+});

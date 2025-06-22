@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, memo, useCallback } from "react";
 import { useMousePosition } from "@/utils/mouse";
 
 interface ParticlesProps {
@@ -11,7 +11,7 @@ interface ParticlesProps {
     refresh?: boolean;
 }
 
-export default function Particles({
+const Particles = memo(function Particles({
     className = "",
     quantity = 30,
     staticity = 50,
@@ -25,6 +25,7 @@ export default function Particles({
     const mousePosition = useMousePosition();
     const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const canvasSize = useRef<{ w: number; h: number }>({ w: 0, h: 0 });
+    const animationFrameRef = useRef<number | null>(null);
     const dpr = typeof window !== "undefined" ? window.devicePixelRatio : 1;
 
     useEffect(() => {
@@ -37,6 +38,9 @@ export default function Particles({
 
         return () => {
             window.removeEventListener("resize", initCanvas);
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
         };
     }, []);
 
@@ -223,7 +227,7 @@ export default function Particles({
                 );
             }
         });
-        window.requestAnimationFrame(animate);
+        animationFrameRef.current = requestAnimationFrame(animate);
     };
 
     return (
@@ -231,4 +235,6 @@ export default function Particles({
             <canvas ref={canvasRef} />
         </div>
     );
-}
+});
+
+export default Particles;

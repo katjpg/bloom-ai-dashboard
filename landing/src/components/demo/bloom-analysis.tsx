@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IconShield, IconHeart, IconAlertTriangle, IconCheck, IconX } from "@tabler/icons-react";
 
@@ -54,7 +54,7 @@ const analysisResults: AnalysisResult[] = [
   },
 ];
 
-export function BloomAnalysis({ triggerAnalysis }: BloomAnalysisProps) {
+export const BloomAnalysis = memo(function BloomAnalysis({ triggerAnalysis }: BloomAnalysisProps) {
   const [currentAnalysis, setCurrentAnalysis] = useState<AnalysisResult | null>(null);
   const [analysisHistory, setAnalysisHistory] = useState<AnalysisResult[]>([]);
   const mountedRef = useRef(true);
@@ -85,17 +85,18 @@ export function BloomAnalysis({ triggerAnalysis }: BloomAnalysisProps) {
       const analysis = analysisResults[triggerAnalysis % analysisResults.length];
       setCurrentAnalysis(analysis);
       
-      // Move to history after showing
+      // Move to history after showing - increased to match longer message timing
       timeoutRef.current = setTimeout(() => {
         if (mountedRef.current) {
-          setAnalysisHistory(prev => [analysis, ...prev].slice(0, 3));
+          setAnalysisHistory(prev => [analysis, ...prev].slice(0, 5));
           setCurrentAnalysis(null);
         }
-      }, 2500);
+      }, 3500);
     }
   }, [triggerAnalysis]);
 
-  const getStatusIcon = (status: string) => {
+  // Memoize status icon computation
+  const getStatusIcon = useCallback((status: string) => {
     switch (status) {
       case "safe":
         return <IconShield className="w-4 h-4 text-blue-400" />;
@@ -106,9 +107,9 @@ export function BloomAnalysis({ triggerAnalysis }: BloomAnalysisProps) {
       default:
         return <IconCheck className="w-4 h-4 text-gray-400" />;
     }
-  };
+  }, []);
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = useCallback((status: string) => {
     switch (status) {
       case "safe":
         return "text-blue-400";
@@ -119,7 +120,7 @@ export function BloomAnalysis({ triggerAnalysis }: BloomAnalysisProps) {
       default:
         return "text-gray-400";
     }
-  };
+  }, []);
 
   return (
     <div className="relative w-full max-w-md">
@@ -139,14 +140,16 @@ export function BloomAnalysis({ triggerAnalysis }: BloomAnalysisProps) {
           </div>
 
           {/* Current Analysis */}
-          <div className="p-4 h-64 flex flex-col">
+          <div className="p-4 h-64 flex flex-col" style={{ contain: "layout" }}>
             <AnimatePresence>
               {currentAnalysis && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  className="mb-4 p-3 bg-neutral-800/50 rounded-lg border border-neutral-600"
+                  initial={{ opacity: 0, transform: "scale(0.95)" }}
+                  animate={{ opacity: 1, transform: "scale(1)" }}
+                  exit={{ opacity: 0, transform: "scale(0.95)" }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="mb-4 p-3 bg-neutral-800/50 rounded-lg border border-neutral-600 ring-1 ring-green-400/20"
+                  style={{ willChange: "transform, opacity" }}
                 >
                   <div className="flex items-center gap-2 mb-2">
                     {getStatusIcon(currentAnalysis.status)}
@@ -161,10 +164,12 @@ export function BloomAnalysis({ triggerAnalysis }: BloomAnalysisProps) {
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${Math.abs(currentAnalysis.sentiment)}%` }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
                         className={`h-full rounded-full ${
                           currentAnalysis.sentiment > 50 ? 'bg-green-400' :
                           currentAnalysis.sentiment >= -20 && currentAnalysis.sentiment <= 20 ? 'bg-yellow-400' : 'bg-red-400'
                         }`}
+                        style={{ willChange: "width" }}
                       />
                     </div>
                     <span className="text-xs text-gray-400">{currentAnalysis.sentiment > 0 ? '+' : ''}{currentAnalysis.sentiment}</span>
@@ -176,13 +181,15 @@ export function BloomAnalysis({ triggerAnalysis }: BloomAnalysisProps) {
             {/* Analysis History */}
             <div className="mb-4">
               <h4 className="text-xs text-gray-500 mb-2 uppercase tracking-wide">Recent Analysis</h4>
-              <div className="space-y-2 max-h-20 overflow-y-auto">
+              <div className="space-y-2 max-h-28 overflow-y-auto">
                 {analysisHistory.map((analysis, index) => (
                   <motion.div
                     key={analysis.messageId}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, transform: "translateX(20px)" }}
+                    animate={{ opacity: 1, transform: "translateX(0)" }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
                     className="flex items-center gap-2 p-2 bg-neutral-900/50 rounded text-xs"
+                    style={{ willChange: "transform, opacity" }}
                   >
                     {getStatusIcon(analysis.status)}
                     <span className={`flex-1 ${getStatusColor(analysis.status)}`}>
@@ -214,4 +221,4 @@ export function BloomAnalysis({ triggerAnalysis }: BloomAnalysisProps) {
       </div>
     </div>
   );
-}
+});

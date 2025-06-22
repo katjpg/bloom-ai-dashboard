@@ -1,15 +1,18 @@
 import { AnimatedSpan, Terminal, TypingAnimation } from "./terminal"
-import { useEffect, useState, memo } from "react"
+import { useEffect, useState, memo, useRef } from "react"
 
 export default memo(function TerminalDemo() {
   const [key, setKey] = useState(0)
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       setKey(prev => prev + 1)
     }, 8000) // Reset every 8 seconds
 
-    return () => clearInterval(interval)
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current)
+    }
   }, [])
 
   return (
