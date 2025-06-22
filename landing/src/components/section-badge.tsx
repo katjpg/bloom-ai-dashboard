@@ -10,7 +10,7 @@ interface SectionBadgeProps {
 
 export function SectionBadge({ 
   badgeText = "Built by gamers, for gamers",
-  delay = 1900,
+  delay = 2100,
   className = ""
 }: SectionBadgeProps) {
   return (

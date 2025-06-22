@@ -35,7 +35,7 @@ const Navbar = () => {
             <div className="z-[99] fixed pointer-events-none inset-x-0 h-[88px] bg-[rgba(2,6,23,0.8)] backdrop-blur-sm [mask:linear-gradient(to_bottom,#000_20%,transparent_calc(100%-20%))]"></div>
 
             <header className="fixed top-4 inset-x-0 mx-auto max-w-6xl px-4 md:px-12 z-[100]">
-                <nav className="backdrop-blur-lg rounded-xl lg:rounded-2xl border border-[rgba(124,124,124,0.2)] px-4 md:px-6 py-3 opacity-0 animate-[blur-up_1s_cubic-bezier(0.16,1,0.3,1)_1900ms_both]">
+                <nav className="backdrop-blur-lg rounded-xl lg:rounded-2xl border border-[rgba(124,124,124,0.2)] px-4 md:px-6 py-3 opacity-0 animate-[blur-up_1s_cubic-bezier(0.16,1,0.3,1)_2100ms_both]">
                     <div className="flex items-center justify-between">
                         {/* Left side - Logo */}
                         <div className="flex items-center gap-2">

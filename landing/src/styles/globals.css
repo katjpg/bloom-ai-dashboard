@@ -83,6 +83,14 @@ h3 {
   animation-delay: 1900ms;
 }
 
+.motion-delay-\[2100ms\] {
+  animation-delay: 2100ms;
+}
+
+.motion-delay-\[1600ms\] {
+  animation-delay: 1600ms;
+}
+
 /* Animations */
 @keyframes message-appear {
   from {

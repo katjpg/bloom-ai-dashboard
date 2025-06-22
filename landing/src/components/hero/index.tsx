@@ -1,13 +1,14 @@
 import Particles from "@/components/particles";
 import Container from "@/components/layout/container";
 import Image from "next/image";
+import Link from "next/link";
 import { DemoSection } from "@/components/demo";
 import { MainFeaturesSection } from "@/components/main-features";
 import { SectionBadge } from "@/components/section-badge";
 
 export const Hero = () => (
   <main 
-    className="relative flex flex-col items-center px-4 pt-48 md:pt-64 pb-24 md:pb-32 dark bg-background"
+    className="relative flex flex-col items-center px-4 pt-32 md:pt-48 pb-24 md:pb-32 dark bg-background"
     style={{
       background: `radial-gradient(ellipse at top, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
                    var(--background)`
@@ -40,9 +41,24 @@ export const Hero = () => (
         Detect toxicity, protect player data, and reward positive behavior—all in real-time.
       </p>
       
+      {/* Hero CTA Button */}
+      <Link 
+        href="https://bloom-ai-dashboard.vercel.app/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="bg-emerald-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-emerald-600 transition-colors text-sm md:text-base hero-text-blur-in motion-delay-[2100ms]"
+        style={{ 
+          background: '#0a786b',
+          color: 'white',
+          WebkitTextFillColor: 'white'
+        } as React.CSSProperties}
+      >
+        Get Started
+      </Link>
+      
       {/* Dashboard Image */}
-      <Container delay={1.9} className="w-full mb-16 md:mb-24">
-        <div className="relative mx-auto max-w-6xl rounded-xl lg:rounded-[32px] border p-2 backdrop-blur-lg border-neutral-700 bg-neutral-800/50 md:p-4 mt-16 md:mt-20">
+      <Container delay={2.1} className="w-full mb-16 md:mb-24">
+        <div className="relative mx-auto max-w-6xl rounded-xl lg:rounded-[32px] border p-2 backdrop-blur-lg border-neutral-700 bg-neutral-800/50 md:p-4 mt-6">
           <div className="absolute top-1/4 left-1/2 -z-10 gradient w-3/4 -translate-x-1/2 h-1/4 -translate-y-1/2 inset-0 blur-[10rem]"></div>
           
           <div className="rounded-lg lg:rounded-[24px] border p-2 border-neutral-700 bg-black">
