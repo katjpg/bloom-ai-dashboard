@@ -36,6 +36,7 @@ const uncutSans = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://bloom-ai-gaming.vercel.app'),
   title: "Bloom AI",
   description: "AI-powered moderation and sentiment analysis for gaming communities. Detect toxicity, protect player data, and reward positive behavior—all in real-time.",
   icons: {
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Bloom AI",
     description: "AI-powered moderation and sentiment analysis for gaming communities. Detect toxicity, protect player data, and reward positive behavior—all in real-time.",
-    url: "https://bloom-ai.com",
+    url: "https://bloom-ai-gaming.vercel.app",
     siteName: "Bloom AI",
     images: [
       {
