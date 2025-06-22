@@ -2,8 +2,8 @@
 @import "./fonts.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #020617;
+  --foreground: #ededed;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -51,7 +51,7 @@ h3 {
 
 .hero-text-blur-in {
   animation: blur-up 1s cubic-bezier(0.16, 1, 0.3, 1) both;
-  background: linear-gradient(to right bottom, rgb(255, 255, 255) 30%, rgba(255, 255, 255, 0.55));
+  background: linear-gradient(to right bottom, rgb(237, 237, 237) 30%, rgba(237, 237, 237, 0.55));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
