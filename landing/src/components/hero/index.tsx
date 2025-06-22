@@ -2,6 +2,7 @@ import Particles from "@/components/particles";
 import Container from "@/components/layout/container";
 import Image from "next/image";
 import { DemoSection } from "@/components/demo";
+import { MainFeaturesSection } from "@/components/main-features";
 
 export const Hero = () => (
   <main 
@@ -57,6 +58,9 @@ export const Hero = () => (
 
       {/* Demo Section */}
       <DemoSection />
+
+      {/* Main Features Section */}
+      <MainFeaturesSection />
     </div>
   </main>
 );
