@@ -13,7 +13,7 @@ export function DemoSection() {
       {/* Section Title */}
       <Container>
         <h2 
-          className="text-center uppercase font-bold text-balance text-3xl md:text-5xl mb-4"
+          className="text-center uppercase font-semibold text-balance text-3xl md:text-5xl mb-4"
           style={{ 
             fontFamily: 'var(--font-clash-grotesk)',
             background: 'linear-gradient(to right bottom, rgb(255, 255, 255) 30%, rgba(255, 255, 255, 0.55))',
