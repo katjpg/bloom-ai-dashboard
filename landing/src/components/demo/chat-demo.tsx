@@ -17,35 +17,35 @@ interface ChatDemoProps {
 
 const gamingMessages: Message[] = [
   {
-    username: "NoobSlayer42",
+    username: "halcyon_daze4",
     content: "gg everyone, great match!",
     avatarColor: "bg-blue-500/30",
     textColor: "text-blue-400",
     duration: 4000,
   },
   {
-    username: "xXDragonXx",
+    username: "coolblue111",
     content: "you guys are trash, uninstall the game",
     avatarColor: "bg-red-500/30", 
     textColor: "text-red-400",
     duration: 4500,
   },
   {
-    username: "GamerGirl2024",
+    username: "skygamer",
     content: "hey everyone! anyone want to team up?",
     avatarColor: "bg-purple-500/30",
     textColor: "text-purple-400", 
     duration: 4200,
   },
   {
-    username: "ProGamer_Elite",
+    username: "lexu9",
     content: "nice strategy on that last round",
     avatarColor: "bg-green-500/30",
     textColor: "text-green-400",
     duration: 3800,
   },
   {
-    username: "ToxicKid99", 
+    username: "grrrreg56", 
     content: "this lobby is full of idiots",
     avatarColor: "bg-orange-500/30",
     textColor: "text-orange-400",
