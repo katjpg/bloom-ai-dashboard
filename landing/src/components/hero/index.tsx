@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { DemoSection } from "@/components/demo";
 import { MainFeaturesSection } from "@/components/main-features";
+import { HowItWorksSection } from "@/components/how-it-works";
 import { SectionBadge } from "@/components/section-badge";
 
 export const Hero = () => (
@@ -79,6 +80,9 @@ export const Hero = () => (
 
       {/* Main Features Section */}
       <MainFeaturesSection />
+
+      {/* How It Works Section */}
+      <HowItWorksSection />
     </div>
   </main>
 );
