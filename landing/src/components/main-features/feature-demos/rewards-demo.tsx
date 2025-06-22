@@ -44,10 +44,10 @@ export function RewardsDemo({ feature, animateIn }: RewardsDemoProps) {
         
         <div className="space-y-6">
           {/* Stats Grid */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {Object.entries(demo.stats).map(([key, value]) => (
               <div key={key} className="bg-neutral-900/50 rounded-lg p-4 text-center">
-                <div className="text-2xl font-bold text-white mb-1">{value}</div>
+                <div className="text-xl sm:text-2xl font-bold text-white mb-1">{value}</div>
                 <div 
                   className="text-xs text-gray-400 capitalize"
                   style={{ fontFamily: 'var(--font-uncut-sans)' }}
