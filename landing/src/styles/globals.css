@@ -87,6 +87,10 @@ h3 {
   animation-delay: 2100ms;
 }
 
+.motion-delay-\[2300ms\] {
+  animation-delay: 2300ms;
+}
+
 .motion-delay-\[1600ms\] {
   animation-delay: 1600ms;
 }

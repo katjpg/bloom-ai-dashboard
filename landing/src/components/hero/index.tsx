@@ -46,7 +46,7 @@ export const Hero = () => (
         href="https://bloom-ai-dashboard.vercel.app/"
         target="_blank"
         rel="noopener noreferrer"
-        className="bg-emerald-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-emerald-600 transition-colors text-sm md:text-base hero-text-blur-in motion-delay-[2100ms]"
+        className="bg-emerald-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-emerald-600 transition-colors text-sm md:text-base hero-text-blur-in motion-delay-[2300ms]"
         style={{ 
           background: '#0a786b',
           color: 'white',
@@ -57,7 +57,7 @@ export const Hero = () => (
       </Link>
       
       {/* Dashboard Image */}
-      <Container delay={2.1} className="w-full mb-16 md:mb-24">
+      <Container delay={2.3} className="w-full mb-16 md:mb-24">
         <div className="relative mx-auto max-w-6xl rounded-xl lg:rounded-[32px] border p-2 backdrop-blur-lg border-neutral-700 bg-neutral-800/50 md:p-4 mt-6">
           <div className="absolute top-1/4 left-1/2 -z-10 gradient w-3/4 -translate-x-1/2 h-1/4 -translate-y-1/2 inset-0 blur-[10rem]"></div>
           
