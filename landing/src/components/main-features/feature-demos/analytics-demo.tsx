@@ -41,13 +41,6 @@ export function AnalyticsDemo({ feature, animateIn }: AnalyticsDemoProps) {
 
       {/* Feature Demo */}
       <div className="bg-black/90 rounded-lg border border-neutral-700 p-6">
-        <h4 
-          className="text-white font-semibold mb-4 flex items-center gap-2"
-          style={{ fontFamily: 'var(--font-clash-grotesk)' }}
-        >
-          <IconEye className="w-4 h-4" />
-          Live Demo
-        </h4>
         
         <div className="space-y-6">
           {/* Stats Grid */}

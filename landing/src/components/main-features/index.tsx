@@ -66,9 +66,9 @@ const features: Feature[] = [
         engagement: "+32%"
       },
       leaderboard: [
-        { name: "HelperPro99", points: 2840, badge: "Community Champion" },
-        { name: "KindGamer23", points: 2156, badge: "Support Star" },
-        { name: "TeamPlayer", points: 1923, badge: "Positive Voice" }
+        { name: "HelperPro99", points: 2840, badge: "Bloom MVP" },
+        { name: "KindGamer23", points: 2156, badge: "Bloom MVP" },
+        { name: "TeamPlayer", points: 1923, badge: "Bloom MVP" }
       ]
     }
   },
