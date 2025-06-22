@@ -6,6 +6,8 @@ import { DemoSection } from "@/components/demo";
 import { MainFeaturesSection } from "@/components/main-features";
 import { HowItWorksSection } from "@/components/how-it-works";
 import { SectionBadge } from "@/components/section-badge";
+import { FAQSection } from "@/components/faq";
+import { CTASection } from "@/components/cta";
 
 export const Hero = () => (
   <main 
@@ -83,6 +85,12 @@ export const Hero = () => (
 
       {/* How It Works Section */}
       <HowItWorksSection />
+
+      {/* FAQ Section */}
+      <FAQSection />
+
+      {/* CTA Section */}
+      <CTASection />
     </div>
   </main>
 );

@@ -17,8 +17,20 @@ export const DemoSection = memo(function DemoSection() {
     <section className="w-full max-w-6xl mx-auto px-4 py-16 md:py-24">
       {/* Section Title */}
       <Container>
+        <div className="text-center mb-8">
+          <span 
+            className="text-sm uppercase tracking-wide font-medium"
+            style={{ 
+              fontFamily: 'var(--font-uncut-sans)',
+              color: '#0c9a88',
+              textShadow: '0 0 10px rgba(12, 154, 136, 0.5)'
+            }}
+          >
+            POWERED BY BLOOM
+          </span>
+        </div>
         <h2 
-          className="text-center uppercase font-semibold text-balance text-3xl md:text-5xl mb-4"
+          className="text-center uppercase font-semibold text-balance text-3xl md:text-5xl mb-8"
           style={{ 
             fontFamily: 'var(--font-clash-grotesk)',
             background: 'linear-gradient(to right bottom, rgb(255, 255, 255) 30%, rgba(255, 255, 255, 0.55))',
